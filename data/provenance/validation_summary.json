@@ -1,0 +1,50 @@
+{
+  "schema": 2,
+  "release_date": "2026-09-24",
+  "environment": {
+    "python": "3.9.7",
+    "fresh_dependency_install": false
+  },
+  "layout": {
+    "visible_directories": [
+      "analysis",
+      "data",
+      "experiments"
+    ],
+    "manuscript_and_rendered_figures_included": false
+  },
+  "relocation": {
+    "copied_release_files_only": true,
+    "original_research_path_on_pythonpath": false,
+    "checks": [
+      {
+        "command": "python -m analysis.reproduce --output-dir build/results",
+        "passed": true
+      },
+      {
+        "command": "python -m analysis.plot_core_figures --output-dir build/figures",
+        "passed": true
+      },
+      {
+        "command": "python experiments/model_code/smoke.py",
+        "passed": true
+      },
+      {
+        "command": "python -m analysis.check_release",
+        "passed": true
+      }
+    ]
+  },
+  "paths": {
+    "hardcoded_filesystem_path_scan_passed": true,
+    "generic_path_checker_cases_passed": true,
+    "relative_BNG_paths_resolve_from_repository": true
+  },
+  "scope": {
+    "saved_numeric_reference_tables": 6,
+    "new_gpu_experiments": false,
+    "remote_ci_executed": false,
+    "github_remote_configured": false
+  },
+  "original_research_sources_modified": false
+}

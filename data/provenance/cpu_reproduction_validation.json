@@ -1,0 +1,112 @@
+{
+  "passed": true,
+  "source_snapshot_hashes_checked": 13,
+  "reference_comparisons": [
+    {
+      "reference": "data/expected/rq1_condition_summary_40.csv",
+      "rows": 40,
+      "compared_columns": [
+        "model",
+        "dataset",
+        "editor",
+        "method",
+        "order_id",
+        "n",
+        "regression_intercept",
+        "regression_slope",
+        "regression_r2",
+        "target_actual_spearman",
+        "target_ratio_median",
+        "actual_ratio_median",
+        "actual_lt_target_count",
+        "target_nonexpands_count",
+        "actual_nonexpands_count"
+      ],
+      "passed": true
+    },
+    {
+      "reference": "data/expected/rq2_threshold_mask_360.csv",
+      "rows": 360,
+      "compared_columns": [
+        "model",
+        "dataset",
+        "editor",
+        "method",
+        "order_id",
+        "edit_count",
+        "excluded_above3",
+        "kept_after_threshold3"
+      ],
+      "passed": true
+    },
+    {
+      "reference": "data/expected/rq2_correlations.csv",
+      "rows": 12,
+      "compared_columns": [
+        "dataset",
+        "geometry_context",
+        "metric",
+        "n",
+        "n_trajectories",
+        "spearman",
+        "pearson",
+        "partial_spearman_given_D"
+      ],
+      "passed": true
+    },
+    {
+      "reference": "data/expected/rq3_orthogonal_dose_summary.csv",
+      "rows": 4,
+      "compared_columns": [
+        "removed_fraction",
+        "n_states",
+        "mean_delta_LOC",
+        "mean_delta_EFF_TF",
+        "mean_delta_GEN_TF",
+        "LOC_up_no_edit_loss",
+        "LOC_up_both_losses_at_most_1pp"
+      ],
+      "passed": true
+    },
+    {
+      "reference": "data/expected/rq3_same_norm_state_differences_68.csv",
+      "rows": 68,
+      "compared_columns": [
+        "model",
+        "dataset",
+        "editor",
+        "method",
+        "order_id",
+        "edit_count",
+        "dose_fraction",
+        "n_cases",
+        "difference_LOC_pp",
+        "difference_EFF_TF_pp",
+        "difference_GEN_TF_pp"
+      ],
+      "passed": true
+    },
+    {
+      "reference": "data/expected/rq3_same_norm_overall_means.csv",
+      "rows": 6,
+      "compared_columns": [
+        "scope",
+        "dose_fraction",
+        "dose_percent",
+        "operation",
+        "n_states",
+        "total_state_case_count",
+        "n_joint_condition",
+        "mean_delta_LOC_pp",
+        "mean_delta_EFF_TF_pp",
+        "mean_delta_GEN_TF_pp"
+      ],
+      "passed": true
+    }
+  ],
+  "performance_conditions": 40,
+  "model_inference_performed": false,
+  "inferential_scope": "Saved measurements; descriptive checkpoint/state aggregation. Checkpoints are not independent replicates.",
+  "numpy_version": "1.22.1",
+  "pandas_version": "1.4.0"
+}

@@ -1,0 +1,7 @@
+scope,dose_fraction,dose_percent,operation,n_states,total_state_case_count,n_joint_condition,mean_delta_LOC_pp,mean_delta_EFF_TF_pp,mean_delta_GEN_TF_pp
+all_cohorts_equal_eligible_state,0.25,25,orthogonal,34,3391,15,0.788864967308397,0.3820292238784507,0.28283995416348356
+all_cohorts_equal_eligible_state,0.25,25,parallel,34,3391,3,-0.1266791747732107,-0.6030251975048064,-0.5372693881259679
+all_cohorts_equal_eligible_state,0.25,25,parallel_minus_orthogonal,34,3391,2,-0.9155441420816077,-0.985054421383257,-0.8201093422894514
+all_cohorts_equal_eligible_state,0.5,50,orthogonal,34,3309,9,1.1867987604441188,-0.06069181977648177,-0.40172441340612275
+all_cohorts_equal_eligible_state,0.5,50,parallel,34,3309,2,-0.431510315735497,-1.3470746519750194,-0.9567925504163559
+all_cohorts_equal_eligible_state,0.5,50,parallel_minus_orthogonal,34,3309,1,-1.6183090761796157,-1.2863828321985378,-0.5550681370102332

@@ -1,0 +1,1473 @@
+{
+  "schema_version": 1,
+  "snapshot_date": "2026-09-24",
+  "scope": "Current modified editor source and dependency closure of selected model runners; model assets and historical protocols are external.",
+  "files": [
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/aggregate_edit_analysis_artifacts.py",
+      "release_path": "experiments/diagnostics/aggregate_edit_analysis_artifacts.py",
+      "source_sha256": "692554619f81261fc9b2ac41ece4eedb47a5eb30dbcf3fd04cb374d01faf133c",
+      "release_sha256": "692554619f81261fc9b2ac41ece4eedb47a5eb30dbcf3fd04cb374d01faf133c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_base_component_cosines.py",
+      "release_path": "experiments/diagnostics/analyze_base_component_cosines.py",
+      "source_sha256": "bbb9f8c62bed2c85138e4407613477107939915b97ddefe7c4a0639832aaa198",
+      "release_sha256": "bbb9f8c62bed2c85138e4407613477107939915b97ddefe7c4a0639832aaa198",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_base_h_m_reference_cosines.py",
+      "release_path": "experiments/diagnostics/analyze_base_h_m_reference_cosines.py",
+      "source_sha256": "7ab39a5b594343c774fb8eb6992f2a867369e9a8e9e30e81b062a0b048cf530e",
+      "release_sha256": "7ab39a5b594343c774fb8eb6992f2a867369e9a8e9e30e81b062a0b048cf530e",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_edit_count_gain_trajectory.py",
+      "release_path": "experiments/diagnostics/analyze_edit_count_gain_trajectory.py",
+      "source_sha256": "cffd821f5141973fcb799fd62a50386ea5b1547189b6fb3cc638017d6797bbc8",
+      "release_sha256": "cffd821f5141973fcb799fd62a50386ea5b1547189b6fb3cc638017d6797bbc8",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_edited_a_m_o_reference_cosines.py",
+      "release_path": "experiments/diagnostics/analyze_edited_a_m_o_reference_cosines.py",
+      "source_sha256": "73b9b1fe227edff63e8cb04db37469b302a50675140e102ff124a2749b5fe566",
+      "release_sha256": "73b9b1fe227edff63e8cb04db37469b302a50675140e102ff124a2749b5fe566",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_geometry_locality_correlation.py",
+      "release_path": "experiments/diagnostics/analyze_geometry_locality_correlation.py",
+      "source_sha256": "cba619ae5fa788cffc804ffb3f693d99d811c8467aa2a1143c064d3c91566c98",
+      "release_sha256": "cba619ae5fa788cffc804ffb3f693d99d811c8467aa2a1143c064d3c91566c98",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_residual_branch_collapse.py",
+      "release_path": "experiments/diagnostics/analyze_residual_branch_collapse.py",
+      "source_sha256": "07ea1c027f6069a7621918000b48574091e79e5853452da1ed1bca4bf111ba4b",
+      "release_sha256": "07ea1c027f6069a7621918000b48574091e79e5853452da1ed1bca4bf111ba4b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_residual_spectrum.py",
+      "release_path": "experiments/diagnostics/analyze_residual_spectrum.py",
+      "source_sha256": "d2fd9a9e8f58097d8e47805589a4315ae396a096b443f6c706cb23b44be49f62",
+      "release_sha256": "d2fd9a9e8f58097d8e47805589a4315ae396a096b443f6c706cb23b44be49f62",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/assemble_cumulative_prefix_locality1k.py",
+      "release_path": "experiments/diagnostics/assemble_cumulative_prefix_locality1k.py",
+      "source_sha256": "8dc27bc9053cd65b72d24907b813bebe9e6739ec613ed5f1e3c221c0f465d91c",
+      "release_sha256": "a2ffb49bdf50db660c40b571deb1a6ea3ed527b8891011f51877dbe03121582f",
+      "changes": [
+        "4 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/capture_matched_geometry_checkpoints.py",
+      "release_path": "experiments/diagnostics/capture_matched_geometry_checkpoints.py",
+      "source_sha256": "de4f25414fadc9d24adf328f88133d0833b478c9de4963bb4b0c4d8b5b02071b",
+      "release_sha256": "758ef754a0bef1c1ba49164ef1ce6307c679d3e49a49ea3c3a728b93e367dff4",
+      "changes": [
+        "2 output path defaults use BNG_OUTPUT_ROOT",
+        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/capture_scalar_checkpoint_h9.py",
+      "release_path": "experiments/diagnostics/capture_scalar_checkpoint_h9.py",
+      "source_sha256": "b544676d5b5362b0c4dbb968523c8f2e5cf91ce5a862985515e8ff4a7e068dd3",
+      "release_sha256": "8cae82e2c79c66223bdafabefc78d47b197efa38c278bc321ad7d0077391e399",
+      "changes": [
+        "5 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/compare_locality_proxies.py",
+      "release_path": "experiments/diagnostics/compare_locality_proxies.py",
+      "source_sha256": "6a4637cd44ff358ea228859bd2254dfcb0c9c1cde28d58009aa9b975f427041d",
+      "release_sha256": "6a4637cd44ff358ea228859bd2254dfcb0c9c1cde28d58009aa9b975f427041d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/early_attention_condition.py",
+      "release_path": "experiments/diagnostics/early_attention_condition.py",
+      "source_sha256": "c052883bcbaf27da9cb6c81fc4c88dcf8778f860f361cfd9b7bb1b489dbc5401",
+      "release_sha256": "c052883bcbaf27da9cb6c81fc4c88dcf8778f860f361cfd9b7bb1b489dbc5401",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/edit_order_manifest.py",
+      "release_path": "experiments/diagnostics/edit_order_manifest.py",
+      "source_sha256": "751bc7d5e08c9443829a9d5712f930d912b8246222f178c7adb0ff0d1526df24",
+      "release_sha256": "751bc7d5e08c9443829a9d5712f930d912b8246222f178c7adb0ff0d1526df24",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/evaluate_matched_geometry_corrected.py",
+      "release_path": "experiments/diagnostics/evaluate_matched_geometry_corrected.py",
+      "source_sha256": "aab0df5fa73d8c79101c78ab12dd017083b510b7483b88d89a7536bdd871057a",
+      "release_sha256": "aab0df5fa73d8c79101c78ab12dd017083b510b7483b88d89a7536bdd871057a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/evaluate_raw_plot_locality_n1000.py",
+      "release_path": "experiments/diagnostics/evaluate_raw_plot_locality_n1000.py",
+      "source_sha256": "3e973adb06996802ff0af99bba163df7cf9e59f3a373311e77a0ac9a638d7d7d",
+      "release_sha256": "ebb8839a3b24b4e91e7a398a1cc48d891534e2c75eaa36e3ff5501ca73dd93a6",
+      "changes": [
+        "2 output path defaults use BNG_OUTPUT_ROOT",
+        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/evaluation_prompt_contract.py",
+      "release_path": "experiments/diagnostics/evaluation_prompt_contract.py",
+      "source_sha256": "38f8c007b9b615a89e247532906ff1cb934a37f1bbcae7fedaf921ca61ee3875",
+      "release_sha256": "38f8c007b9b615a89e247532906ff1cb934a37f1bbcae7fedaf921ca61ee3875",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/fixed_probe_tracking.py",
+      "release_path": "experiments/diagnostics/fixed_probe_tracking.py",
+      "source_sha256": "0822f33e75549809debeeb0b8a0bdfa96cf07029e466522dfb1a9acd6fb43600",
+      "release_sha256": "0822f33e75549809debeeb0b8a0bdfa96cf07029e466522dfb1a9acd6fb43600",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/gpt2_checkpoint_analysis.py",
+      "release_path": "experiments/diagnostics/gpt2_checkpoint_analysis.py",
+      "source_sha256": "5c8c1b06ccaf2d178745ef63c50101bf8c762b5aa94925cbf79f282be5af9b87",
+      "release_sha256": "d7521643886aeb6379934377b480c6c24407ab495e80352479f43745f1b2f856",
+      "changes": [
+        "1 data path defaults use BNG_DATA_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/gpt2_intervention_analysis.py",
+      "release_path": "experiments/diagnostics/gpt2_intervention_analysis.py",
+      "source_sha256": "b9164c44a8b7a7599140eee5526b6c931bef1f5da998f101297bc0786b9c02d2",
+      "release_sha256": "56e68adacbc87b0704d65d5538cf43305c5cd7d90d9c0b8580e0b333d9385dd9",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "1 data path defaults use BNG_DATA_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/o0_axis_condition.py",
+      "release_path": "experiments/diagnostics/o0_axis_condition.py",
+      "source_sha256": "b9ee399633bda1df98661f10d5c54e7ddd55e5859803737f17159b861b05593d",
+      "release_sha256": "b9ee399633bda1df98661f10d5c54e7ddd55e5859803737f17159b861b05593d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/o0_axis_observation_metrics.py",
+      "release_path": "experiments/diagnostics/o0_axis_observation_metrics.py",
+      "source_sha256": "dae58d82f4830605105c3fcf203669869db4f5c0b3d9f40b07322fb05d61d0fe",
+      "release_sha256": "dae58d82f4830605105c3fcf203669869db4f5c0b3d9f40b07322fb05d61d0fe",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/plot_unified_branch_rms_trajectory.py",
+      "release_path": "experiments/diagnostics/plot_unified_branch_rms_trajectory.py",
+      "source_sha256": "cc241ba06ae195ab33c6e2d98ba7ce940af64663033b25bd4a6062378e59778f",
+      "release_sha256": "cc241ba06ae195ab33c6e2d98ba7ce940af64663033b25bd4a6062378e59778f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/post_update_tracking.py",
+      "release_path": "experiments/diagnostics/post_update_tracking.py",
+      "source_sha256": "0fd8bb2bb4347116c0f7d933037981af1c1f44aeff2dfa922988978bf02c5f6b",
+      "release_sha256": "0fd8bb2bb4347116c0f7d933037981af1c1f44aeff2dfa922988978bf02c5f6b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_all_cohort_parallel_control.py",
+      "release_path": "experiments/diagnostics/run_all_cohort_parallel_control.py",
+      "source_sha256": "c9d81c4893d9fd24c1d66a15e292553557fd8ba883e58908c5d7c301c1a07a00",
+      "release_sha256": "1b87f43e8d1fc745c91abd8e01bf01ee5ea0d177c080fa81e7853a33989c3f1a",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "Historical paper reference uses BNG_RESEARCH_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_gpt2_intervention_extension.py",
+      "release_path": "experiments/diagnostics/run_gpt2_intervention_extension.py",
+      "source_sha256": "1e328fd48314282ddc31607f02458dbeded069165200ff096dab8dfe98a4d48b",
+      "release_sha256": "deaae919c9f10124c71f38d1ec7b49639620751f881e85b7683be589e9bbaac5",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_llama_counterfact_intervention.py",
+      "release_path": "experiments/diagnostics/run_llama_counterfact_intervention.py",
+      "source_sha256": "d0bfe596784237e0a2ce17dd2fea5285b83a0096921a02ff1f32e5421b4c9af0",
+      "release_sha256": "01a8d6925673f0d709ee3f383a6c28448e7be2a1d022ee0de42f49ec20eafd72",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_llama_counterfact_parallel_control.py",
+      "release_path": "experiments/diagnostics/run_llama_counterfact_parallel_control.py",
+      "source_sha256": "ec24c8efb7528556c614e78e954d8f58579d05d9571c20c72c1fb2c3cde98ee1",
+      "release_sha256": "2783cea02d2a37e19b7d0772f46f336e5c206123f4be4d0a7f2a2cef249b8f6d",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_llama_intervention_extension.py",
+      "release_path": "experiments/diagnostics/run_llama_intervention_extension.py",
+      "source_sha256": "30dffc0ae174db03c5b4547bf1167473137234acaee440a95c66e7f97bec5877",
+      "release_sha256": "585fb8d36ae23fa86a987356bf17ed4735f8df426f7e96cb6064ef213916fb61",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/target_text_contract.py",
+      "release_path": "experiments/diagnostics/target_text_contract.py",
+      "source_sha256": "2ad8e6aecf59870e0ee47769badf425ce26aa84eb941c1b21c4e6a83b4f0bbc9",
+      "release_sha256": "2ad8e6aecf59870e0ee47769badf425ce26aa84eb941c1b21c4e6a83b4f0bbc9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/virtual_actual_tracking.py",
+      "release_path": "experiments/diagnostics/virtual_actual_tracking.py",
+      "source_sha256": "1449ddc77c8edc1e89ff33faf2460415fc47a8cd91f38d9e66c953cf44a4aaf9",
+      "release_sha256": "1449ddc77c8edc1e89ff33faf2460415fc47a8cd91f38d9e66c953cf44a4aaf9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "evaluate/eval_cumulative_generation_locality.py",
+      "release_path": "experiments/evaluate/eval_cumulative_generation_locality.py",
+      "source_sha256": "ffd547524690adc652cd2927a9f5988b625548f72863977cad4c5c83700bab28",
+      "release_sha256": "ffd547524690adc652cd2927a9f5988b625548f72863977cad4c5c83700bab28",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "evaluate/eval_hf_easyedit.py",
+      "release_path": "experiments/evaluate/eval_hf_easyedit.py",
+      "source_sha256": "2d04b2c76e03fad79e46c7b9c83118081949e9bd82c8eee48d1aeed7d3f61cd1",
+      "release_sha256": "2d04b2c76e03fad79e46c7b9c83118081949e9bd82c8eee48d1aeed7d3f61cd1",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "scripts/run_rgr_batch.py",
+      "release_path": "experiments/scripts/run_rgr_batch.py",
+      "source_sha256": "78af4a3d439740350f8533762951a0bb1498883ba3c4fcd8b63ff8f6cba73557",
+      "release_sha256": "561413bcf81571523bfbe9c22533601c2ff7aa1358397204c808b69397c3187c",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "Expand environment variables and user-home notation before hparam path normalization."
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/LICENSE",
+      "release_path": "experiments/EasyEdit/LICENSE",
+      "source_sha256": "46c273d5a0a7f8bc3889863398e1bb20493e256f38033dfd637ec46bf654c531",
+      "release_sha256": "46c273d5a0a7f8bc3889863398e1bb20493e256f38033dfd637ec46bf654c531",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/__init__.py",
+      "source_sha256": "f995b566d0dfd10b4a977eb8df96000f77de7f4d44dcaddc636937a2290d1985",
+      "release_sha256": "f995b566d0dfd10b4a977eb8df96000f77de7f4d44dcaddc636937a2290d1985",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/AKEW_both.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/AKEW_both.py",
+      "source_sha256": "8ec2d7d5fb9705c62ef70493dd07a59f3943eb8763dc29b4f09506cbe1bbb423",
+      "release_sha256": "8ec2d7d5fb9705c62ef70493dd07a59f3943eb8763dc29b4f09506cbe1bbb423",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/Cknowedit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/Cknowedit.py",
+      "source_sha256": "17395f49d2380abeb3f9e8e4236df14e2fcd6c89948d76bd70121ffb256f201d",
+      "release_sha256": "17395f49d2380abeb3f9e8e4236df14e2fcd6c89948d76bd70121ffb256f201d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/ComprehendEdit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/ComprehendEdit.py",
+      "source_sha256": "d65c0efe5d0697517b06c269b4ed387051b9917d02ae86d1307b5f5304fb014f",
+      "release_sha256": "d65c0efe5d0697517b06c269b4ed387051b9917d02ae86d1307b5f5304fb014f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/HalluEditBench.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/HalluEditBench.py",
+      "source_sha256": "2511889e5996f4fb7d1a0f4f5097fd40976a6fbf879baf28d4f9e9051e04a96e",
+      "release_sha256": "2511889e5996f4fb7d1a0f4f5097fd40976a6fbf879baf28d4f9e9051e04a96e",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/LEME.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/LEME.py",
+      "source_sha256": "ed374b1dbff7c96bdd9b89ad3e9659c4659b96e731a23b0fe6ddd5ce324b2c5c",
+      "release_sha256": "ed374b1dbff7c96bdd9b89ad3e9659c4659b96e731a23b0fe6ddd5ce324b2c5c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/MQuAKE.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/MQuAKE.py",
+      "source_sha256": "f24c1a67aa5f4eeafaf4e8142834e58452eb9db351d6abea9131314147851aa0",
+      "release_sha256": "f24c1a67aa5f4eeafaf4e8142834e58452eb9db351d6abea9131314147851aa0",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/__init__.py",
+      "source_sha256": "c6d4a10f809d20234db4f83474de1075589244725898c929b0aca65fd27c5d72",
+      "release_sha256": "c6d4a10f809d20234db4f83474de1075589244725898c929b0aca65fd27c5d72",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/adsedit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/adsedit.py",
+      "source_sha256": "b3b57b61b4e99d054ddafdea5043b98d8570a3d1fe9299300b35d57ed57c1102",
+      "release_sha256": "b3b57b61b4e99d054ddafdea5043b98d8570a3d1fe9299300b35d57ed57c1102",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/attr_snippets.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/attr_snippets.py",
+      "source_sha256": "4763cfd79850ba6f6dae12aedd166b1248746ea8bf16562c5de0636f47e918fa",
+      "release_sha256": "4763cfd79850ba6f6dae12aedd166b1248746ea8bf16562c5de0636f47e918fa",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/coco_caption.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/coco_caption.py",
+      "source_sha256": "5bc200e38b4f10a0b192170745acfb682909fbbb0faefa451460c8f57d862eed",
+      "release_sha256": "5bc200e38b4f10a0b192170745acfb682909fbbb0faefa451460c8f57d862eed",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/counterfact.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/counterfact.py",
+      "source_sha256": "fa5f7df8f8a5fe9f435a3bf64277ffd2ea23fd4f75f121bc9044e21502e104b9",
+      "release_sha256": "fa5f7df8f8a5fe9f435a3bf64277ffd2ea23fd4f75f121bc9044e21502e104b9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/knowedit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/knowedit.py",
+      "source_sha256": "ebedc926e1777404730763bbafb8d2ae2a66b239a0c7e75e633c49def7665dfb",
+      "release_sha256": "ebedc926e1777404730763bbafb8d2ae2a66b239a0c7e75e633c49def7665dfb",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/knowns.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/knowns.py",
+      "source_sha256": "086f71cf4adb4d5b66bb4cb0c440db96c5acf92482e56fc6a27df6c0210fbfdc",
+      "release_sha256": "086f71cf4adb4d5b66bb4cb0c440db96c5acf92482e56fc6a27df6c0210fbfdc",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/multitask.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/multitask.py",
+      "source_sha256": "9dd51b743aa466d059628923ae43cedab0e85169551d4f54532ad660f2b5bc40",
+      "release_sha256": "9dd51b743aa466d059628923ae43cedab0e85169551d4f54532ad660f2b5bc40",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/personality.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/personality.py",
+      "source_sha256": "5871a301fc9806a4a9a9f647c014f1582b67689e0e4ca1450924c08e89f07e65",
+      "release_sha256": "5871a301fc9806a4a9a9f647c014f1582b67689e0e4ca1450924c08e89f07e65",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/processor/base_dataset.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/processor/base_dataset.py",
+      "source_sha256": "e4b39520141145e2be6dece4ab8e26644a3eb9746ef07762f53520068ba69d87",
+      "release_sha256": "e4b39520141145e2be6dece4ab8e26644a3eb9746ef07762f53520068ba69d87",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/processor/base_processor.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/processor/base_processor.py",
+      "source_sha256": "08c0ed8b96f9a703cc03b0bfa4b44df2c05c8170aa031b03df9dd214d6943b5f",
+      "release_sha256": "08c0ed8b96f9a703cc03b0bfa4b44df2c05c8170aa031b03df9dd214d6943b5f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/processor/blip_processors.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/processor/blip_processors.py",
+      "source_sha256": "425f316d922ceaab882f98c5d7eb275b29e6fa7571908f96432af760f6aaec96",
+      "release_sha256": "425f316d922ceaab882f98c5d7eb275b29e6fa7571908f96432af760f6aaec96",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/processor/llavaov_processors.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/processor/llavaov_processors.py",
+      "source_sha256": "b81a6a04c3ddc2bb331cba21c99bdb2cb01013ccc169a98a9ef80aebe2c049bb",
+      "release_sha256": "b81a6a04c3ddc2bb331cba21c99bdb2cb01013ccc169a98a9ef80aebe2c049bb",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/processor/qwen2vl_processors.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/processor/qwen2vl_processors.py",
+      "source_sha256": "42e957a84cc2c5b6229e7eca16f0e3cd15dee42c1cb894f6841f90c9ba8d3b49",
+      "release_sha256": "42e957a84cc2c5b6229e7eca16f0e3cd15dee42c1cb894f6841f90c9ba8d3b49",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/processor/randaugment.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/processor/randaugment.py",
+      "source_sha256": "b27b5537d1ca51bb742690beea7e958bc718eedc17251b642f4f583cb4f93ae6",
+      "release_sha256": "b27b5537d1ca51bb742690beea7e958bc718eedc17251b642f4f583cb4f93ae6",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/safety.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/safety.py",
+      "source_sha256": "de744301f848e93a66732e024225c2595c0ed166b3331775b0322f63ccb02e7b",
+      "release_sha256": "de744301f848e93a66732e024225c2595c0ed166b3331775b0322f63ccb02e7b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/sanitization.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/sanitization.py",
+      "source_sha256": "55a8a7c6b0d81492064a47f375051775a03eb8e5ad46d363156a3bb58d98a27a",
+      "release_sha256": "55a8a7c6b0d81492064a47f375051775a03eb8e5ad46d363156a3bb58d98a27a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/tfidf_stats.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/tfidf_stats.py",
+      "source_sha256": "d5d5481edfb4307dd3e9b597519c230e7844721879bd755d98a212d208e268d4",
+      "release_sha256": "d5d5481edfb4307dd3e9b597519c230e7844721879bd755d98a212d208e268d4",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/vqa.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/vqa.py",
+      "source_sha256": "e2ec8aedc36aa5cddf1b795ccedecaef31816c5aa8a626e5eb2934fd8768db67",
+      "release_sha256": "e2ec8aedc36aa5cddf1b795ccedecaef31816c5aa8a626e5eb2934fd8768db67",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/wiki_recent.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/wiki_recent.py",
+      "source_sha256": "4b7f93b15d4c8314a1e4fd37a2bff8a945012bfb055d9908f59cc8045ec41e86",
+      "release_sha256": "4b7f93b15d4c8314a1e4fd37a2bff8a945012bfb055d9908f59cc8045ec41e86",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/wikibigedit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/wikibigedit.py",
+      "source_sha256": "cce3dd94d20a171bb9cb9801a24f6c77ac8bb58b427116a738aa533309db0967",
+      "release_sha256": "cce3dd94d20a171bb9cb9801a24f6c77ac8bb58b427116a738aa533309db0967",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/dataset/zsre.py",
+      "release_path": "experiments/EasyEdit/easyeditor/dataset/zsre.py",
+      "source_sha256": "3ebf805d6b03d4664d7fcbd2033f72572974b2220af734d0ad84768a0465d28f",
+      "release_sha256": "3ebf805d6b03d4664d7fcbd2033f72572974b2220af734d0ad84768a0465d28f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/__init__.py",
+      "source_sha256": "dcc6155ed77e825c6c56723c9998f0299cf73d95d4839e5c25242229a7c3eb95",
+      "release_sha256": "dcc6155ed77e825c6c56723c9998f0299cf73d95d4839e5c25242229a7c3eb95",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/batch_editor.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/batch_editor.py",
+      "source_sha256": "9930d3b23d26fd040b5c3b4d914f01009a98c53196bf057e9e15a0eb9f20d7a1",
+      "release_sha256": "9930d3b23d26fd040b5c3b4d914f01009a98c53196bf057e9e15a0eb9f20d7a1",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/concept_editor.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/concept_editor.py",
+      "source_sha256": "bc939d72562ac070f38ac364f49458b641e1c06d04bb7d4ab59f317f84c59cb7",
+      "release_sha256": "bc939d72562ac070f38ac364f49458b641e1c06d04bb7d4ab59f317f84c59cb7",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/editor.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/editor.py",
+      "source_sha256": "30dff883d6e77c167db7c54ff5cf2457580f2130b3aad3c2d739970208e80ce8",
+      "release_sha256": "30dff883d6e77c167db7c54ff5cf2457580f2130b3aad3c2d739970208e80ce8",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/multimodal_editor.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/multimodal_editor.py",
+      "source_sha256": "75509aa8fa7c14a0a048464fc8c59213a2ce1df73c42683990e8d2c9a21fcf19",
+      "release_sha256": "75509aa8fa7c14a0a048464fc8c59213a2ce1df73c42683990e8d2c9a21fcf19",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/per_editor.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/per_editor.py",
+      "source_sha256": "a63cabe2e98aa0696892089dd546bbe7bfd457a5c92d021f169fb594d138cb49",
+      "release_sha256": "a63cabe2e98aa0696892089dd546bbe7bfd457a5c92d021f169fb594d138cb49",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/editors/utils.py",
+      "release_path": "experiments/EasyEdit/easyeditor/editors/utils.py",
+      "source_sha256": "f521e3508a3ceae91985be1eb92ff11331f53890193e95b61e2cfca1be3e014d",
+      "release_sha256": "f521e3508a3ceae91985be1eb92ff11331f53890193e95b61e2cfca1be3e014d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/__init__.py",
+      "source_sha256": "ceaf1c1c3d640b23e32e3bc6a8e0071728abf90564f30cb416e5c7ceddeede4b",
+      "release_sha256": "ceaf1c1c3d640b23e32e3bc6a8e0071728abf90564f30cb416e5c7ceddeede4b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/concept_evaluate.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/concept_evaluate.py",
+      "source_sha256": "8e08d9c81f658aa9e446840a75bf702816a2f57002b169375433a0b6c28eb8ee",
+      "release_sha256": "8e08d9c81f658aa9e446840a75bf702816a2f57002b169375433a0b6c28eb8ee",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/evaluate.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/evaluate.py",
+      "source_sha256": "2a160984c40414c0c21d9abf7f804ea5269f200452052339e4df8d5bd23f334f",
+      "release_sha256": "2a160984c40414c0c21d9abf7f804ea5269f200452052339e4df8d5bd23f334f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/evaluate_cknowedit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/evaluate_cknowedit.py",
+      "source_sha256": "24a3a49f66e87a1cf6a818d9ca47b4dbc539a20bdb171b073a5f47378fa18c84",
+      "release_sha256": "24a3a49f66e87a1cf6a818d9ca47b4dbc539a20bdb171b073a5f47378fa18c84",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/evaluate_uns.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/evaluate_uns.py",
+      "source_sha256": "f9713c3259022dcb60b19a36105dd811dcf3b13b3782c4df9edb19dafeefcea6",
+      "release_sha256": "f9713c3259022dcb60b19a36105dd811dcf3b13b3782c4df9edb19dafeefcea6",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/evaluate_utils.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/evaluate_utils.py",
+      "source_sha256": "f5973dedb4e1b811ebec02133a1bec4caf6d64d39feeefd4b2456c72379518b3",
+      "release_sha256": "f5973dedb4e1b811ebec02133a1bec4caf6d64d39feeefd4b2456c72379518b3",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/multimodal_evaluate.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/multimodal_evaluate.py",
+      "source_sha256": "3d946992a25a2214849b38e870c37cfdeb318aba63ee6a2de2c04421de4c440f",
+      "release_sha256": "3d946992a25a2214849b38e870c37cfdeb318aba63ee6a2de2c04421de4c440f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/personality_evaluate.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/personality_evaluate.py",
+      "source_sha256": "ab23981e8e2db5595251beef2e27810166898ba368427b2f05a2478b6d69f090",
+      "release_sha256": "ab23981e8e2db5595251beef2e27810166898ba368427b2f05a2478b6d69f090",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/evaluate/safety_evaluate.py",
+      "release_path": "experiments/EasyEdit/easyeditor/evaluate/safety_evaluate.py",
+      "source_sha256": "8bea129bdbd615e01f87e5fff4937f1a7200a00bb293cc145fec8cbc5da17b8e",
+      "release_sha256": "8bea129bdbd615e01f87e5fff4937f1a7200a00bb293cc145fec8cbc5da17b8e",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/__init__.py",
+      "source_sha256": "6a28741369070605bd3fa27b3f953006c57dd1672bc262ce30c8fb768be1cd8d",
+      "release_sha256": "6a28741369070605bd3fa27b3f953006c57dd1672bc262ce30c8fb768be1cd8d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/alphaedit/AlphaEdit_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/alphaedit/AlphaEdit_hparams.py",
+      "source_sha256": "d1535c96e43e762fae40dbfbcedd6522150ab6fcc5d0d04aefb7c8b1a94db752",
+      "release_sha256": "d1535c96e43e762fae40dbfbcedd6522150ab6fcc5d0d04aefb7c8b1a94db752",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/alphaedit/AlphaEdit_main.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/alphaedit/AlphaEdit_main.py",
+      "source_sha256": "b73337404b51ccd2c5ca070bf5a2dd1d70a65b025ddfa5309be0831c9ccad1d7",
+      "release_sha256": "b73337404b51ccd2c5ca070bf5a2dd1d70a65b025ddfa5309be0831c9ccad1d7",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/alphaedit/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/alphaedit/__init__.py",
+      "source_sha256": "6446d77cb7c457f9469e1d762a272e790d3e23daf0f1c1968e9dd3830533b485",
+      "release_sha256": "6446d77cb7c457f9469e1d762a272e790d3e23daf0f1c1968e9dd3830533b485",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/alphaedit/compute_ks.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/alphaedit/compute_ks.py",
+      "source_sha256": "ce572cebe71a93added4d8b7a17da53fb129ee077930a795e3c895cae395faa2",
+      "release_sha256": "ce572cebe71a93added4d8b7a17da53fb129ee077930a795e3c895cae395faa2",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/alphaedit/compute_z.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/alphaedit/compute_z.py",
+      "source_sha256": "1b287a0c6cda4eb8d970c7f9ade1189316c986afdaf291c44c5e1be69f4a67bc",
+      "release_sha256": "1b287a0c6cda4eb8d970c7f9ade1189316c986afdaf291c44c5e1be69f4a67bc",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/__init__.py",
+      "source_sha256": "447ca48d8c9d7e4537f3f6625994e85ca14c9cbc249029d1e05772669194e48b",
+      "release_sha256": "447ca48d8c9d7e4537f3f6625994e85ca14c9cbc249029d1e05772669194e48b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/compute_ks.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/compute_ks.py",
+      "source_sha256": "3346c77e68a363d4ec69fbf21e1b84e4dffae69e16288f68c6ea8c0b43d5e912",
+      "release_sha256": "3346c77e68a363d4ec69fbf21e1b84e4dffae69e16288f68c6ea8c0b43d5e912",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/compute_z.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/compute_z.py",
+      "source_sha256": "79ac6282b267da419675a010ba7f3736ee73ce51c667a8b4896c906a195fb7c5",
+      "release_sha256": "79ac6282b267da419675a010ba7f3736ee73ce51c667a8b4896c906a195fb7c5",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/endogenous_pivots.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/endogenous_pivots.py",
+      "source_sha256": "360bbf2ab3fa1ebf68734afdf5729a2fb0b30d1994bed8297a09144c38b2e456",
+      "release_sha256": "360bbf2ab3fa1ebf68734afdf5729a2fb0b30d1994bed8297a09144c38b2e456",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/memit_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/memit_hparams.py",
+      "source_sha256": "5e60635fed8adda703a5cd62726dfd6f4e8f3e46e99a0731be7c56ac5363b284",
+      "release_sha256": "5e60635fed8adda703a5cd62726dfd6f4e8f3e46e99a0731be7c56ac5363b284",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/memit_main copy.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/memit_main copy.py",
+      "source_sha256": "b409ef104dccb65541fcfb6d3b19c2e35e68d5109f92c6bb74378ebe8a7d5735",
+      "release_sha256": "b409ef104dccb65541fcfb6d3b19c2e35e68d5109f92c6bb74378ebe8a7d5735",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/memit/memit_main.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/memit/memit_main.py",
+      "source_sha256": "d0d0326793af34b548d398962e6c73d1d09b277f07423f7ff1582ee0aed61813",
+      "release_sha256": "d0d0326793af34b548d398962e6c73d1d09b277f07423f7ff1582ee0aed61813",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/README.md",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/README.md",
+      "source_sha256": "4711e2605517fe1308cccd59748761e19342b4c0b0b26d2a9a32bbf3a93f94a6",
+      "release_sha256": "df091ec86a4b72e26d200405b5b3366ad761db4616fedec69d32d9aa85123469",
+      "changes": [
+        "Correct inherited relative hparams link and labels; replace unavailable upstream README link with accurate source-snapshot scope text."
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/__init__.py",
+      "source_sha256": "87e6bd462753e8a86b84b2461da6067762cb0d5c9b7061b1b0598adb6f550a7a",
+      "release_sha256": "87e6bd462753e8a86b84b2461da6067762cb0d5c9b7061b1b0598adb6f550a7a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/compute_u.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/compute_u.py",
+      "source_sha256": "b92ab467df150b672f66cd29fbc3c7d689ca822afc06c9ac839310b8d8819874",
+      "release_sha256": "b92ab467df150b672f66cd29fbc3c7d689ca822afc06c9ac839310b8d8819874",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/compute_v.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/compute_v.py",
+      "source_sha256": "9a1b772ea2acc8b791ecdf139727e9e44d49cfccbfeec4bf10adfc771ee6a60c",
+      "release_sha256": "9a1b772ea2acc8b791ecdf139727e9e44d49cfccbfeec4bf10adfc771ee6a60c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/layer_stats.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/layer_stats.py",
+      "source_sha256": "d36256899d3e6b2605483148f399fe2dbe8ec9249b9af1ec1ba70c2f8c132209",
+      "release_sha256": "d36256899d3e6b2605483148f399fe2dbe8ec9249b9af1ec1ba70c2f8c132209",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/repr_tools.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/repr_tools.py",
+      "source_sha256": "b94f8fb914b847db90dbacc306fbc64574b146c3f89650e40e185a4c1f52e0a7",
+      "release_sha256": "b94f8fb914b847db90dbacc306fbc64574b146c3f89650e40e185a4c1f52e0a7",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/rome_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/rome_hparams.py",
+      "source_sha256": "4303603c9bccedcfe702788b52bca6785daa1873fbc91b52f5c02720a01576ec",
+      "release_sha256": "4303603c9bccedcfe702788b52bca6785daa1873fbc91b52f5c02720a01576ec",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/rome_main.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/rome_main.py",
+      "source_sha256": "dc3786b7459e3d75820a223f4ed126e5b35a79c2b03379f394154589edae01f8",
+      "release_sha256": "dc3786b7459e3d75820a223f4ed126e5b35a79c2b03379f394154589edae01f8",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/models/rome/tok_dataset.py",
+      "release_path": "experiments/EasyEdit/easyeditor/models/rome/tok_dataset.py",
+      "source_sha256": "3dd4815dd6d15e0727939f38e8a8f8ddfaea56f10b700249334982c56e4883b4",
+      "release_sha256": "3dd4815dd6d15e0727939f38e8a8f8ddfaea56f10b700249334982c56e4883b4",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/BaseTrainer.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/BaseTrainer.py",
+      "source_sha256": "5017b309b3587f768f6e2bb6d2ba53643baff8eb0a3cb2814a7a6fe327553127",
+      "release_sha256": "5017b309b3587f768f6e2bb6d2ba53643baff8eb0a3cb2814a7a6fe327553127",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/EditTrainer.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/EditTrainer.py",
+      "source_sha256": "8cdeb7173799ad2c6389d7a7193beb7962e531a5af734044dc34596c60e8f125",
+      "release_sha256": "8cdeb7173799ad2c6389d7a7193beb7962e531a5af734044dc34596c60e8f125",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/MultiTaskTrainer.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/MultiTaskTrainer.py",
+      "source_sha256": "5d8ed60287aca7de077fca829c2b46469088d3a81a3741c67522eccd631e585c",
+      "release_sha256": "5d8ed60287aca7de077fca829c2b46469088d3a81a3741c67522eccd631e585c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/MultimodalTrainer.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/MultimodalTrainer.py",
+      "source_sha256": "12486d409f139e76ab82745afefa5d1b3f4db96ba00bc732323ff39fcdd3f5c9",
+      "release_sha256": "12486d409f139e76ab82745afefa5d1b3f4db96ba00bc732323ff39fcdd3f5c9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/PerTrainer.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/PerTrainer.py",
+      "source_sha256": "e52393d1b209709d5bd68101719d01cc299209d96222b1eb9c92dec37952fc34",
+      "release_sha256": "e52393d1b209709d5bd68101719d01cc299209d96222b1eb9c92dec37952fc34",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/__init__.py",
+      "source_sha256": "2426eb84a97d2297f860bd65c7ac3e401bcc1f8490ae5cee07b787ba80e1da76",
+      "release_sha256": "2426eb84a97d2297f860bd65c7ac3e401bcc1f8490ae5cee07b787ba80e1da76",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/MALMEN.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/MALMEN.py",
+      "source_sha256": "cbebed9f093311b1ec3b01a73ebd3e2a25edec8f5bbc06b422ef8aa3694ccec8",
+      "release_sha256": "cbebed9f093311b1ec3b01a73ebd3e2a25edec8f5bbc06b422ef8aa3694ccec8",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/MEND.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/MEND.py",
+      "source_sha256": "bf06a97a374d868334bc2fc18b25385ebf3be1a688a92498e95ecef87ded7930",
+      "release_sha256": "bf06a97a374d868334bc2fc18b25385ebf3be1a688a92498e95ecef87ded7930",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/SERAC.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/SERAC.py",
+      "source_sha256": "c52c462e1c3ccbfcf937eae84eb73864fb2e53122706b0e48c93a09bb78e54af",
+      "release_sha256": "c52c462e1c3ccbfcf937eae84eb73864fb2e53122706b0e48c93a09bb78e54af",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/__init__.py",
+      "source_sha256": "f9c391b59dd76fc963625d7debfddd93ae78a916a1707b5a741a8f52b8df0e7a",
+      "release_sha256": "f9c391b59dd76fc963625d7debfddd93ae78a916a1707b5a741a8f52b8df0e7a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/editable_model.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/editable_model.py",
+      "source_sha256": "7b291b67b9af33dc7868622cd95e60d24abeca6a4c69f0903b3df52acb2a52e6",
+      "release_sha256": "7b291b67b9af33dc7868622cd95e60d24abeca6a4c69f0903b3df52acb2a52e6",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/ft.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/ft.py",
+      "source_sha256": "c60355576cac69dbca0816a4747cbb7bbba7a2352d0e7edb2191d870450eeff7",
+      "release_sha256": "c60355576cac69dbca0816a4747cbb7bbba7a2352d0e7edb2191d870450eeff7",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/higher_utils/utils.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/higher_utils/utils.py",
+      "source_sha256": "1d719bb729f8b1a2d4df5087a2ce4a9910c2425bf36d39cefe763b7d8e632ce5",
+      "release_sha256": "1d719bb729f8b1a2d4df5087a2ce4a9910c2425bf36d39cefe763b7d8e632ce5",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/hooks.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/hooks.py",
+      "source_sha256": "5e63cfa7f1c09973cdbd9437b9adcbe1e1f11f5c96035c66870eb5e00dcebe28",
+      "release_sha256": "5e63cfa7f1c09973cdbd9437b9adcbe1e1f11f5c96035c66870eb5e00dcebe28",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/local_nn.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/local_nn.py",
+      "source_sha256": "ffca4fb48675c4c6cf56bb9cbbff8ce50f2c46eb8fdbfc6a7e1b6308acddab92",
+      "release_sha256": "ffca4fb48675c4c6cf56bb9cbbff8ce50f2c46eb8fdbfc6a7e1b6308acddab92",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/malmen/nets.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/malmen/nets.py",
+      "source_sha256": "e73be7745b364212091981b58fe0164eb4ee6798e69e3b1fea7bf5d62c256c08",
+      "release_sha256": "e73be7745b364212091981b58fe0164eb4ee6798e69e3b1fea7bf5d62c256c08",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/malmen/util.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/malmen/util.py",
+      "source_sha256": "51701339828a1df152b3a5e9ab02350f0a66487df36d4a4d980915b09088f260",
+      "release_sha256": "51701339828a1df152b3a5e9ab02350f0a66487df36d4a4d980915b09088f260",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/algs/patch.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/algs/patch.py",
+      "source_sha256": "e8f15f57194f52c0ef086d03e5e57813074f10025df7fcb6eb595451320a9388",
+      "release_sha256": "e8f15f57194f52c0ef086d03e5e57813074f10025df7fcb6eb595451320a9388",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/Qformer.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/Qformer.py",
+      "source_sha256": "4177b2d871900cde732c81d7e550e636de1b2cb649a0b0f8d556ff2bfa6da276",
+      "release_sha256": "4177b2d871900cde732c81d7e550e636de1b2cb649a0b0f8d556ff2bfa6da276",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/__init__.py",
+      "source_sha256": "bbd2ce4b8ef1e273c9247fcfd417a7f6872803bb345c990d1148a6bcde20d61c",
+      "release_sha256": "bbd2ce4b8ef1e273c9247fcfd417a7f6872803bb345c990d1148a6bcde20d61c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/base_model.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/base_model.py",
+      "source_sha256": "ed79956e770a9f050ac45cf33fef2e4bcfeb16a4a14448cd40d5f42237366f5b",
+      "release_sha256": "ed79956e770a9f050ac45cf33fef2e4bcfeb16a4a14448cd40d5f42237366f5b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/blip2.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/blip2.py",
+      "source_sha256": "2b734f347dbd1e5da6db226d65a7c301b47403340e7ad49b4966c8123f271940",
+      "release_sha256": "2b734f347dbd1e5da6db226d65a7c301b47403340e7ad49b4966c8123f271940",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/blip2_opt.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/blip2_opt.py",
+      "source_sha256": "b02d5131e72301ecddc7e37df7deb3607d2e546a7f371ee5d9ee2d4a83e65a00",
+      "release_sha256": "b02d5131e72301ecddc7e37df7deb3607d2e546a7f371ee5d9ee2d4a83e65a00",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/clip_vit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/clip_vit.py",
+      "source_sha256": "d994175e03d099b389a1bfdeac14186c96259138c078e5856c0c2882846e71be",
+      "release_sha256": "d994175e03d099b389a1bfdeac14186c96259138c078e5856c0c2882846e71be",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/common/dist_utils.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/common/dist_utils.py",
+      "source_sha256": "80ac52911e1f4f2dc6aa551272a25cf75a8adb1db288b4d6a7488566b8b916e9",
+      "release_sha256": "80ac52911e1f4f2dc6aa551272a25cf75a8adb1db288b4d6a7488566b8b916e9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/common/logger.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/common/logger.py",
+      "source_sha256": "fa800fee8492c76049d4e3dadbe70fcb8f4a70756c43a150115720428a50b15d",
+      "release_sha256": "fa800fee8492c76049d4e3dadbe70fcb8f4a70756c43a150115720428a50b15d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/common/utils.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/common/utils.py",
+      "source_sha256": "9a074332b75a3b20e3f5bea4ba618f1bfbb1a4e729ec7746443835b9f09b27c9",
+      "release_sha256": "f0ddba958aaf2d9cc56677a8dd3532294274d2d9c3e3ba4bca213e9226280e9b",
+      "changes": [
+        "Resolve BLIP2 cache and external asset paths through BNG_CACHE_ROOT and BNG_BLIP2_ASSET_ROOT instead of fixed host paths/current working directory."
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/eva_vit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/eva_vit.py",
+      "source_sha256": "c7b47566b1b1e2f6e1bad5b8e4b16f51a947024ee37d86a7d548cd7ac6cf932b",
+      "release_sha256": "c7b47566b1b1e2f6e1bad5b8e4b16f51a947024ee37d86a7d548cd7ac6cf932b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/mini_gpt4.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/mini_gpt4.py",
+      "source_sha256": "7e868b9bf3593dd2a19e20ab13d704eeedb661c8bc4db6b75e616fccb9778044",
+      "release_sha256": "7e868b9bf3593dd2a19e20ab13d704eeedb661c8bc4db6b75e616fccb9778044",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/modeling_llama.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/modeling_llama.py",
+      "source_sha256": "d2036165a61b48a432cae0754937755de8debf8f81f9f312656564e834fd9c40",
+      "release_sha256": "d2036165a61b48a432cae0754937755de8debf8f81f9f312656564e834fd9c40",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/blip2_models/modeling_opt.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/blip2_models/modeling_opt.py",
+      "source_sha256": "ab87f09d0bfc4f031402a38fad2e0896152dcf2bbd12c914dad5ff09fac07b51",
+      "release_sha256": "ab87f09d0bfc4f031402a38fad2e0896152dcf2bbd12c914dad5ff09fac07b51",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/losses.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/losses.py",
+      "source_sha256": "8058428cefa68c07811ed6c598db339e107255a63f2af0749b328916be301fff",
+      "release_sha256": "8058428cefa68c07811ed6c598db339e107255a63f2af0749b328916be301fff",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/models.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/models.py",
+      "source_sha256": "7e28e27f2d13add988f3c6eb3f46ca65159d043e15cecdf0a41b006a4116e460",
+      "release_sha256": "7e28e27f2d13add988f3c6eb3f46ca65159d043e15cecdf0a41b006a4116e460",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/__init__.py",
+      "source_sha256": "9a12e5420e489534aa2731f54951d98c466592a4f41bb2549a8d985e2c4ae5a4",
+      "release_sha256": "9a12e5420e489534aa2731f54951d98c466592a4f41bb2549a8d985e2c4ae5a4",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/ke_training_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/ke_training_hparams.py",
+      "source_sha256": "7e3283641d5e6e4635218901bfeeb613f5d3d08bf685cde9eb6a614473bf18b3",
+      "release_sha256": "7e3283641d5e6e4635218901bfeeb613f5d3d08bf685cde9eb6a614473bf18b3",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/malmen_training_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/malmen_training_hparams.py",
+      "source_sha256": "a8b4da94e8baf3389131625b24dd503a7d446ea22b3836d6be434a399d1bbc5f",
+      "release_sha256": "a8b4da94e8baf3389131625b24dd503a7d446ea22b3836d6be434a399d1bbc5f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/mend_multimodal_training_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/mend_multimodal_training_hparams.py",
+      "source_sha256": "317146fc1219ca7543126e005e273e68e3c6443bfa68be2322d44ef510e73e53",
+      "release_sha256": "317146fc1219ca7543126e005e273e68e3c6443bfa68be2322d44ef510e73e53",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/mend_training_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/mend_training_hparams.py",
+      "source_sha256": "b4d8a051e34357606a376c2026565eead59890ab9b30a053d0e1b0f8dc67212b",
+      "release_sha256": "b4d8a051e34357606a376c2026565eead59890ab9b30a053d0e1b0f8dc67212b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/serac_multimodal_training_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/serac_multimodal_training_hparams.py",
+      "source_sha256": "c44c2ccb3608613e6eedd102204fb2139e4e0eeb944e64dff62e5b8d0b0edda7",
+      "release_sha256": "c44c2ccb3608613e6eedd102204fb2139e4e0eeb944e64dff62e5b8d0b0edda7",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/training_hparams/serac_training_hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/training_hparams/serac_training_hparams.py",
+      "source_sha256": "13488c6157c860f5c1c7ba935f71b490067b0b647a1f0ee702fae00cc90fcf1a",
+      "release_sha256": "13488c6157c860f5c1c7ba935f71b490067b0b647a1f0ee702fae00cc90fcf1a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/trainer/utils.py",
+      "release_path": "experiments/EasyEdit/easyeditor/trainer/utils.py",
+      "source_sha256": "6a4190b41fc4756d79951d6cb670c8775bd85745992f933734b588196bb06bc6",
+      "release_sha256": "edb8070c1eea5ac7a92aa1aebae2e61dd0753e1982450485b50b2c13a31c9e41",
+      "changes": [
+        "Replace machine-specific scratch-directory probes with BNG_SCRATCH_ROOT."
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/__init__.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/__init__.py",
+      "source_sha256": "403ee14b2e7789c44e72f996ed8024c65b8d15d8d827249314c77994286e96a3",
+      "release_sha256": "403ee14b2e7789c44e72f996ed8024c65b8d15d8d827249314c77994286e96a3",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/alg_dict.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/alg_dict.py",
+      "source_sha256": "a646a682493563c7de68f99da3db49aead11416696ae5d8683d6dd9c5ca85333",
+      "release_sha256": "a646a682493563c7de68f99da3db49aead11416696ae5d8683d6dd9c5ca85333",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/alg_train_dict.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/alg_train_dict.py",
+      "source_sha256": "0bf46ee298183fae266fffefbb3df30321eed7d765cd9e9ff198fdd71dfb258f",
+      "release_sha256": "0bf46ee298183fae266fffefbb3df30321eed7d765cd9e9ff198fdd71dfb258f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/early_attention_preservation.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/early_attention_preservation.py",
+      "source_sha256": "782720ae797f7fd6e00d56d5f0a8e0bc821c67994f28e63b18f9a57f4a49bde5",
+      "release_sha256": "782720ae797f7fd6e00d56d5f0a8e0bc821c67994f28e63b18f9a57f4a49bde5",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/edit_analysis_artifacts.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/edit_analysis_artifacts.py",
+      "source_sha256": "fa80065fa59893398af12025c82f33914abff3278ba85828e8cde974387514c7",
+      "release_sha256": "fa80065fa59893398af12025c82f33914abff3278ba85828e8cde974387514c7",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/edited_layer_checkpoint.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/edited_layer_checkpoint.py",
+      "source_sha256": "f5f5b39011db8e84fe1d8084e6f61f3197822a60f21c346aab4951a7627ae51a",
+      "release_sha256": "f5f5b39011db8e84fe1d8084e6f61f3197822a60f21c346aab4951a7627ae51a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/generate.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/generate.py",
+      "source_sha256": "13d28184bd215ea7d51bef091fcd3624271d93f4c3df32fdbf2e97cc15581b45",
+      "release_sha256": "13d28184bd215ea7d51bef091fcd3624271d93f4c3df32fdbf2e97cc15581b45",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/globals.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/globals.py",
+      "source_sha256": "fdb1cbed3ff82eb87b26bced5bb4f2f43e8d8cb76c81b1cd5d83a3b3cd830ed1",
+      "release_sha256": "fdb1cbed3ff82eb87b26bced5bb4f2f43e8d8cb76c81b1cd5d83a3b3cd830ed1",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/hparams.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/hparams.py",
+      "source_sha256": "9ee7a423fd70a9eaacb4c2ef1aaf2268ba87e28656fd7e3c562a7c9505d25b72",
+      "release_sha256": "9ee7a423fd70a9eaacb4c2ef1aaf2268ba87e28656fd7e3c562a7c9505d25b72",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/inner_margin_schedule.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/inner_margin_schedule.py",
+      "source_sha256": "b2556ee8b56c3e3a32d1ecde4ce9529e521e5251e5039ccbd5bf686166d3c10a",
+      "release_sha256": "b2556ee8b56c3e3a32d1ecde4ce9529e521e5251e5039ccbd5bf686166d3c10a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/key_gaussian_noise.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/key_gaussian_noise.py",
+      "source_sha256": "2cc1dcd99f84f4fb22dc808112335912d88e84a37905586c204c083de83d971c",
+      "release_sha256": "2cc1dcd99f84f4fb22dc808112335912d88e84a37905586c204c083de83d971c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/logit_lens.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/logit_lens.py",
+      "source_sha256": "7167211cb97f00544e14dc3cfd3f212f6486818dd8e6931e136226d710a3acc2",
+      "release_sha256": "7167211cb97f00544e14dc3cfd3f212f6486818dd8e6931e136226d710a3acc2",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/nethook.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/nethook.py",
+      "source_sha256": "75d1b6353aae539f56aed3f721fdae9762776414e7a97f2c13734fc77bb29ce1",
+      "release_sha256": "75d1b6353aae539f56aed3f721fdae9762776414e7a97f2c13734fc77bb29ce1",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/norm_anchor_scaling.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/norm_anchor_scaling.py",
+      "source_sha256": "8916b1600926d0af000984236d72eced2162bd0d7319e8da6113390d4f7936ee",
+      "release_sha256": "8916b1600926d0af000984236d72eced2162bd0d7319e8da6113390d4f7936ee",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/o0_axis_preservation.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/o0_axis_preservation.py",
+      "source_sha256": "b0d11255f1d2dec3193e9365370933459b10777f61753df2ff1be118a9d8623d",
+      "release_sha256": "b0d11255f1d2dec3193e9365370933459b10777f61753df2ff1be118a9d8623d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/oedit.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/oedit.py",
+      "source_sha256": "d91414f2c01b04c6b2c636b43499836a00f9a1d2a2dbe97fbcb238995742e4fd",
+      "release_sha256": "d91414f2c01b04c6b2c636b43499836a00f9a1d2a2dbe97fbcb238995742e4fd",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/official_editing_baselines.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/official_editing_baselines.py",
+      "source_sha256": "c655918d3b9eb17126ecff82fac681df7856f25f2f869398ecbb55a65b60db0c",
+      "release_sha256": "c655918d3b9eb17126ecff82fac681df7856f25f2f869398ecbb55a65b60db0c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/perplexity.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/perplexity.py",
+      "source_sha256": "e0dc2678eb331aba94d70bddad30ce983b3a062c35d180d1f524835f2966161e",
+      "release_sha256": "e0dc2678eb331aba94d70bddad30ce983b3a062c35d180d1f524835f2966161e",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/residual_gain_regularization.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/residual_gain_regularization.py",
+      "source_sha256": "7f643a058d0f77c240dd2e43e64275157ebd8792139688075c21a4597f83bcbd",
+      "release_sha256": "7f643a058d0f77c240dd2e43e64275157ebd8792139688075c21a4597f83bcbd",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/rewrite_update_action.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/rewrite_update_action.py",
+      "source_sha256": "8896b96d2abf58b6becbc5919b8e77417106ad3d7f1327147478266689266fef",
+      "release_sha256": "8896b96d2abf58b6becbc5919b8e77417106ad3d7f1327147478266689266fef",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/runningstats.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/runningstats.py",
+      "source_sha256": "cae826b6471b6b5a4dd1f5da3adbd9cf697b01ae80585d59e727ca64f4ec47ae",
+      "release_sha256": "cae826b6471b6b5a4dd1f5da3adbd9cf697b01ae80585d59e727ca64f4ec47ae",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/sadr_regularization.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/sadr_regularization.py",
+      "source_sha256": "21b4b14f7012009d98f236d3bc585e6ba9212614d61576af8e05aaf221f3aa24",
+      "release_sha256": "21b4b14f7012009d98f236d3bc585e6ba9212614d61576af8e05aaf221f3aa24",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/semantic_multikey.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/semantic_multikey.py",
+      "source_sha256": "ad9552c2b67d81812fe8af34cb7837541c16bad612e474e1106c2b91efa437d1",
+      "release_sha256": "ad9552c2b67d81812fe8af34cb7837541c16bad612e474e1106c2b91efa437d1",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/strict_tangent_layer_plan.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/strict_tangent_layer_plan.py",
+      "source_sha256": "48ea836f02258c99c50a1bdbc216ad823e682df91ebb0319c619ea1d8a00716c",
+      "release_sha256": "48ea836f02258c99c50a1bdbc216ad823e682df91ebb0319c619ea1d8a00716c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "EasyEdit/easyeditor/util/tangent_layer_allocation.py",
+      "release_path": "experiments/EasyEdit/easyeditor/util/tangent_layer_allocation.py",
+      "source_sha256": "13400d26c273a55ab55a73dbe28453c4d45f605d7dd252fea93b8c0feee81080",
+      "release_sha256": "13400d26c273a55ab55a73dbe28453c4d45f605d7dd252fea93b8c0feee81080",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "hparams/MEMIT/llama3-8b.yaml",
+      "release_path": "experiments/hparams/MEMIT/llama3-8b.yaml",
+      "source_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
+      "release_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "hparams/AlphaEdit/llama3-8b.yaml",
+      "release_path": "experiments/hparams/AlphaEdit/llama3-8b.yaml",
+      "source_sha256": "077b01f4bc0402fa995abad59e4c36c1a4fb147fdd25db12e23b1541b9879902",
+      "release_sha256": "077b01f4bc0402fa995abad59e4c36c1a4fb147fdd25db12e23b1541b9879902",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "third_party/alphaedit/LICENSE",
+      "release_path": "experiments/model_code/licenses/AlphaEdit-LICENSE",
+      "source_sha256": "e67be850493c2a738ebed178044a2e32fc9546b5d1971f880d24736e57f69051",
+      "release_sha256": "e67be850493c2a738ebed178044a2e32fc9546b5d1971f880d24736e57f69051",
+      "changes": []
+    },
+    {
+      "source_repository": "paper_results_reorganization_20260922",
+      "source_path": "results_rewrite_20260923_rq3_all_cohorts/rewrite_geometry_comparison/capture_rewrite_backfill.py",
+      "release_path": "experiments/model_code/capture_rewrite_backfill.py",
+      "source_sha256": "90d440b5beb599d5496b5f6eb049884e02e02d2b27f54b89a24f026e2a04afa9",
+      "release_sha256": "2f01e6363cd9ef10fa7f337cff85a244c1f0008aba836762245723c67cfec3a9",
+      "changes": [
+        "Collector import, inventory and output defaults relocated"
+      ]
+    }
+  ],
+  "generated_files": [
+    {
+      "release_path": "experiments/model_code/paths.py",
+      "sha256": "d619d6ee0ee896ffcff1b19ab337a273f5c31a21188af34374f255a687b825b0",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/model_code/smoke.py",
+      "sha256": "6501db9e1f356234adbac2d04ab0f15e808ff4c03dac86753c55d606e9c8b820",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/model_code/__init__.py",
+      "sha256": "e1130ae4a441db2b90a70a426338be260938ab02dc4c80d72c405e843b61c218",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/diagnostics/__init__.py",
+      "sha256": "e1130ae4a441db2b90a70a426338be260938ab02dc4c80d72c405e843b61c218",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/evaluate/__init__.py",
+      "sha256": "e1130ae4a441db2b90a70a426338be260938ab02dc4c80d72c405e843b61c218",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/scripts/__init__.py",
+      "sha256": "e1130ae4a441db2b90a70a426338be260938ab02dc4c80d72c405e843b61c218",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/requirements.txt",
+      "sha256": "80feecfef03bbceb9945bc0324caa0c4b41ee44a630b6292dcb26ca6c25c72b2",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    },
+    {
+      "release_path": "experiments/README.md",
+      "sha256": "b73cacc4108c868b611e8659c6e564d2b47f731ae97738b6aaf13808a6460939",
+      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+    }
+  ],
+  "excluded_assets": [
+    "model weights and tokenizers",
+    "dataset prompts and answers",
+    "covariance, projector and NAS anchor caches",
+    "edited model checkpoints",
+    "raw hidden tensors",
+    "original experiment output directories"
+  ],
+  "layout_note": "Model source files are grouped under experiments/. Original source_path fields remain relative to their source repository.",
+  "path_configuration": "BNG_* relative paths resolve from the release repository root; executable imports resolve from experiments/. Historical external protocol contents are not rewritten."
+}

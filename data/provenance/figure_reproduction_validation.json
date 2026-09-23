@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "figure_checks": {
+    "fig4_pq_plane": {
+      "pixels_identical_to_original": true,
+      "shape": [
+        3720,
+        5400,
+        4
+      ],
+      "pdf_fonts": [
+        "CZRBLR+STIXGeneral-Regular           CID TrueType      Identity-H       yes yes yes     15  0",
+        "FTXWZA+STIXGeneral-Italic            CID TrueType      Identity-H       yes yes yes     23  0"
+      ]
+    },
+    "fig5_geometry_locality": {
+      "pixels_identical_to_original": true,
+      "shape": [
+        3660,
+        5400,
+        4
+      ],
+      "pdf_fonts": [
+        "CZRBLR+STIXGeneral-Regular           CID TrueType      Identity-H       yes yes yes     15  0",
+        "FTXWZA+STIXGeneral-Italic            CID TrueType      Identity-H       yes yes yes     23  0"
+      ]
+    }
+  }
+}

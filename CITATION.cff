@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying study when using this research code or numerical observations."
+title: "Beyond Norm Growth: A Geometric Decomposition of Hidden-State Drift in Sequential Knowledge Editing"
+type: software
+authors:
+  - family-names: Jeong
+    given-names: Hojun
+  - family-names: Kang
+    given-names: Sangwoo
+version: "0.1.0"
+date-released: "2026-09-24"
+license: MIT

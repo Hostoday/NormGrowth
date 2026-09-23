@@ -1,0 +1,47 @@
+# Generated runs and local environments
+/build/
+/outputs/
+/logs/
+/artifacts/
+/models/
+/checkpoints/
+/captures/
+/local_data/
+/inputs/
+/.venv/
+/venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Model weights and hidden-state tensors are external inputs.
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.npz
+*.npy
+*.zip
+*.tar
+*.gz
+
+# Machine-specific settings and credentials
+.env
+.env.*
+!.env.example
+*.local.json
+*.local.yaml
+
+# Preserve source PDFs and the compact numerical CSVs in data/ and paper/.
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.log
+*.out
+*.toc
