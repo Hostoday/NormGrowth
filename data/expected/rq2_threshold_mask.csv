@@ -179,6 +179,15 @@ GPT-2 XL,zsRE,MEMIT,SPHERE,canonical,300,False,True
 GPT-2 XL,zsRE,MEMIT,SPHERE,canonical,500,False,True
 GPT-2 XL,zsRE,MEMIT,SPHERE,canonical,750,False,True
 GPT-2 XL,zsRE,MEMIT,SPHERE,canonical,1000,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,50,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,100,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,150,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,200,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,250,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,300,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,500,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,750,False,True
+Llama,CounterFact,AlphaEdit,ENCORE,canonical,1000,False,True
 Llama,CounterFact,AlphaEdit,NAS,canonical,50,False,True
 Llama,CounterFact,AlphaEdit,NAS,canonical,100,False,True
 Llama,CounterFact,AlphaEdit,NAS,canonical,150,False,True
@@ -215,6 +224,15 @@ Llama,CounterFact,AlphaEdit,SPHERE,canonical,300,False,True
 Llama,CounterFact,AlphaEdit,SPHERE,canonical,500,False,True
 Llama,CounterFact,AlphaEdit,SPHERE,canonical,750,False,True
 Llama,CounterFact,AlphaEdit,SPHERE,canonical,1000,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,50,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,100,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,150,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,200,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,250,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,300,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,500,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,750,False,True
+Llama,CounterFact,MEMIT,ENCORE,canonical,1000,False,True
 Llama,CounterFact,MEMIT,NAS,canonical,50,False,True
 Llama,CounterFact,MEMIT,NAS,canonical,100,False,True
 Llama,CounterFact,MEMIT,NAS,canonical,150,False,True
@@ -287,15 +305,6 @@ Llama,zsRE,AlphaEdit,SADR,canonical,300,False,True
 Llama,zsRE,AlphaEdit,SADR,canonical,500,False,True
 Llama,zsRE,AlphaEdit,SADR,canonical,750,False,True
 Llama,zsRE,AlphaEdit,SADR,canonical,1000,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,50,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,100,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,150,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,200,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,250,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,300,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,500,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,750,False,True
-Llama,zsRE,AlphaEdit,SADR,o0_seed20260905,1000,False,True
 Llama,zsRE,AlphaEdit,SPHERE,canonical,50,False,True
 Llama,zsRE,AlphaEdit,SPHERE,canonical,100,False,True
 Llama,zsRE,AlphaEdit,SPHERE,canonical,150,False,True
@@ -305,15 +314,6 @@ Llama,zsRE,AlphaEdit,SPHERE,canonical,300,False,True
 Llama,zsRE,AlphaEdit,SPHERE,canonical,500,False,True
 Llama,zsRE,AlphaEdit,SPHERE,canonical,750,False,True
 Llama,zsRE,AlphaEdit,SPHERE,canonical,1000,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,50,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,100,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,150,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,200,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,250,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,300,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,500,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,750,False,True
-Llama,zsRE,AlphaEdit,SPHERE,o0_seed20260905,1000,False,True
 Llama,zsRE,MEMIT,ENCORE,canonical,50,False,True
 Llama,zsRE,MEMIT,ENCORE,canonical,100,False,True
 Llama,zsRE,MEMIT,ENCORE,canonical,150,False,True

@@ -11,12 +11,11 @@ import json
 import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, rankdata, spearmanr
+from . import snapshot
+from .snapshot import CHECKPOINT, METRICS, STATE, THRESHOLD_COLUMNS, filename, metadata, validate_checkpoints
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
-STATE = ["model", "dataset", "editor", "method", "order_id"]
-CHECKPOINT = STATE + ["edit_count"]
-METRICS = ["mean_q", "mean_kappa", "mean_abs_norm_deviation"]
 
 
 def read(name):
@@ -41,7 +40,7 @@ def compare(actual, expected_name, keys, checks):
 
 
 def rq1(output, checks):
-    frame = read("rq1_per_edit_40000.csv")
+    frame = read(filename("rq1"))
     assert len(frame) == 40000 and not frame.duplicated(STATE + ["edit_index"]).any()
     rows = []
     for key, group in frame.groupby(STATE, sort=True):
@@ -70,18 +69,20 @@ def partial_spearman(x, y, control):
 
 
 def rq2(output, checks):
-    frame = read("rq2_checkpoints_360.csv")
-    assert len(frame) == 360 and not frame.duplicated(CHECKPOINT).any()
-    columns = [context + "_" + metric for context in ["locality", "rewrite"] for metric in METRICS]
+    frame = read(filename("rq2"))
+    validate_checkpoints(frame)
+    columns = THRESHOLD_COLUMNS
     assert np.isfinite(frame[columns]).all().all()
     retained = frame[columns].le(3).all(axis=1)
     mask = frame[CHECKPOINT].copy()
     mask["excluded_above3"] = ~retained
     mask["kept_after_threshold3"] = retained
-    compare(mask, "rq2_threshold_mask_360.csv", CHECKPOINT, checks)
-    mask.to_csv(output / "rq2_threshold_mask_360.csv", index=False)
+    compare(mask, filename("rq2_mask"), CHECKPOINT, checks)
+    mask.to_csv(output / "rq2_threshold_mask.csv", index=False)
     kept = frame[retained].copy()
-    assert len(kept) == 337 and kept.groupby("dataset").size().to_dict() == {"CounterFact":151,"zsRE":186}
+    expected_count = metadata().get("rq2_retained_checkpoints")
+    if expected_count is not None:
+        assert len(kept) == expected_count
     rows = []
     for dataset, group in kept.groupby("dataset"):
         for context in ["locality", "rewrite"]:
@@ -95,11 +96,70 @@ def rq2(output, checks):
     result = pd.DataFrame(rows)
     compare(result, "rq2_correlations.csv", ["dataset","geometry_context","metric"], checks)
     result.to_csv(output / "rq2_correlations.csv", index=False)
-    kept.to_csv(output / "rq2_retained_checkpoints_337.csv", index=False)
+    kept.to_csv(output / "rq2_retained_checkpoints.csv", index=False)
+    if all(context + "_mean_d" in kept for context in ["locality", "rewrite"]):
+        drift_rows = []
+        for dataset, group in kept.groupby("dataset"):
+            for context in ["locality", "rewrite"]:
+                q, d, deviation = [group[context + "_" + name]
+                                   for name in ["mean_q", "mean_d", "mean_abs_norm_deviation"]]
+                assert np.isfinite(d).all()
+                drift_rows.append(dict(dataset=dataset, geometry_context=context,
+                    n_checkpoints=len(group), rho_q_LOC=spearmanr(q, group.locality_percent)[0],
+                    rho_d_LOC=spearmanr(d, group.locality_percent)[0],
+                    rho_DH_LOC=spearmanr(deviation, group.locality_percent)[0], rho_q_d=spearmanr(q,d)[0]))
+        drift = pd.DataFrame(drift_rows)
+        if "rq2_drift" in metadata()["files"]:
+            compare(drift, filename("rq2_drift"), ["dataset", "geometry_context"], checks)
+        drift.to_csv(output / "rq2_drift_correlations.csv", index=False)
+    energy_rows = []
+    for context in ["locality", "rewrite"]:
+        moment_columns = [context + "_" + name for name in
+                          ["mean_p", "mean_p_squared", "mean_q_squared", "mean_kappa_squared"]]
+        if not set(moment_columns).issubset(kept.columns):
+            continue
+        if metadata().get("complete_second_moments"):
+            assert np.isfinite(kept[moment_columns]).all().all()
+        part = kept.dropna(subset=moment_columns)
+        if part.empty:
+            continue
+        p, p2, q2, kappa2 = [part[name].to_numpy() for name in moment_columns]
+        # Second moments are case-wise means, never squares of checkpoint means.
+        np.testing.assert_allclose(2*p+p2+q2, kappa2-1, atol=1e-7, rtol=1e-7)
+        energy = part[CHECKPOINT].copy()
+        energy["geometry_context"] = context
+        energy["P"] = 2*p+p2
+        energy["Q"] = q2
+        energy["mean_squared_norm_increase"] = kappa2-1
+        energy["compensation_ratio"] = -(2*p+p2)/q2
+        energy["orthogonal_displacement_energy_fraction"] = q2/(p2+q2)
+        energy_rows.append(energy)
+    if energy_rows:
+        pd.concat(energy_rows, ignore_index=True).to_csv(output / "rq2_checkpoint_energy.csv", index=False)
+    if "locality_endpoints" in metadata()["files"]:
+        endpoint_rows = []
+        for context, role in [("rewrite", "figure4"), ("locality", "locality_endpoints")]:
+            endpoints = read(filename(role))
+            assert endpoints.order_id.eq("canonical").all()
+            p = 2*endpoints.mean_p+endpoints.mean_p_squared
+            q = endpoints.mean_q_squared
+            increase = endpoints.mean_kappa_squared-1
+            np.testing.assert_allclose(p+q, increase, atol=1e-7, rtol=1e-7)
+            c = -p/q
+            endpoint_rows.append(dict(context=context, n_endpoints=len(endpoints),
+                median_c=c.median(), c_q25=c.quantile(.25), c_q75=c.quantile(.75),
+                Q_above1=int(q.gt(1).sum()), P_above0=int(p.gt(0).sum()),
+                mean_squared_norm_grows=int(increase.gt(0).sum())))
+        endpoint_summary = pd.DataFrame(endpoint_rows)
+        compare(endpoint_summary, filename("endpoint_summary"), ["context"], checks)
+        endpoint_summary.to_csv(output / "endpoint_norm_decomposition_summary.csv", index=False)
+    return dict(available=len(frame), retained=len(kept), excluded=len(frame)-len(kept),
+                trajectories=len(frame[STATE].drop_duplicates()),
+                dataset_retained_counts=kept.groupby("dataset").size().to_dict())
 
 
 def rq3(output, checks):
-    frame = read("rq3_orthogonal_states_doses_200.csv")
+    frame = read(filename("rq3_doses"))
     assert len(frame) == 200 and not frame.duplicated(CHECKPOINT+["dose_fraction"]).any()
     rows = []
     for dose, group in frame[frame.dose_fraction.gt(0)].groupby("dose_fraction"):
@@ -114,26 +174,37 @@ def rq3(output, checks):
     compare(result, "rq3_orthogonal_dose_summary.csv", ["removed_fraction"], checks)
     result.to_csv(output / "rq3_orthogonal_dose_summary.csv", index=False)
 
-    conditions = read("rq3_same_norm_conditions_480.csv")
+    conditions = read(filename("rq3_same_norm"))
     conditions["endpoint"] = conditions.endpoint.str.upper()
     assert len(conditions) == 480 and conditions.scope.eq("B_common_all_families").all()
-    eligible = conditions[conditions.n_cases.gt(0)].copy()
-    assert len(eligible) == 408
     index = CHECKPOINT+["dose_fraction"]
+    operations = ["perp", "projection_match"]
+    endpoints = ["LOC", "EFF", "GEN"]
+    assert set(conditions.operation) == set(operations)
+    assert set(conditions.endpoint) == set(endpoints)
+    assert set(conditions.dose_fraction) == {.25, .5}
+    assert not conditions.duplicated(index+["operation", "endpoint"]).any()
+    assert conditions.groupby(index).size().eq(len(operations)*len(endpoints)).all()
+    assert conditions.groupby(index).n_cases.nunique().eq(1).all()
+    assert conditions.n_cases.ge(0).all()
+    eligible = conditions[conditions.n_cases.gt(0)].copy()
     wide = eligible.pivot(index=index, columns=["operation","endpoint"], values="delta_pp")
-    assert len(wide) == 68 and not wide.isna().any().any()
+    wide = wide.reindex(columns=pd.MultiIndex.from_product([operations, endpoints]))
+    assert np.isfinite(wide).all().all()
     counts = eligible.groupby(index).n_cases
     assert counts.nunique().eq(1).all()
     differences = wide.index.to_frame(index=False)
     differences["n_cases"] = counts.first().reindex(wide.index).to_numpy()
     for endpoint, metric in [("LOC","LOC"),("EFF","EFF_TF"),("GEN","GEN_TF")]:
         differences["difference_"+metric+"_pp"] = (wide["projection_match",endpoint]-wide["perp",endpoint]).to_numpy()
-    compare(differences, "rq3_same_norm_state_differences_68.csv", index, checks)
-    differences.to_csv(output / "rq3_same_norm_state_differences_68.csv", index=False)
+    compare(differences, filename("rq3_differences"), index, checks)
+    differences.to_csv(output / "rq3_same_norm_state_differences.csv", index=False)
     means = []
+    dose_counts = {}
     for dose in [.25,.5]:
-        state_values = wide.xs(dose,level="dose_fraction")
-        assert len(state_values) == 34
+        state_values = wide[wide.index.get_level_values("dose_fraction") == dose].droplevel("dose_fraction")
+        dose_counts[str(dose)] = dict(eligible_states=len(state_values),
+            total_state_case_count=int(differences[differences.dose_fraction.eq(dose)].n_cases.sum()))
         for operation, source in [("orthogonal","perp"),("parallel","projection_match"),("parallel_minus_orthogonal",None)]:
             values = state_values[source] if source else state_values["projection_match"]-state_values["perp"]
             means.append(dict(scope="all_cohorts_equal_eligible_state", dose_fraction=dose,
@@ -145,24 +216,35 @@ def rq3(output, checks):
     result = pd.DataFrame(means)
     compare(result,"rq3_same_norm_overall_means.csv",["dose_fraction","operation"],checks)
     result.to_csv(output / "rq3_same_norm_overall_means.csv", index=False)
+    declared = metadata().get("rq3_same_norm_eligible_states_by_dose")
+    if declared is not None:
+        assert {dose: values["eligible_states"] for dose, values in dose_counts.items()} == declared
+    return dict(orthogonal_states=len(frame[CHECKPOINT].drop_duplicates()),
+                same_norm_eligible_state_dose_rows=len(wide), same_norm_by_dose=dose_counts)
 
 
 def main():
+    global DATA
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path, default=Path("build/reproduced"))
+    parser.add_argument("--data-dir", type=Path, default=DATA)
     args = parser.parse_args()
+    DATA = args.data_dir.resolve()
+    snapshot.DATA = DATA
     output = args.output_dir.resolve()
     if output == DATA or DATA in output.parents:
         parser.error("Output must not overwrite the included source data directory")
     output.mkdir(parents=True, exist_ok=True)
     manifest = json.loads((DATA/"provenance/data_sources.json").read_text())
     for entry in manifest["files"]:
-        path = ROOT/entry["package_file"]
+        path = DATA / entry["package_file"].removeprefix("data/")
         if hashlib.sha256(path.read_bytes()).hexdigest() != entry["package_sha256"]:
             raise ValueError("Saved input changed: " + entry["package_file"])
     checks=[]
-    rq1(output,checks); rq2(output,checks); rq3(output,checks)
-    performance=read("performance_1k_40.csv")
+    rq1(output,checks)
+    rq2_counts = rq2(output,checks)
+    rq3_counts = rq3(output,checks)
+    performance=read(filename("performance"))
     assert len(performance)==40 and performance.available.all()
     assert performance[["n_rewrite","n_rephrase","n_locality"]].eq(1000).all().all()
     assert not performance.duplicated(CHECKPOINT).any()
@@ -170,10 +252,15 @@ def main():
     performance.to_csv(output/"performance_1k_40.csv",index=False)
     report=dict(passed=True,source_snapshot_hashes_checked=len(manifest["files"]),
         reference_comparisons=checks,performance_conditions=40,model_inference_performed=False,
+        rq2_counts=rq2_counts, rq3_counts=rq3_counts, snapshot=metadata(),
         inferential_scope="Saved measurements; descriptive checkpoint/state aggregation. Checkpoints are not independent replicates.",
         numpy_version=np.__version__,pandas_version=pd.__version__)
     (output/"validation.json").write_text(json.dumps(report,indent=2)+"\n")
-    print(f"Validated {len(checks)} reference tables; RQ1 40,000 edits, RQ2 337/360 checkpoints, RQ3 40 states and 34 eligible same-norm states.")
+    print(f"Validated {len(checks)} reference tables; RQ1 40,000 edits, "
+          f"RQ2 {rq2_counts['retained']}/{rq2_counts['available']} checkpoints, "
+          f"RQ3 {rq3_counts['orthogonal_states']} states; same-norm eligible states "
+          + ", ".join(f"{float(dose)*100:g}%: {values['eligible_states']}"
+                      for dose, values in rq3_counts['same_norm_by_dose'].items()) + ".")
 
 
 if __name__ == "__main__":

@@ -1,29 +1,215 @@
 {
   "passed": true,
-  "figure_checks": {
+  "figures": {
     "fig4_pq_plane": {
-      "pixels_identical_to_original": true,
-      "shape": [
-        3720,
-        5400,
-        4
+      "input_points": 34,
+      "visible_points": 34,
+      "off_scale_points": 0,
+      "panels": [
+        {
+          "model": "Llama",
+          "dataset": "zsRE",
+          "visible_points": 7,
+          "x_limits": [
+            -0.6,
+            0.3
+          ],
+          "y_limits": [
+            0.4,
+            2.7
+          ]
+        },
+        {
+          "model": "Llama",
+          "dataset": "CounterFact",
+          "visible_points": 7,
+          "x_limits": [
+            -0.6,
+            0.3
+          ],
+          "y_limits": [
+            0.4,
+            2.7
+          ]
+        },
+        {
+          "model": "GPT-2 XL",
+          "dataset": "zsRE",
+          "visible_points": 10,
+          "x_limits": [
+            -0.6,
+            0.3
+          ],
+          "y_limits": [
+            0.4,
+            2.7
+          ]
+        },
+        {
+          "model": "GPT-2 XL",
+          "dataset": "CounterFact",
+          "visible_points": 10,
+          "x_limits": [
+            -0.6,
+            0.3
+          ],
+          "y_limits": [
+            0.4,
+            2.7
+          ]
+        }
       ],
-      "pdf_fonts": [
-        "CZRBLR+STIXGeneral-Regular           CID TrueType      Identity-H       yes yes yes     15  0",
-        "FTXWZA+STIXGeneral-Italic            CID TrueType      Identity-H       yes yes yes     23  0"
-      ]
+      "subplot_layout": [
+        2,
+        2
+      ],
+      "source": "figure4_rewrite_endpoints.csv",
+      "source_sha256": "c9560c497d4f6122439c393dee506d9741b1ad718f651ca171e9423244c757cb",
+      "geometry_context": "rewrite subject_last",
+      "geometry_cohort": "fixed1000",
+      "exact_coordinates": true,
+      "shared_axes": true,
+      "scales": "linear",
+      "removed_endpoint_count": 6,
+      "width_inches": 9.0,
+      "height_inches": 6.2,
+      "font_family": "STIXGeneral",
+      "dpi": 600
     },
     "fig5_geometry_locality": {
-      "pixels_identical_to_original": true,
-      "shape": [
-        3660,
-        5400,
-        4
+      "source": "figure5_prompt_overlay.csv",
+      "source_sha256": "7202ff554be8b8bd03703e5af685e1b45c811817f104b1607be707071ae7004f",
+      "input_checkpoint_count": 337,
+      "dataset_checkpoint_counts": {
+        "CounterFact": 169,
+        "zsRE": 168
+      },
+      "drawn_points": 2022,
+      "points_per_metric": 674,
+      "prompts": [
+        "locality",
+        "rewrite"
       ],
-      "pdf_fonts": [
-        "CZRBLR+STIXGeneral-Regular           CID TrueType      Identity-H       yes yes yes     15  0",
-        "FTXWZA+STIXGeneral-Italic            CID TrueType      Identity-H       yes yes yes     23  0"
-      ]
+      "prompt_colors": {
+        "locality": "#4477AA",
+        "rewrite": "#DD8844"
+      },
+      "subplot_layout": [
+        2,
+        3
+      ],
+      "panels": [
+        {
+          "dataset": "zsRE",
+          "metric": "mean_q",
+          "drawn_points": 336,
+          "locality_points": 168,
+          "rewrite_points": 168,
+          "x_limits": [
+            0.0,
+            3.0
+          ],
+          "y_limits": [
+            -1.0,
+            101.0
+          ],
+          "exact_artist_coordinate_match": true
+        },
+        {
+          "dataset": "zsRE",
+          "metric": "mean_kappa",
+          "drawn_points": 336,
+          "locality_points": 168,
+          "rewrite_points": 168,
+          "x_limits": [
+            0.8,
+            3.0
+          ],
+          "y_limits": [
+            -1.0,
+            101.0
+          ],
+          "exact_artist_coordinate_match": true
+        },
+        {
+          "dataset": "zsRE",
+          "metric": "mean_abs_norm_deviation",
+          "drawn_points": 336,
+          "locality_points": 168,
+          "rewrite_points": 168,
+          "x_limits": [
+            0.0,
+            2.0
+          ],
+          "y_limits": [
+            -1.0,
+            101.0
+          ],
+          "exact_artist_coordinate_match": true
+        },
+        {
+          "dataset": "CounterFact",
+          "metric": "mean_q",
+          "drawn_points": 338,
+          "locality_points": 169,
+          "rewrite_points": 169,
+          "x_limits": [
+            0.0,
+            3.0
+          ],
+          "y_limits": [
+            -1.0,
+            101.0
+          ],
+          "exact_artist_coordinate_match": true
+        },
+        {
+          "dataset": "CounterFact",
+          "metric": "mean_kappa",
+          "drawn_points": 338,
+          "locality_points": 169,
+          "rewrite_points": 169,
+          "x_limits": [
+            0.8,
+            3.0
+          ],
+          "y_limits": [
+            -1.0,
+            101.0
+          ],
+          "exact_artist_coordinate_match": true
+        },
+        {
+          "dataset": "CounterFact",
+          "metric": "mean_abs_norm_deviation",
+          "drawn_points": 338,
+          "locality_points": 169,
+          "rewrite_points": 169,
+          "x_limits": [
+            0.0,
+            2.0
+          ],
+          "y_limits": [
+            -1.0,
+            101.0
+          ],
+          "exact_artist_coordinate_match": true
+        }
+      ],
+      "geometry_cohort": "fixed1000",
+      "canonical_orders_only": true,
+      "excluded_checkpoints": 23,
+      "all_retained_points_visible": true,
+      "same_checkpoint_and_outcome_for_both_prompts": true,
+      "method_shapes_preserved": true,
+      "model_dataset_order_fills_preserved": true,
+      "edit_count_marker_size_preserved": true,
+      "same_metric_axis_limits_across_datasets": true,
+      "linear_axes": true,
+      "width_inches": 9.0,
+      "height_inches": 6.1,
+      "font_family": "STIXGeneral",
+      "dpi": 600
     }
   }
 }

@@ -13,6 +13,7 @@ import os
 from typing import Any, Dict, Optional, Tuple
 
 import torch
+from transformers.pytorch_utils import Conv1D
 
 
 @dataclass
@@ -300,7 +301,11 @@ def sphere_project_update(
     beta: float,
     alpha: float,
 ) -> Tuple[torch.Tensor, Dict[str, float]]:
-    """Apply SPHERE's soft sparse-space projection."""
+    """Project a canonical [output, input] weight/update pair.
+
+    Stored model parameters must go through sphere_project_update_for_module;
+    this tensor-only core deliberately retains the original Linear arithmetic.
+    """
 
     beta = float(beta)
     alpha = float(alpha)
@@ -360,6 +365,50 @@ def sphere_project_update(
     }
 
 
+def sphere_project_update_for_module(
+    module: torch.nn.Module,
+    weight: torch.Tensor,
+    update: torch.Tensor,
+    *,
+    beta: float,
+    alpha: float,
+) -> Tuple[torch.Tensor, Dict[str, Any]]:
+    """Apply SPHERE to MLP input directions for either supported storage layout.
+
+    GPT-2 Conv1D stores [input, output], so both the reference weight and its
+    update are transposed before row normalization and principal-space fitting.
+    Detect the module type explicitly: square parameters cannot reveal layout.
+    """
+    if isinstance(module, Conv1D):
+        transposed = True
+        semantic_weight, semantic_update = weight.T, update.T
+        stored_layout = "input_output"
+    elif isinstance(module, torch.nn.Linear):
+        transposed = False
+        semantic_weight, semantic_update = weight, update
+        stored_layout = "output_input"
+    else:
+        raise TypeError(
+            f"Unsupported SPHERE rewrite module: {type(module).__name__}; "
+            "an explicit weight-layout adapter is required"
+        )
+    projected, stats = sphere_project_update(
+        semantic_weight, semantic_update, beta=beta, alpha=alpha
+    )
+    stats.update({
+        "sphere_orientation_version": "semantic_output_input_v1",
+        "module_type": f"{type(module).__module__}.{type(module).__qualname__}",
+        "stored_weight_layout": stored_layout,
+        "stored_weight_shape": list(weight.shape),
+        "projection_weight_layout": "output_input",
+        "projection_weight_shape": list(semantic_weight.shape),
+        "projection_axis": "mlp_input",
+        "projection_dimension": int(semantic_weight.shape[1]),
+        "orientation_transposed": transposed,
+    })
+    return projected.T if transposed else projected, stats
+
+
 def project_updates_with_sphere(
     model: Any,
     hparams: Any,
@@ -376,7 +425,12 @@ def project_updates_with_sphere(
     projected_updates: Dict[str, torch.Tensor] = {}
     for weight_name, update in update_matrices.items():
         weight = parameter_getter(model, weight_name)
-        projected, stats = sphere_project_update(
+        module_name, _, parameter_name = weight_name.rpartition(".")
+        if parameter_name != "weight":
+            raise ValueError(f"SPHERE requires a rewrite weight parameter: {weight_name}")
+        module = model.get_submodule(module_name)
+        projected, stats = sphere_project_update_for_module(
+            module,
             weight,
             update.to(weight.device),
             beta=beta,

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "source_bundle": "paper_figures_SPHERE_corrected_20260927",
+  "canonical_orders_only": true,
+  "complete_second_moments": true,
+  "design_conditions": 40,
+  "checkpoints_per_trajectory": 9,
+  "edit_counts": [
+    50,
+    100,
+    150,
+    200,
+    250,
+    300,
+    500,
+    750,
+    1000
+  ],
+  "rq2_available_checkpoints": 360,
+  "rq2_retained_checkpoints": 337,
+  "rq2_available_trajectories": 40,
+  "rq3_same_norm_eligible_states_by_dose": {
+    "0.25": 34,
+    "0.5": 34
+  },
+  "missing_trajectories": [],
+  "files": {
+    "rq1": "rq1_per_edit_40000.csv",
+    "rq2": "rq2_checkpoints.csv",
+    "rq3_doses": "rq3_orthogonal_states_doses_200.csv",
+    "rq3_same_norm": "rq3_same_norm_conditions_480.csv",
+    "performance": "performance_1k_40.csv",
+    "figure4": "figure4_rewrite_endpoints.csv",
+    "figure5": "figure5_prompt_overlay.csv",
+    "rq2_mask": "rq2_threshold_mask.csv",
+    "rq3_differences": "rq3_same_norm_state_differences.csv",
+    "rq2_drift": "rq2_drift_correlations.csv",
+    "locality_endpoints": "locality_endpoints.csv",
+    "endpoint_summary": "endpoint_norm_decomposition_summary.csv"
+  }
+}

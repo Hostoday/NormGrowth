@@ -1,310 +1,8 @@
 {
   "schema_version": 1,
-  "snapshot_date": "2026-09-24",
+  "snapshot_date": "2026-09-27",
   "scope": "Current modified editor source and dependency closure of selected model runners; model assets and historical protocols are external.",
   "files": [
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/aggregate_edit_analysis_artifacts.py",
-      "release_path": "experiments/diagnostics/aggregate_edit_analysis_artifacts.py",
-      "source_sha256": "692554619f81261fc9b2ac41ece4eedb47a5eb30dbcf3fd04cb374d01faf133c",
-      "release_sha256": "692554619f81261fc9b2ac41ece4eedb47a5eb30dbcf3fd04cb374d01faf133c",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_base_component_cosines.py",
-      "release_path": "experiments/diagnostics/analyze_base_component_cosines.py",
-      "source_sha256": "bbb9f8c62bed2c85138e4407613477107939915b97ddefe7c4a0639832aaa198",
-      "release_sha256": "bbb9f8c62bed2c85138e4407613477107939915b97ddefe7c4a0639832aaa198",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_base_h_m_reference_cosines.py",
-      "release_path": "experiments/diagnostics/analyze_base_h_m_reference_cosines.py",
-      "source_sha256": "7ab39a5b594343c774fb8eb6992f2a867369e9a8e9e30e81b062a0b048cf530e",
-      "release_sha256": "7ab39a5b594343c774fb8eb6992f2a867369e9a8e9e30e81b062a0b048cf530e",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_edit_count_gain_trajectory.py",
-      "release_path": "experiments/diagnostics/analyze_edit_count_gain_trajectory.py",
-      "source_sha256": "cffd821f5141973fcb799fd62a50386ea5b1547189b6fb3cc638017d6797bbc8",
-      "release_sha256": "cffd821f5141973fcb799fd62a50386ea5b1547189b6fb3cc638017d6797bbc8",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_edited_a_m_o_reference_cosines.py",
-      "release_path": "experiments/diagnostics/analyze_edited_a_m_o_reference_cosines.py",
-      "source_sha256": "73b9b1fe227edff63e8cb04db37469b302a50675140e102ff124a2749b5fe566",
-      "release_sha256": "73b9b1fe227edff63e8cb04db37469b302a50675140e102ff124a2749b5fe566",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_geometry_locality_correlation.py",
-      "release_path": "experiments/diagnostics/analyze_geometry_locality_correlation.py",
-      "source_sha256": "cba619ae5fa788cffc804ffb3f693d99d811c8467aa2a1143c064d3c91566c98",
-      "release_sha256": "cba619ae5fa788cffc804ffb3f693d99d811c8467aa2a1143c064d3c91566c98",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_residual_branch_collapse.py",
-      "release_path": "experiments/diagnostics/analyze_residual_branch_collapse.py",
-      "source_sha256": "07ea1c027f6069a7621918000b48574091e79e5853452da1ed1bca4bf111ba4b",
-      "release_sha256": "07ea1c027f6069a7621918000b48574091e79e5853452da1ed1bca4bf111ba4b",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/analyze_residual_spectrum.py",
-      "release_path": "experiments/diagnostics/analyze_residual_spectrum.py",
-      "source_sha256": "d2fd9a9e8f58097d8e47805589a4315ae396a096b443f6c706cb23b44be49f62",
-      "release_sha256": "d2fd9a9e8f58097d8e47805589a4315ae396a096b443f6c706cb23b44be49f62",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/assemble_cumulative_prefix_locality1k.py",
-      "release_path": "experiments/diagnostics/assemble_cumulative_prefix_locality1k.py",
-      "source_sha256": "8dc27bc9053cd65b72d24907b813bebe9e6739ec613ed5f1e3c221c0f465d91c",
-      "release_sha256": "a2ffb49bdf50db660c40b571deb1a6ea3ed527b8891011f51877dbe03121582f",
-      "changes": [
-        "4 output path defaults use BNG_OUTPUT_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/capture_matched_geometry_checkpoints.py",
-      "release_path": "experiments/diagnostics/capture_matched_geometry_checkpoints.py",
-      "source_sha256": "de4f25414fadc9d24adf328f88133d0833b478c9de4963bb4b0c4d8b5b02071b",
-      "release_sha256": "758ef754a0bef1c1ba49164ef1ce6307c679d3e49a49ea3c3a728b93e367dff4",
-      "changes": [
-        "2 output path defaults use BNG_OUTPUT_ROOT",
-        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/capture_scalar_checkpoint_h9.py",
-      "release_path": "experiments/diagnostics/capture_scalar_checkpoint_h9.py",
-      "source_sha256": "b544676d5b5362b0c4dbb968523c8f2e5cf91ce5a862985515e8ff4a7e068dd3",
-      "release_sha256": "8cae82e2c79c66223bdafabefc78d47b197efa38c278bc321ad7d0077391e399",
-      "changes": [
-        "5 output path defaults use BNG_OUTPUT_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/compare_locality_proxies.py",
-      "release_path": "experiments/diagnostics/compare_locality_proxies.py",
-      "source_sha256": "6a4637cd44ff358ea228859bd2254dfcb0c9c1cde28d58009aa9b975f427041d",
-      "release_sha256": "6a4637cd44ff358ea228859bd2254dfcb0c9c1cde28d58009aa9b975f427041d",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/early_attention_condition.py",
-      "release_path": "experiments/diagnostics/early_attention_condition.py",
-      "source_sha256": "c052883bcbaf27da9cb6c81fc4c88dcf8778f860f361cfd9b7bb1b489dbc5401",
-      "release_sha256": "c052883bcbaf27da9cb6c81fc4c88dcf8778f860f361cfd9b7bb1b489dbc5401",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/edit_order_manifest.py",
-      "release_path": "experiments/diagnostics/edit_order_manifest.py",
-      "source_sha256": "751bc7d5e08c9443829a9d5712f930d912b8246222f178c7adb0ff0d1526df24",
-      "release_sha256": "751bc7d5e08c9443829a9d5712f930d912b8246222f178c7adb0ff0d1526df24",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/evaluate_matched_geometry_corrected.py",
-      "release_path": "experiments/diagnostics/evaluate_matched_geometry_corrected.py",
-      "source_sha256": "aab0df5fa73d8c79101c78ab12dd017083b510b7483b88d89a7536bdd871057a",
-      "release_sha256": "aab0df5fa73d8c79101c78ab12dd017083b510b7483b88d89a7536bdd871057a",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/evaluate_raw_plot_locality_n1000.py",
-      "release_path": "experiments/diagnostics/evaluate_raw_plot_locality_n1000.py",
-      "source_sha256": "3e973adb06996802ff0af99bba163df7cf9e59f3a373311e77a0ac9a638d7d7d",
-      "release_sha256": "ebb8839a3b24b4e91e7a398a1cc48d891534e2c75eaa36e3ff5501ca73dd93a6",
-      "changes": [
-        "2 output path defaults use BNG_OUTPUT_ROOT",
-        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/evaluation_prompt_contract.py",
-      "release_path": "experiments/diagnostics/evaluation_prompt_contract.py",
-      "source_sha256": "38f8c007b9b615a89e247532906ff1cb934a37f1bbcae7fedaf921ca61ee3875",
-      "release_sha256": "38f8c007b9b615a89e247532906ff1cb934a37f1bbcae7fedaf921ca61ee3875",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/fixed_probe_tracking.py",
-      "release_path": "experiments/diagnostics/fixed_probe_tracking.py",
-      "source_sha256": "0822f33e75549809debeeb0b8a0bdfa96cf07029e466522dfb1a9acd6fb43600",
-      "release_sha256": "0822f33e75549809debeeb0b8a0bdfa96cf07029e466522dfb1a9acd6fb43600",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/gpt2_checkpoint_analysis.py",
-      "release_path": "experiments/diagnostics/gpt2_checkpoint_analysis.py",
-      "source_sha256": "5c8c1b06ccaf2d178745ef63c50101bf8c762b5aa94925cbf79f282be5af9b87",
-      "release_sha256": "d7521643886aeb6379934377b480c6c24407ab495e80352479f43745f1b2f856",
-      "changes": [
-        "1 data path defaults use BNG_DATA_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/gpt2_intervention_analysis.py",
-      "release_path": "experiments/diagnostics/gpt2_intervention_analysis.py",
-      "source_sha256": "b9164c44a8b7a7599140eee5526b6c931bef1f5da998f101297bc0786b9c02d2",
-      "release_sha256": "56e68adacbc87b0704d65d5538cf43305c5cd7d90d9c0b8580e0b333d9385dd9",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT",
-        "1 data path defaults use BNG_DATA_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/o0_axis_condition.py",
-      "release_path": "experiments/diagnostics/o0_axis_condition.py",
-      "source_sha256": "b9ee399633bda1df98661f10d5c54e7ddd55e5859803737f17159b861b05593d",
-      "release_sha256": "b9ee399633bda1df98661f10d5c54e7ddd55e5859803737f17159b861b05593d",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/o0_axis_observation_metrics.py",
-      "release_path": "experiments/diagnostics/o0_axis_observation_metrics.py",
-      "source_sha256": "dae58d82f4830605105c3fcf203669869db4f5c0b3d9f40b07322fb05d61d0fe",
-      "release_sha256": "dae58d82f4830605105c3fcf203669869db4f5c0b3d9f40b07322fb05d61d0fe",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/plot_unified_branch_rms_trajectory.py",
-      "release_path": "experiments/diagnostics/plot_unified_branch_rms_trajectory.py",
-      "source_sha256": "cc241ba06ae195ab33c6e2d98ba7ce940af64663033b25bd4a6062378e59778f",
-      "release_sha256": "cc241ba06ae195ab33c6e2d98ba7ce940af64663033b25bd4a6062378e59778f",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/post_update_tracking.py",
-      "release_path": "experiments/diagnostics/post_update_tracking.py",
-      "source_sha256": "0fd8bb2bb4347116c0f7d933037981af1c1f44aeff2dfa922988978bf02c5f6b",
-      "release_sha256": "0fd8bb2bb4347116c0f7d933037981af1c1f44aeff2dfa922988978bf02c5f6b",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/run_all_cohort_parallel_control.py",
-      "release_path": "experiments/diagnostics/run_all_cohort_parallel_control.py",
-      "source_sha256": "c9d81c4893d9fd24c1d66a15e292553557fd8ba883e58908c5d7c301c1a07a00",
-      "release_sha256": "1b87f43e8d1fc745c91abd8e01bf01ee5ea0d177c080fa81e7853a33989c3f1a",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT",
-        "Historical paper reference uses BNG_RESEARCH_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/run_gpt2_intervention_extension.py",
-      "release_path": "experiments/diagnostics/run_gpt2_intervention_extension.py",
-      "source_sha256": "1e328fd48314282ddc31607f02458dbeded069165200ff096dab8dfe98a4d48b",
-      "release_sha256": "deaae919c9f10124c71f38d1ec7b49639620751f881e85b7683be589e9bbaac5",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/run_llama_counterfact_intervention.py",
-      "release_path": "experiments/diagnostics/run_llama_counterfact_intervention.py",
-      "source_sha256": "d0bfe596784237e0a2ce17dd2fea5285b83a0096921a02ff1f32e5421b4c9af0",
-      "release_sha256": "01a8d6925673f0d709ee3f383a6c28448e7be2a1d022ee0de42f49ec20eafd72",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/run_llama_counterfact_parallel_control.py",
-      "release_path": "experiments/diagnostics/run_llama_counterfact_parallel_control.py",
-      "source_sha256": "ec24c8efb7528556c614e78e954d8f58579d05d9571c20c72c1fb2c3cde98ee1",
-      "release_sha256": "2783cea02d2a37e19b7d0772f46f336e5c206123f4be4d0a7f2a2cef249b8f6d",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/run_llama_intervention_extension.py",
-      "release_path": "experiments/diagnostics/run_llama_intervention_extension.py",
-      "source_sha256": "30dffc0ae174db03c5b4547bf1167473137234acaee440a95c66e7f97bec5877",
-      "release_sha256": "585fb8d36ae23fa86a987356bf17ed4735f8df426f7e96cb6064ef213916fb61",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT",
-        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
-      ]
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/target_text_contract.py",
-      "release_path": "experiments/diagnostics/target_text_contract.py",
-      "source_sha256": "2ad8e6aecf59870e0ee47769badf425ce26aa84eb941c1b21c4e6a83b4f0bbc9",
-      "release_sha256": "2ad8e6aecf59870e0ee47769badf425ce26aa84eb941c1b21c4e6a83b4f0bbc9",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "diagnostics/virtual_actual_tracking.py",
-      "release_path": "experiments/diagnostics/virtual_actual_tracking.py",
-      "source_sha256": "1449ddc77c8edc1e89ff33faf2460415fc47a8cd91f38d9e66c953cf44a4aaf9",
-      "release_sha256": "1449ddc77c8edc1e89ff33faf2460415fc47a8cd91f38d9e66c953cf44a4aaf9",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "evaluate/eval_cumulative_generation_locality.py",
-      "release_path": "experiments/evaluate/eval_cumulative_generation_locality.py",
-      "source_sha256": "ffd547524690adc652cd2927a9f5988b625548f72863977cad4c5c83700bab28",
-      "release_sha256": "ffd547524690adc652cd2927a9f5988b625548f72863977cad4c5c83700bab28",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "evaluate/eval_hf_easyedit.py",
-      "release_path": "experiments/evaluate/eval_hf_easyedit.py",
-      "source_sha256": "2d04b2c76e03fad79e46c7b9c83118081949e9bd82c8eee48d1aeed7d3f61cd1",
-      "release_sha256": "2d04b2c76e03fad79e46c7b9c83118081949e9bd82c8eee48d1aeed7d3f61cd1",
-      "changes": []
-    },
-    {
-      "source_repository": "Residual_gain_regulization",
-      "source_path": "scripts/run_rgr_batch.py",
-      "release_path": "experiments/scripts/run_rgr_batch.py",
-      "source_sha256": "78af4a3d439740350f8533762951a0bb1498883ba3c4fcd8b63ff8f6cba73557",
-      "release_sha256": "561413bcf81571523bfbe9c22533601c2ff7aa1358397204c808b69397c3187c",
-      "changes": [
-        "1 output path defaults use BNG_OUTPUT_ROOT",
-        "Expand environment variables and user-home notation before hparam path normalization."
-      ]
-    },
     {
       "source_repository": "Residual_gain_regulization",
       "source_path": "EasyEdit/LICENSE",
@@ -1315,9 +1013,16 @@
       "source_repository": "Residual_gain_regulization",
       "source_path": "EasyEdit/easyeditor/util/official_editing_baselines.py",
       "release_path": "experiments/EasyEdit/easyeditor/util/official_editing_baselines.py",
-      "source_sha256": "c655918d3b9eb17126ecff82fac681df7856f25f2f869398ecbb55a65b60db0c",
-      "release_sha256": "c655918d3b9eb17126ecff82fac681df7856f25f2f869398ecbb55a65b60db0c",
-      "changes": []
+      "source_sha256": "1460de201e7dfbf4b973ae77ae4ddf58e5c992337ca0d7cda12855ac001606ad",
+      "release_sha256": "1460de201e7dfbf4b973ae77ae4ddf58e5c992337ca0d7cda12855ac001606ad",
+      "changes": [
+        "Normalize and project GPT-2 Conv1D weight/update in semantic output-by-input coordinates, then transpose back.",
+        "Keep Linear arithmetic unchanged and record module type, storage layout, projection axis and dimensions."
+      ],
+      "previous_source_sha256": "c655918d3b9eb17126ecff82fac681df7856f25f2f869398ecbb55a65b60db0c",
+      "previous_release_sha256": "c655918d3b9eb17126ecff82fac681df7856f25f2f869398ecbb55a65b60db0c",
+      "experiment_snapshot": "archive://editing-runs/_Analysis_Cross_Layer/sphere_input_axis_correction_20260927/code_snapshot/EasyEdit/easyeditor/util/official_editing_baselines.py",
+      "orientation_version": "semantic_output_input_v1"
     },
     {
       "source_repository": "Residual_gain_regulization",
@@ -1385,11 +1090,336 @@
     },
     {
       "source_repository": "Residual_gain_regulization",
-      "source_path": "hparams/MEMIT/llama3-8b.yaml",
-      "release_path": "experiments/hparams/MEMIT/llama3-8b.yaml",
-      "source_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
-      "release_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
+      "source_path": "diagnostics/aggregate_edit_analysis_artifacts.py",
+      "release_path": "experiments/diagnostics/aggregate_edit_analysis_artifacts.py",
+      "source_sha256": "692554619f81261fc9b2ac41ece4eedb47a5eb30dbcf3fd04cb374d01faf133c",
+      "release_sha256": "692554619f81261fc9b2ac41ece4eedb47a5eb30dbcf3fd04cb374d01faf133c",
       "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_base_component_cosines.py",
+      "release_path": "experiments/diagnostics/analyze_base_component_cosines.py",
+      "source_sha256": "bbb9f8c62bed2c85138e4407613477107939915b97ddefe7c4a0639832aaa198",
+      "release_sha256": "bbb9f8c62bed2c85138e4407613477107939915b97ddefe7c4a0639832aaa198",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_base_h_m_reference_cosines.py",
+      "release_path": "experiments/diagnostics/analyze_base_h_m_reference_cosines.py",
+      "source_sha256": "7ab39a5b594343c774fb8eb6992f2a867369e9a8e9e30e81b062a0b048cf530e",
+      "release_sha256": "7ab39a5b594343c774fb8eb6992f2a867369e9a8e9e30e81b062a0b048cf530e",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_edit_count_gain_trajectory.py",
+      "release_path": "experiments/diagnostics/analyze_edit_count_gain_trajectory.py",
+      "source_sha256": "cffd821f5141973fcb799fd62a50386ea5b1547189b6fb3cc638017d6797bbc8",
+      "release_sha256": "cffd821f5141973fcb799fd62a50386ea5b1547189b6fb3cc638017d6797bbc8",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_edited_a_m_o_reference_cosines.py",
+      "release_path": "experiments/diagnostics/analyze_edited_a_m_o_reference_cosines.py",
+      "source_sha256": "73b9b1fe227edff63e8cb04db37469b302a50675140e102ff124a2749b5fe566",
+      "release_sha256": "73b9b1fe227edff63e8cb04db37469b302a50675140e102ff124a2749b5fe566",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_geometry_locality_correlation.py",
+      "release_path": "experiments/diagnostics/analyze_geometry_locality_correlation.py",
+      "source_sha256": "cba619ae5fa788cffc804ffb3f693d99d811c8467aa2a1143c064d3c91566c98",
+      "release_sha256": "cba619ae5fa788cffc804ffb3f693d99d811c8467aa2a1143c064d3c91566c98",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_residual_branch_collapse.py",
+      "release_path": "experiments/diagnostics/analyze_residual_branch_collapse.py",
+      "source_sha256": "07ea1c027f6069a7621918000b48574091e79e5853452da1ed1bca4bf111ba4b",
+      "release_sha256": "07ea1c027f6069a7621918000b48574091e79e5853452da1ed1bca4bf111ba4b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/analyze_residual_spectrum.py",
+      "release_path": "experiments/diagnostics/analyze_residual_spectrum.py",
+      "source_sha256": "d2fd9a9e8f58097d8e47805589a4315ae396a096b443f6c706cb23b44be49f62",
+      "release_sha256": "d2fd9a9e8f58097d8e47805589a4315ae396a096b443f6c706cb23b44be49f62",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/assemble_cumulative_prefix_locality1k.py",
+      "release_path": "experiments/diagnostics/assemble_cumulative_prefix_locality1k.py",
+      "source_sha256": "8dc27bc9053cd65b72d24907b813bebe9e6739ec613ed5f1e3c221c0f465d91c",
+      "release_sha256": "a2ffb49bdf50db660c40b571deb1a6ea3ed527b8891011f51877dbe03121582f",
+      "changes": [
+        "4 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/capture_matched_geometry_checkpoints.py",
+      "release_path": "experiments/diagnostics/capture_matched_geometry_checkpoints.py",
+      "source_sha256": "de4f25414fadc9d24adf328f88133d0833b478c9de4963bb4b0c4d8b5b02071b",
+      "release_sha256": "758ef754a0bef1c1ba49164ef1ce6307c679d3e49a49ea3c3a728b93e367dff4",
+      "changes": [
+        "2 output path defaults use BNG_OUTPUT_ROOT",
+        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/capture_scalar_checkpoint_h9.py",
+      "release_path": "experiments/diagnostics/capture_scalar_checkpoint_h9.py",
+      "source_sha256": "b544676d5b5362b0c4dbb968523c8f2e5cf91ce5a862985515e8ff4a7e068dd3",
+      "release_sha256": "8cae82e2c79c66223bdafabefc78d47b197efa38c278bc321ad7d0077391e399",
+      "changes": [
+        "5 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/compare_locality_proxies.py",
+      "release_path": "experiments/diagnostics/compare_locality_proxies.py",
+      "source_sha256": "6a4637cd44ff358ea228859bd2254dfcb0c9c1cde28d58009aa9b975f427041d",
+      "release_sha256": "6a4637cd44ff358ea228859bd2254dfcb0c9c1cde28d58009aa9b975f427041d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/early_attention_condition.py",
+      "release_path": "experiments/diagnostics/early_attention_condition.py",
+      "source_sha256": "c052883bcbaf27da9cb6c81fc4c88dcf8778f860f361cfd9b7bb1b489dbc5401",
+      "release_sha256": "c052883bcbaf27da9cb6c81fc4c88dcf8778f860f361cfd9b7bb1b489dbc5401",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/edit_order_manifest.py",
+      "release_path": "experiments/diagnostics/edit_order_manifest.py",
+      "source_sha256": "751bc7d5e08c9443829a9d5712f930d912b8246222f178c7adb0ff0d1526df24",
+      "release_sha256": "751bc7d5e08c9443829a9d5712f930d912b8246222f178c7adb0ff0d1526df24",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/evaluate_matched_geometry_corrected.py",
+      "release_path": "experiments/diagnostics/evaluate_matched_geometry_corrected.py",
+      "source_sha256": "aab0df5fa73d8c79101c78ab12dd017083b510b7483b88d89a7536bdd871057a",
+      "release_sha256": "aab0df5fa73d8c79101c78ab12dd017083b510b7483b88d89a7536bdd871057a",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/evaluate_raw_plot_locality_n1000.py",
+      "release_path": "experiments/diagnostics/evaluate_raw_plot_locality_n1000.py",
+      "source_sha256": "3e973adb06996802ff0af99bba163df7cf9e59f3a373311e77a0ac9a638d7d7d",
+      "release_sha256": "ebb8839a3b24b4e91e7a398a1cc48d891534e2c75eaa36e3ff5501ca73dd93a6",
+      "changes": [
+        "2 output path defaults use BNG_OUTPUT_ROOT",
+        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/evaluation_prompt_contract.py",
+      "release_path": "experiments/diagnostics/evaluation_prompt_contract.py",
+      "source_sha256": "38f8c007b9b615a89e247532906ff1cb934a37f1bbcae7fedaf921ca61ee3875",
+      "release_sha256": "38f8c007b9b615a89e247532906ff1cb934a37f1bbcae7fedaf921ca61ee3875",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/fixed_probe_tracking.py",
+      "release_path": "experiments/diagnostics/fixed_probe_tracking.py",
+      "source_sha256": "0822f33e75549809debeeb0b8a0bdfa96cf07029e466522dfb1a9acd6fb43600",
+      "release_sha256": "0822f33e75549809debeeb0b8a0bdfa96cf07029e466522dfb1a9acd6fb43600",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/gpt2_checkpoint_analysis.py",
+      "release_path": "experiments/diagnostics/gpt2_checkpoint_analysis.py",
+      "source_sha256": "5c8c1b06ccaf2d178745ef63c50101bf8c762b5aa94925cbf79f282be5af9b87",
+      "release_sha256": "d7521643886aeb6379934377b480c6c24407ab495e80352479f43745f1b2f856",
+      "changes": [
+        "1 data path defaults use BNG_DATA_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/gpt2_intervention_analysis.py",
+      "release_path": "experiments/diagnostics/gpt2_intervention_analysis.py",
+      "source_sha256": "b9164c44a8b7a7599140eee5526b6c931bef1f5da998f101297bc0786b9c02d2",
+      "release_sha256": "56e68adacbc87b0704d65d5538cf43305c5cd7d90d9c0b8580e0b333d9385dd9",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "1 data path defaults use BNG_DATA_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/o0_axis_condition.py",
+      "release_path": "experiments/diagnostics/o0_axis_condition.py",
+      "source_sha256": "b9ee399633bda1df98661f10d5c54e7ddd55e5859803737f17159b861b05593d",
+      "release_sha256": "b9ee399633bda1df98661f10d5c54e7ddd55e5859803737f17159b861b05593d",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/o0_axis_observation_metrics.py",
+      "release_path": "experiments/diagnostics/o0_axis_observation_metrics.py",
+      "source_sha256": "dae58d82f4830605105c3fcf203669869db4f5c0b3d9f40b07322fb05d61d0fe",
+      "release_sha256": "dae58d82f4830605105c3fcf203669869db4f5c0b3d9f40b07322fb05d61d0fe",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/plot_unified_branch_rms_trajectory.py",
+      "release_path": "experiments/diagnostics/plot_unified_branch_rms_trajectory.py",
+      "source_sha256": "cc241ba06ae195ab33c6e2d98ba7ce940af64663033b25bd4a6062378e59778f",
+      "release_sha256": "cc241ba06ae195ab33c6e2d98ba7ce940af64663033b25bd4a6062378e59778f",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/post_update_tracking.py",
+      "release_path": "experiments/diagnostics/post_update_tracking.py",
+      "source_sha256": "0fd8bb2bb4347116c0f7d933037981af1c1f44aeff2dfa922988978bf02c5f6b",
+      "release_sha256": "0fd8bb2bb4347116c0f7d933037981af1c1f44aeff2dfa922988978bf02c5f6b",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_all_cohort_parallel_control.py",
+      "release_path": "experiments/diagnostics/run_all_cohort_parallel_control.py",
+      "source_sha256": "c9d81c4893d9fd24c1d66a15e292553557fd8ba883e58908c5d7c301c1a07a00",
+      "release_sha256": "1b87f43e8d1fc745c91abd8e01bf01ee5ea0d177c080fa81e7853a33989c3f1a",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "Historical paper reference uses BNG_RESEARCH_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_gpt2_intervention_extension.py",
+      "release_path": "experiments/diagnostics/run_gpt2_intervention_extension.py",
+      "source_sha256": "1e328fd48314282ddc31607f02458dbeded069165200ff096dab8dfe98a4d48b",
+      "release_sha256": "deaae919c9f10124c71f38d1ec7b49639620751f881e85b7683be589e9bbaac5",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_llama_counterfact_intervention.py",
+      "release_path": "experiments/diagnostics/run_llama_counterfact_intervention.py",
+      "source_sha256": "d0bfe596784237e0a2ce17dd2fea5285b83a0096921a02ff1f32e5421b4c9af0",
+      "release_sha256": "01a8d6925673f0d709ee3f383a6c28448e7be2a1d022ee0de42f49ec20eafd72",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_llama_counterfact_parallel_control.py",
+      "release_path": "experiments/diagnostics/run_llama_counterfact_parallel_control.py",
+      "source_sha256": "ec24c8efb7528556c614e78e954d8f58579d05d9571c20c72c1fb2c3cde98ee1",
+      "release_sha256": "2783cea02d2a37e19b7d0772f46f336e5c206123f4be4d0a7f2a2cef249b8f6d",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/run_llama_intervention_extension.py",
+      "release_path": "experiments/diagnostics/run_llama_intervention_extension.py",
+      "source_sha256": "30dffc0ae174db03c5b4547bf1167473137234acaee440a95c66e7f97bec5877",
+      "release_sha256": "585fb8d36ae23fa86a987356bf17ed4735f8df426f7e96cb6064ef213916fb61",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "Llama model default uses BNG_LLAMA_MODEL / BNG_MODEL_ROOT"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/target_text_contract.py",
+      "release_path": "experiments/diagnostics/target_text_contract.py",
+      "source_sha256": "2ad8e6aecf59870e0ee47769badf425ce26aa84eb941c1b21c4e6a83b4f0bbc9",
+      "release_sha256": "2ad8e6aecf59870e0ee47769badf425ce26aa84eb941c1b21c4e6a83b4f0bbc9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "diagnostics/virtual_actual_tracking.py",
+      "release_path": "experiments/diagnostics/virtual_actual_tracking.py",
+      "source_sha256": "1449ddc77c8edc1e89ff33faf2460415fc47a8cd91f38d9e66c953cf44a4aaf9",
+      "release_sha256": "1449ddc77c8edc1e89ff33faf2460415fc47a8cd91f38d9e66c953cf44a4aaf9",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "evaluate/eval_cumulative_generation_locality.py",
+      "release_path": "experiments/evaluate/eval_cumulative_generation_locality.py",
+      "source_sha256": "ffd547524690adc652cd2927a9f5988b625548f72863977cad4c5c83700bab28",
+      "release_sha256": "ffd547524690adc652cd2927a9f5988b625548f72863977cad4c5c83700bab28",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "evaluate/eval_hf_easyedit.py",
+      "release_path": "experiments/evaluate/eval_hf_easyedit.py",
+      "source_sha256": "2d04b2c76e03fad79e46c7b9c83118081949e9bd82c8eee48d1aeed7d3f61cd1",
+      "release_sha256": "2d04b2c76e03fad79e46c7b9c83118081949e9bd82c8eee48d1aeed7d3f61cd1",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "outputs/_Analysis_Cross_Layer/gpt2_xl_counterfact_20260914/hparams/AlphaEdit_gpt2-xl.yaml",
+      "release_path": "experiments/hparams/AlphaEdit/gpt2-xl_counterfact_encore.yaml",
+      "source_sha256": "a0efbb9545fdcdfc4bb13e57e95a77b98f93ace423043f949fd7d2da9cd8a749",
+      "release_sha256": "06301245bdd580e461efb619bdc19ae86b1eb3782ba10311c062e762cade5b95",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/gpt2_xl_counterfact_20260914/runs/AlphaEdit/ENCORE/run_manifest.json",
+      "primary_run_record_sha256": "4846806ebdd438aa68e563defc4b1a1d56609ed2c1b4651d44eea0c7051f7151",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 2,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 0.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper."
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "outputs/_Analysis_Cross_Layer/gpt2_xl_replication_20260914/hparams/AlphaEdit_gpt2-xl.yaml",
+      "release_path": "experiments/hparams/AlphaEdit/gpt2-xl_zsre_encore.yaml",
+      "source_sha256": "a0efbb9545fdcdfc4bb13e57e95a77b98f93ace423043f949fd7d2da9cd8a749",
+      "release_sha256": "06301245bdd580e461efb619bdc19ae86b1eb3782ba10311c062e762cade5b95",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/gpt2_xl_replication_20260914/runs/AlphaEdit/ENCORE/run_manifest.json",
+      "primary_run_record_sha256": "c4619cfd95bc15b3d3ea96cfcb75f29a2c4a2d94e19b3b94861864f57eb413de",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 2,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 0.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper."
     },
     {
       "source_repository": "Residual_gain_regulization",
@@ -1401,11 +1431,146 @@
     },
     {
       "source_repository": "Residual_gain_regulization",
-      "source_path": "third_party/alphaedit/LICENSE",
-      "release_path": "experiments/model_code/licenses/AlphaEdit-LICENSE",
-      "source_sha256": "e67be850493c2a738ebed178044a2e32fc9546b5d1971f880d24736e57f69051",
-      "release_sha256": "e67be850493c2a738ebed178044a2e32fc9546b5d1971f880d24736e57f69051",
+      "source_path": "outputs/method_comparison/_hparams/AlphaEdit_llama3-8b_L2-10.yaml",
+      "release_path": "experiments/hparams/AlphaEdit/llama3-8b_counterfact_encore.yaml",
+      "source_sha256": "320cb901ca5162b7ae9ac9b2140d1fe7dbe835fd8c6b93cc50ad2652e22589f8",
+      "release_sha256": "44f19ab3cbb6e90ff7a09c9a21bfc230053c15187b642fa48692239b7f496313",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters.",
+        "Align ENCORE values with the completed 2026-09-24 corrected experiment."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/encore_parameter_alignment_20260924/runs/llama_counterfact_alphaedit_encore/run_manifest.json",
+      "primary_run_record_sha256": "1d91a66000a8927aed6f528a5ed01ee0d06d07534be42d05e06e027a021efd82",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 1,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 0.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper.",
+      "previous_run_record": "archive://editing-runs/_Analysis_Cross_Layer/rq1_missing_measurements_20260921/runs/AlphaEdit_CounterFact_ENCORE/run_manifest.json",
+      "previous_run_record_sha256": "c610e79b79c64ad3dce4b757184ed1b3a28d524272405170a8200b5618b225ac"
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "outputs/method_comparison/_hparams/AlphaEdit_llama3-8b_L2-10.yaml",
+      "release_path": "experiments/hparams/AlphaEdit/llama3-8b_zsre_encore.yaml",
+      "source_sha256": "320cb901ca5162b7ae9ac9b2140d1fe7dbe835fd8c6b93cc50ad2652e22589f8",
+      "release_sha256": "693db4274018df94a72d711c8c15799c888f5e847d49fdc0b14efcd2796aa6e1",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters.",
+        "Align ENCORE values with the completed 2026-09-24 corrected experiment."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/encore_parameter_alignment_20260924/runs/llama_zsre_alphaedit_encore/run_manifest.json",
+      "primary_run_record_sha256": "a1f5736f4895718a9fc6183720af7fbbf3352c739699ee3ec38595b8e8d07029",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 4,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 0.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper.",
+      "previous_run_record": "archive://editing-runs/_Edited_Model/method_rms_trajectory_n1000_artifacts_v1/AlphaEdit/alphaedit_zsre_bs1_n1000_encore_seed42/run_config.json",
+      "previous_run_record_sha256": "b407ae51f4702fa79421070d203cf0303a065e4bf43da92f41d8c6ce25326299"
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "outputs/_Analysis_Cross_Layer/gpt2_xl_counterfact_20260914/hparams/MEMIT_gpt2-xl.yaml",
+      "release_path": "experiments/hparams/MEMIT/gpt2-xl_counterfact_encore.yaml",
+      "source_sha256": "9aa9d780281cfa9c2f6f56539acc44ba77adafc9a18be62a457c2a7265ab208a",
+      "release_sha256": "5e6f0b72a6bce3cac1bf2c4e44e35e33b38e8c4de20ebed9bbcb8e2b96ffbed0",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/gpt2_xl_counterfact_20260914/runs/MEMIT/ENCORE/run_manifest.json",
+      "primary_run_record_sha256": "2bfdeb9038f71a106976dcf0e85159273d86beb09277ee4f091418133d2f1ad3",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 4,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 10.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper."
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "outputs/_Analysis_Cross_Layer/gpt2_xl_replication_20260914/hparams/MEMIT_gpt2-xl.yaml",
+      "release_path": "experiments/hparams/MEMIT/gpt2-xl_zsre_encore.yaml",
+      "source_sha256": "9aa9d780281cfa9c2f6f56539acc44ba77adafc9a18be62a457c2a7265ab208a",
+      "release_sha256": "3f8c1e847ebbcda1293a4689956b4ade055ead3060646eea46d12f7c4bfca7e3",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/gpt2_xl_replication_20260914/runs/MEMIT/ENCORE/run_manifest.json",
+      "primary_run_record_sha256": "b55b64c6243e92351f0174ee9f6aae7d0630aaed25f7c02b070fd8199fe6228e",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 5,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 40.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper."
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "hparams/MEMIT/llama3-8b.yaml",
+      "release_path": "experiments/hparams/MEMIT/llama3-8b.yaml",
+      "source_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
+      "release_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
       "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "hparams/MEMIT/llama3-8b.yaml",
+      "release_path": "experiments/hparams/MEMIT/llama3-8b_counterfact_encore.yaml",
+      "source_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
+      "release_sha256": "848bece9d3eb42b44e1d573abd574ac85412f046ff2b0d20102cb85f51cb40ae",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/rq1_missing_measurements_20260921/runs/MEMIT_CounterFact_ENCORE/run_manifest.json",
+      "primary_run_record_sha256": "2c954c0f77b72b48d92a517ed369f448c00f7dca369eb01eaf4170af32939d75",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 2,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 20.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper."
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "hparams/MEMIT/llama3-8b.yaml",
+      "release_path": "experiments/hparams/MEMIT/llama3-8b_zsre_encore.yaml",
+      "source_sha256": "912c41a509f82c09dcf8b78637c3617403caa61e61cea19a9179d04b6b7a1e6c",
+      "release_sha256": "2ae255835ee34146e1889566654d3338afb65cad59df142d564416ce4aba0d3f",
+      "changes": [
+        "Set explicit ENCORE values from the actual primary run configuration.",
+        "Replace cache/projector locations with portable paths under repository inputs.",
+        "Serialize YAML without changing other source hyperparameters.",
+        "Align ENCORE values with the completed 2026-09-24 corrected experiment."
+      ],
+      "primary_run_record": "archive://editing-runs/_Analysis_Cross_Layer/encore_parameter_alignment_20260924/runs/llama_zsre_memit_encore/run_manifest.json",
+      "primary_run_record_sha256": "5b67c99a37979eb4bf7d8e51c0df9bfca12e3390f6f7e5f01a1169c198328c34",
+      "effective_encore_overrides": {
+        "encore_enabled": true,
+        "encore_mpes_top1_steps": 4,
+        "encore_mpes_exclude_first_context": true,
+        "encore_norm_lambda": 10.0
+      },
+      "basis": "Actual archived run, not a claim that every setting is identical to the original ENCORE paper.",
+      "previous_run_record": "archive://editing-runs/_Edited_Model/method_rms_trajectory_n1000_artifacts_v1/MEMIT/memit_zsre_bs1_n1000_encore_seed42/run_config.json",
+      "previous_run_record_sha256": "4c7e7a2fb2c6f042c81f9598fe975b76add65240e09363919f2c1b35402254b1"
     },
     {
       "source_repository": "paper_results_reorganization_20260922",
@@ -1415,6 +1580,25 @@
       "release_sha256": "2f01e6363cd9ef10fa7f337cff85a244c1f0008aba836762245723c67cfec3a9",
       "changes": [
         "Collector import, inventory and output defaults relocated"
+      ]
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "third_party/alphaedit/LICENSE",
+      "release_path": "experiments/model_code/licenses/AlphaEdit-LICENSE",
+      "source_sha256": "e67be850493c2a738ebed178044a2e32fc9546b5d1971f880d24736e57f69051",
+      "release_sha256": "e67be850493c2a738ebed178044a2e32fc9546b5d1971f880d24736e57f69051",
+      "changes": []
+    },
+    {
+      "source_repository": "Residual_gain_regulization",
+      "source_path": "scripts/run_rgr_batch.py",
+      "release_path": "experiments/scripts/run_rgr_batch.py",
+      "source_sha256": "78af4a3d439740350f8533762951a0bb1498883ba3c4fcd8b63ff8f6cba73557",
+      "release_sha256": "561413bcf81571523bfbe9c22533601c2ff7aa1358397204c808b69397c3187c",
+      "changes": [
+        "1 output path defaults use BNG_OUTPUT_ROOT",
+        "Expand environment variables and user-home notation before hparam path normalization."
       ]
     }
   ],
@@ -1456,8 +1640,18 @@
     },
     {
       "release_path": "experiments/README.md",
-      "sha256": "b73cacc4108c868b611e8659c6e564d2b47f731ae97738b6aaf13808a6460939",
-      "purpose": "Release path configuration, smoke check, documentation or package metadata"
+      "sha256": "804cf7c170c459fceb5811851166251f5a4602f479368d1b8194517d23319969",
+      "purpose": "Model entry points, portable path setup, and links to observed ENCORE presets"
+    },
+    {
+      "release_path": "experiments/hparams/README.md",
+      "sha256": "59e4a4de6172e1842370eb93efa29067f54edf5ca30f942a6b168307b364447c",
+      "purpose": "Observed ENCORE configurations and distinctions from the cited reference paper"
+    },
+    {
+      "release_path": "experiments/model_code/test_sphere_orientation.py",
+      "sha256": "5f67f17786afabc33f6524c4194ad7815cde29cc8fa8aeb45919cb5de37da63b",
+      "purpose": "CPU SVD, transpose-equivalence, Linear bitwise and module-dispatch regression checks"
     }
   ],
   "excluded_assets": [

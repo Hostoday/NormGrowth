@@ -1,0 +1,41 @@
+# Actual 1,000-edit ENCORE run preset; use experiments/scripts/run_rgr_batch.py.
+# MPES is the cumulative qualifying-observation threshold, not optimizer steps.
+# Asset paths are resolved relative to experiments/ by the runner.
+alg_name: AlphaEdit
+model_name: meta-llama/Meta-Llama-3-8B-Instruct
+stats_dir: ../inputs/stats
+P_loc: ../inputs/projectors/alphaedit_llama3_L4_8_threshold002.pt
+device: 0
+layers:
+- 4
+- 5
+- 6
+- 7
+- 8
+clamp_norm_factor: 0.75
+layer_selection: all
+fact_token: subject_last
+v_num_grad_steps: 25
+v_lr: 1e-1
+v_loss_layer: 31
+v_weight_decay: 0.5
+kl_factor: 0.0625
+mom2_adjustment: true
+mom2_update_weight: 15000
+rewrite_module_tmp: model.layers.{}.mlp.down_proj
+layer_module_tmp: model.layers.{}
+mlp_module_tmp: model.layers.{}.mlp
+attn_module_tmp: model.layers.{}.self_attn
+ln_f_module: model.norm
+lm_head_module: lm_head
+mom2_dataset: wikipedia
+mom2_n_samples: 100000
+mom2_dtype: float32
+nullspace_threshold: 2e-2
+L2: 10
+model_parallel: true
+bf16: true
+encore_enabled: true
+encore_mpes_top1_steps: 4
+encore_mpes_exclude_first_context: true
+encore_norm_lambda: 0.0

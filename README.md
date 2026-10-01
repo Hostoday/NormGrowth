@@ -16,7 +16,7 @@ python -m analysis.reproduce --output-dir build/results
 python -m analysis.plot_core_figures --output-dir build/figures
 ```
 
-The analysis recomputes RQ1–RQ3 summaries from the included numeric observations and checks six reference tables. The plotting command generates the endpoint decomposition and prompt-wise correlation plots (Figures 4 and 5) with Matplotlib. Both commands run on CPU without model weights.
+The analysis recomputes RQ1–RQ3 summaries from the included numeric observations and checks eight reference tables. The plotting command generates the endpoint decomposition and prompt-wise correlation plots (Figures 4 and 5) with Matplotlib. Both commands run on CPU without model weights. The canonical snapshot excludes both additional edit-order trajectories; Figures 4 and 5 and the correlations use the same canonical input collection.
 
 | Directory | Contents |
 |---|---|
@@ -33,8 +33,8 @@ New model experiments require model/tokenizer access, benchmark inputs, covarian
 ## Analysis scope
 
 - **RQ1:** Correspondence between target and realized-state norm ratios across 40,000 edits and 40 conditions. Their input contexts and normalization references differ.
-- **RQ2:** Geometry–locality associations at 337 of 360 checkpoints after a shared exclusion mask. Rewrite uses subject-last; locality uses prompt-last.
-- **RQ3:** Separate orthogonal and parallel interventions at each input's prompt-last activation. Orthogonal dose summaries use 40 states; same-final-norm comparisons use 34 eligible states.
+- **RQ2:** Geometry–locality associations using canonical edit orders and a shared exclusion mask. Snapshot counts and any missing trajectory are recorded in `data/analysis_snapshot.json`. Rewrite uses subject-last; locality uses prompt-last.
+- **RQ3:** Separate orthogonal and parallel interventions at each input's prompt-last activation. Orthogonal dose summaries use 40 states; same-final-norm comparisons use the eligible states at each dose, with counts recorded in the snapshot and validation report.
 
 Checkpoints are repeated observations along editing trajectories. RQ3 changes each evaluated input's own activation, and its teacher-forced metrics differ from free-generation EFF/GEN. See [analysis protocol](analysis/README.md) for details.
 

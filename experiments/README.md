@@ -20,7 +20,7 @@
 | 동일 norm 평행 대조, 나머지 세 조합 | [run_all_cohort_parallel_control.py](diagnostics/run_all_cohort_parallel_control.py) | `llama_zsre`, `gpt2_zsre`, `gpt2_counterfact` |
 | 평가 규약 | [eval_cumulative_generation_locality.py](evaluate/eval_cumulative_generation_locality.py), [target_text_contract.py](diagnostics/target_text_contract.py) | 자유 생성 성능과 TF locality의 구분, 실제 EOS/EOT 보존 |
 
-AlphaEdit의 SPHERE 분기는 **각 층의 update를 투영한 뒤 그 결과를 다음 층의 key·residual 계산에 반영한다**. [소스 manifest](../data/provenance/code_sources.json)는 원본과 공개본 SHA256 및 경로 수정 내역을 제공한다. 각 구현 파일의 원본 및 공개본 hash를 확인할 수 있다.
+AlphaEdit의 SPHERE 분기는 **각 층의 update를 투영한 뒤 그 결과를 다음 층의 key·residual 계산에 반영한다**. 현재 SPHERE 구현은 실제 모듈 타입을 확인한다. `Linear`는 저장 방향을 유지하고 GPT-2 `Conv1D`는 weight와 update를 모두 `[output,input]`으로 전치한 뒤 행 정규화·부분공간 계산·투영을 수행하고 원 저장 방향으로 복원한다. 두 backbone 모두 MLP 입력 방향을 제어하며 적용 방향·차원·버전은 SPHERE 로그에 기록한다. 저장된 수치의 실험 버전은 `data/analysis_snapshot.json`의 `source_bundle`과 출처 기록으로 식별한다. [소스 manifest](../data/provenance/code_sources.json)는 원본과 공개본 SHA256 및 경로 수정 내역을 제공한다. 각 구현 파일의 원본 및 공개본 hash를 확인할 수 있다.
 
 ## 환경과 모델 없는 확인
 
@@ -78,6 +78,6 @@ RQ2의 주 rewrite 측정은 subject-last이고 locality는 prompt-last다. RQ3�
 
 ## 설정과 라이선스
 
-`hparams/`의 두 Llama 파일은 원 코드의 기본 템플릿이다. 특히 AlphaEdit의 기본 `L2=1`은 논문의 matched 설정을 뜻하지 않는다. GPT-2 XL을 Llama 템플릿으로 실행해서는 안 된다. 실제 논문 조건의 설정은 원 run configuration과 manuscript의 실험 설정을 기준으로 확인한다. 이 템플릿만으로 40조건을 일괄 재현할 수 있다고 안내하지 않는다.
+ENCORE의 실제 8조건 설정은 [조건별 설정표와 실행 안내](hparams/README.md), `hparams/{MEMIT,AlphaEdit}/*_encore.yaml`에 제공한다. 이 preset은 저장된 실행값을 보존하며 AlphaEdit의 `L2=10`을 포함한다. 일반 `llama3-8b.yaml`은 기존 기본 템플릿이므로 논문 설정 대신 사용하지 않는다. ENCORE의 Llama 세 조건은 2026-09-24 교정 재실험의 λ/MPES 설정으로 동기화했다. 8개 preset이 전체 40조건의 통합 실행을 제공하는 것은 아니다.
 
 EasyEdit 코드는 [원 MIT License](EasyEdit/LICENSE)를 보존했다. AlphaEdit 상류 소스의 [MIT License](model_code/licenses/AlphaEdit-LICENSE)도 함께 제공한다. 모델 가중치와 데이터셋은 각 배포처의 별도 이용 조건을 따른다.

@@ -1,6 +1,6 @@
 {
   "passed": true,
-  "source_snapshot_hashes_checked": 13,
+  "source_snapshot_hashes_checked": 16,
   "reference_comparisons": [
     {
       "reference": "data/expected/rq1_condition_summary_40.csv",
@@ -25,7 +25,7 @@
       "passed": true
     },
     {
-      "reference": "data/expected/rq2_threshold_mask_360.csv",
+      "reference": "data/expected/rq2_threshold_mask.csv",
       "rows": 360,
       "compared_columns": [
         "model",
@@ -55,6 +55,35 @@
       "passed": true
     },
     {
+      "reference": "data/expected/rq2_drift_correlations.csv",
+      "rows": 4,
+      "compared_columns": [
+        "dataset",
+        "geometry_context",
+        "n_checkpoints",
+        "rho_q_LOC",
+        "rho_d_LOC",
+        "rho_DH_LOC",
+        "rho_q_d"
+      ],
+      "passed": true
+    },
+    {
+      "reference": "data/expected/endpoint_norm_decomposition_summary.csv",
+      "rows": 2,
+      "compared_columns": [
+        "context",
+        "n_endpoints",
+        "median_c",
+        "c_q25",
+        "c_q75",
+        "Q_above1",
+        "P_above0",
+        "mean_squared_norm_grows"
+      ],
+      "passed": true
+    },
+    {
       "reference": "data/expected/rq3_orthogonal_dose_summary.csv",
       "rows": 4,
       "compared_columns": [
@@ -69,7 +98,7 @@
       "passed": true
     },
     {
-      "reference": "data/expected/rq3_same_norm_state_differences_68.csv",
+      "reference": "data/expected/rq3_same_norm_state_differences.csv",
       "rows": 68,
       "compared_columns": [
         "model",
@@ -92,7 +121,6 @@
       "compared_columns": [
         "scope",
         "dose_fraction",
-        "dose_percent",
         "operation",
         "n_states",
         "total_state_case_count",
@@ -106,6 +134,71 @@
   ],
   "performance_conditions": 40,
   "model_inference_performed": false,
+  "rq2_counts": {
+    "available": 360,
+    "retained": 337,
+    "excluded": 23,
+    "trajectories": 40,
+    "dataset_retained_counts": {
+      "CounterFact": 169,
+      "zsRE": 168
+    }
+  },
+  "rq3_counts": {
+    "orthogonal_states": 40,
+    "same_norm_eligible_state_dose_rows": 68,
+    "same_norm_by_dose": {
+      "0.25": {
+        "eligible_states": 34,
+        "total_state_case_count": 3391
+      },
+      "0.5": {
+        "eligible_states": 34,
+        "total_state_case_count": 3304
+      }
+    }
+  },
+  "snapshot": {
+    "schema_version": 1,
+    "source_bundle": "paper_figures_SPHERE_corrected_20260927",
+    "canonical_orders_only": true,
+    "complete_second_moments": true,
+    "design_conditions": 40,
+    "checkpoints_per_trajectory": 9,
+    "edit_counts": [
+      50,
+      100,
+      150,
+      200,
+      250,
+      300,
+      500,
+      750,
+      1000
+    ],
+    "rq2_available_checkpoints": 360,
+    "rq2_retained_checkpoints": 337,
+    "rq2_available_trajectories": 40,
+    "rq3_same_norm_eligible_states_by_dose": {
+      "0.25": 34,
+      "0.5": 34
+    },
+    "missing_trajectories": [],
+    "files": {
+      "rq1": "rq1_per_edit_40000.csv",
+      "rq2": "rq2_checkpoints.csv",
+      "rq3_doses": "rq3_orthogonal_states_doses_200.csv",
+      "rq3_same_norm": "rq3_same_norm_conditions_480.csv",
+      "performance": "performance_1k_40.csv",
+      "figure4": "figure4_rewrite_endpoints.csv",
+      "figure5": "figure5_prompt_overlay.csv",
+      "rq2_mask": "rq2_threshold_mask.csv",
+      "rq3_differences": "rq3_same_norm_state_differences.csv",
+      "rq2_drift": "rq2_drift_correlations.csv",
+      "locality_endpoints": "locality_endpoints.csv",
+      "endpoint_summary": "endpoint_norm_decomposition_summary.csv"
+    }
+  },
   "inferential_scope": "Saved measurements; descriptive checkpoint/state aggregation. Checkpoints are not independent replicates.",
   "numpy_version": "1.22.1",
   "pandas_version": "1.4.0"
