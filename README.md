@@ -1,6 +1,6 @@
 # Beyond Norm Growth
 
-**A Geometric Decomposition of Hidden-State Drift in Sequential Knowledge Editing**
+**Base-Relative Geometry of Hidden-State Drift in Sequential Knowledge Editing**
 
 Code for analyzing target/realized-state norm changes, parallel and orthogonal hidden-state displacement, and component-wise interventions in sequential knowledge editing.
 
@@ -16,7 +16,7 @@ python -m analysis.reproduce --output-dir build/results
 python -m analysis.plot_core_figures --output-dir build/figures
 ```
 
-The analysis recomputes RQ1–RQ3 summaries from the included numeric observations and checks eight reference tables. The plotting command generates the endpoint decomposition and prompt-wise correlation plots (Figures 4 and 5) with Matplotlib. Both commands run on CPU without model weights. The canonical snapshot excludes both additional edit-order trajectories; Figures 4 and 5 and the correlations use the same canonical input collection.
+The analysis reproduces the current manuscript's saved-data results: RQ1 norm and vector comparisons, RQ2 associations on all 360 checkpoints with 337/306-checkpoint sensitivity analyses, and RQ3 paired contrasts and bootstrap intervals. The endpoint table uses complete-target teacher-forced EFF/GEN. The plotting command generates the full-sample Figures 4 and 5, their restricted supplements, and the combined RQ3 forest plot. Both commands run on CPU without model weights. Inputs and version metadata are recorded in `data/analysis_snapshot.json`.
 
 | Directory | Contents |
 |---|---|
@@ -32,11 +32,12 @@ New model experiments require model/tokenizer access, benchmark inputs, covarian
 
 ## Analysis scope
 
-- **RQ1:** Correspondence between target and realized-state norm ratios across 40,000 edits and 40 conditions. Their input contexts and normalization references differ.
-- **RQ2:** Geometry–locality associations using canonical edit orders and a shared exclusion mask. Snapshot counts and any missing trajectory are recorded in `data/analysis_snapshot.json`. Rewrite uses subject-last; locality uses prompt-last.
-- **RQ3:** Separate orthogonal and parallel interventions at each input's prompt-last activation. Orthogonal dose summaries use 40 states; same-final-norm comparisons use the eligible states at each dose, with counts recorded in the snapshot and validation report.
+- **RQ1:** Target/realized norm ratios across 40,000 edits; vector comparisons on 39,473 finite observations and 39,257 paired displacement cosines.
+- **RQ2:** All 360 checkpoints are the primary panel. The 337-state geometry restriction and exclusion of six complete trajectories (306 checkpoints) are sensitivity analyses. Partial-rank controls distinguish norm deviation, edit count, trajectory and total displacement. Correlation intervals use 5,000 whole-trajectory bootstrap draws.
+- **RQ3:** Prompt-last interventions at 40 endpoint states; same-final-norm contrasts use 34 eligible states at each reduction fraction. The 204 state-specific intervals use 10,000 paired-case bootstrap draws. Overall means weight states equally and have no aggregate confidence interval.
+- **Endpoint performance:** EFF/GEN average token accuracy within each case, then average cases; answers include EOS/EOT. LOC measures agreement with Base predictions under the same gold prefix without an added terminator.
 
-Checkpoints are repeated observations along editing trajectories. RQ3 changes each evaluated input's own activation, and its teacher-forced metrics differ from free-generation EFF/GEN. See [analysis protocol](analysis/README.md) for details.
+The packaged endpoint scores and vector measurements are saved observations. CPU reproduction recalculates summaries and intervals; it does not rerun model predictions or hidden-state extraction. See the [analysis protocol](analysis/README.md) and [numeric data description](data/README.md).
 
 ## Validation
 

@@ -2,6 +2,8 @@
 
 이 폴더에는 현재 연구 프로젝트의 MEMIT·AlphaEdit 수정본과, RQ2·RQ3에 사용한 실행기의 소스 및 내부 의존성을 담았다. 저장된 공개 수치의 CPU 재집계와 모델을 다시 실행하는 작업은 요구 자료가 다르다. CPU 분석 안내는 저장소 루트 README를 따른다.
 
+현재 원고의 최종 EFF·GEN은 [TF endpoint 표](../data/manuscript/endpoint_tf_1000.csv)의 complete-target teacher-forced 점수다. 이 폴더에는 과거 자유 생성 평가 경로도 포함되어 있으므로, 해당 실행기의 자유 생성 결과를 현재 TF 성능표와 동일한 지표로 해석하지 않는다. 평가 정의와 공개 자료의 범위는 [수치 자료 안내](../data/README.md)를 따른다.
+
 모델 가중치, 데이터셋의 prompt·answer, covariance·projection cache, 편집 checkpoint, 원시 hidden tensor는 포함하지 않았다. 따라서 이 저장소만으로 논문의 전체 40조건을 새로 학습하고 동일 수치를 재생성하는 통합 실행을 제공한다고 볼 수 없다. 아래 실행기는 구현 확인과 외부 자산을 준비한 모델 실험의 출발점이다.
 
 ## 포함한 코드

@@ -1,15 +1,18 @@
 {
-  "schema": 3,
-  "source_bundle": "paper_figures_SPHERE_corrected_20260927",
+  "schema": 4,
+  "source_bundle": "manuscript_user_latest_20260930_updated_20261001",
   "canonical_orders_only": true,
   "available_checkpoints": 360,
-  "retained_checkpoints": 337,
-  "saved_numeric_reference_tables": 8,
+  "primary_checkpoints": 360,
+  "restricted_checkpoints": 337,
+  "collapse_sensitivity_checkpoints": 306,
+  "saved_numeric_reference_tables": 18,
+  "endpoint_conditions": 40,
+  "endpoint_metric": "complete_target_teacher_forced_case_macro_including_EOS_EOT",
   "model_inference_performed": false,
   "fresh_dependency_install": false,
   "remote_ci_executed": false,
   "current_snapshot_cpu_validation_passed": true,
-  "historical_model_source_smoke": "model_code_smoke.json",
   "rq3_counts": {
     "orthogonal_states": 40,
     "same_norm_eligible_state_dose_rows": 68,
@@ -23,5 +26,18 @@
         "total_state_case_count": 3304
       }
     }
-  }
+  },
+  "latest_manuscript_analyses": [
+    "rq1_scalar_and_vector_reference_sensitivity",
+    "rq2_full360_partial_rank_and_trajectory_bootstrap",
+    "rq2_restricted337_and_excluded306",
+    "rq3_paired_case_bootstrap_and_scoring_sensitivity"
+  ],
+  "reproduced_figures": [
+    "fig4_pq_plane",
+    "fig5_geometry_locality",
+    "fig4_pq_plane_restricted",
+    "fig5_geometry_locality_restricted",
+    "rq3_paired_forest_combined"
+  ]
 }

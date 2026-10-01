@@ -242,22 +242,51 @@ def main():
             raise ValueError("Saved input changed: " + entry["package_file"])
     checks=[]
     rq1(output,checks)
-    rq2_counts = rq2(output,checks)
     rq3_counts = rq3(output,checks)
+    latest = bool(metadata().get("manuscript_snapshot"))
+    extended = {}
+    if latest:
+        from . import manuscript_statistics, manuscript_vectors_interventions
+        inputs = DATA / metadata()["manuscript_data_directory"]
+        extended["rq2"] = manuscript_statistics.run(inputs, output / "rq2")
+        extended["rq1_rq3"] = manuscript_vectors_interventions.run(inputs, output / "rq1_rq3")
+        rq2_counts = dict(available=metadata()["rq2_available_checkpoints"],
+                          primary=metadata()["rq2_primary_checkpoints"],
+                          retained=metadata()["rq2_retained_checkpoints"],
+                          sensitivity=metadata()["rq2_sensitivity_checkpoints"],
+                          trajectories=metadata()["rq2_available_trajectories"])
+    else:
+        rq2_counts = rq2(output,checks)
     performance=read(filename("performance"))
-    assert len(performance)==40 and performance.available.all()
+    assert len(performance)==40
     assert performance[["n_rewrite","n_rephrase","n_locality"]].eq(1000).all().all()
     assert not performance.duplicated(CHECKPOINT).any()
-    assert np.isfinite(performance[["eff_percent","gen_percent","locality_percent"]]).all().all()
-    performance.to_csv(output/"performance_1k_40.csv",index=False)
+    if latest:
+        score_columns = ["eff_tf_percent", "gen_tf_percent", "locality_percent"]
+        assert performance.activation_intervention.eq("none").all()
+        assert performance.target_span.str.contains("EOS/EOT").all()
+        performance_name = "endpoint_tf_1000.csv"
+    else:
+        assert performance.available.all()
+        score_columns = ["eff_percent", "gen_percent", "locality_percent"]
+        performance_name = "performance_1k_40.csv"
+    assert np.isfinite(performance[score_columns]).all().all()
+    assert performance[score_columns].ge(0).all().all() and performance[score_columns].le(100).all().all()
+    performance.to_csv(output/performance_name,index=False)
     report=dict(passed=True,source_snapshot_hashes_checked=len(manifest["files"]),
         reference_comparisons=checks,performance_conditions=40,model_inference_performed=False,
         rq2_counts=rq2_counts, rq3_counts=rq3_counts, snapshot=metadata(),
-        inferential_scope="Saved measurements; descriptive checkpoint/state aggregation. Checkpoints are not independent replicates.",
+        manuscript_analysis=extended,
+        endpoint_score_source="Saved endpoint scores; no token predictions or model inference regenerated",
+        inferential_scope=("Saved measurements; whole-trajectory resampling for RQ2 and paired-case resampling for RQ3. Intervals do not represent independent editing runs."
+                           if latest else "Descriptive summaries of saved measurements; no bootstrap intervals regenerated."),
         numpy_version=np.__version__,pandas_version=pd.__version__)
     (output/"validation.json").write_text(json.dumps(report,indent=2)+"\n")
-    print(f"Validated {len(checks)} reference tables; RQ1 40,000 edits, "
-          f"RQ2 {rq2_counts['retained']}/{rq2_counts['available']} checkpoints, "
+    panel_summary = (f"RQ2 {rq2_counts['primary']} primary checkpoints, 337/306 sensitivity panels, "
+                     if latest else f"RQ2 {rq2_counts['retained']}/{rq2_counts['available']} checkpoints, ")
+    print(f"Validated {len(checks)} aggregate reference tables" +
+          (" and the manuscript statistical analyses" if latest else "") + "; RQ1 40,000 edits, " +
+          panel_summary +
           f"RQ3 {rq3_counts['orthogonal_states']} states; same-norm eligible states "
           + ", ".join(f"{float(dose)*100:g}%: {values['eligible_states']}"
                       for dose, values in rq3_counts['same_norm_by_dose'].items()) + ".")

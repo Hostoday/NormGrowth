@@ -1,74 +1,47 @@
 # Analysis
 
-Run commands from the repository root after installing `requirements.txt` in Python 3.9.
+Run from the repository root in Python 3.9 after installing `requirements.txt`:
 
 ```bash
 python -m analysis.reproduce --output-dir build/results
 python -m analysis.plot_core_figures --output-dir build/figures
+python -m analysis.check_release
 ```
+
+The default snapshot follows the current manuscript. It reads portable observations and independent reference tables from [data/manuscript/](../data/manuscript/README.md). Input hashes are checked before numerical reproduction. Outputs remain in the selected output directory.
 
 ## Numerical reproduction
 
-`reproduce.py` reads the observations described in [data/README.md](../data/README.md), recalculates the summaries, and compares eight recorded reference tables.
-
-| Analysis | Input and aggregation |
+| Analysis | Computation |
 |---|---|
-| RQ1 | 40,000 per-edit observations → 40 condition summaries; regression, median ratios, and non-expansion rates |
-| RQ2 | Canonical checkpoint observations → shared retained panel, 12 prompt/metric correlations, q–d correlations and norm decomposition |
-| RQ3 orthogonal dose | 200 state-dose rows → means across 40 states |
-| RQ3 same final norm | 480 condition rows → comparisons across the states eligible at each dose, using common cases across operations and families |
+| RQ1 norms | 40,000 edits → 40 summaries and a common-denominator comparison |
+| RQ1 vectors | 39,473 finite records; 39,257 paired displacement cosines; configuration and reference-sensitivity summaries |
+| RQ2 primary | 360 checkpoints across 40 trajectories; dataset-specific and model-specific rank associations |
+| RQ2 sensitivity | 337 checkpoints under the shared geometry restriction; 306 after excluding six collapsed trajectories |
+| RQ2 controls | Norm deviation, edit count and trajectory controls; component composition after total-displacement adjustment |
+| RQ2 intervals | 5,000 whole-trajectory bootstrap draws preserving all nine checkpoints; paired correlation differences |
+| RQ3 | Equal-state means, 204 direct paired contrasts, 10,000-draw case-bootstrap intervals, common-dose and answer-token sensitivity |
+| Endpoint performance | Validate and export the 40 saved complete-target TF endpoint score rows |
 
-The shared RQ2 exclusion mask removes a checkpoint when either prompt's mean orthogonal displacement, norm ratio, or absolute norm deviation exceeds 3. Both prompts share the checkpoint's fixed-1,000 LOC outcome. `data/analysis_snapshot.json` records available and retained counts and missing trajectories. The q–d table uses exactly the same retained panel as Figure 5. Second moments are means of case-wise squares and retain the norm identity; they are not squared checkpoint means. Checkpoints are repeated states along an editing trajectory, not independent editing replicates.
+`reproduce.py` calls [manuscript_statistics.py](manuscript_statistics.py) for the RQ2 analyses and [manuscript_vectors_interventions.py](manuscript_vectors_interventions.py) for RQ1 vector and RQ3 case-level analyses. `build/results/validation.json` records the comparisons; the `rq2/` and `rq1_rq3/` subdirectories contain the regenerated tables and detailed validation reports.
 
-RQ3 modifies each rewrite, rephrase, or locality input at its own prompt-last position. This differs from the rewrite subject-last measurement in RQ2. The parallel control matches the orthogonal intervention's final norm on geometrically eligible cases; it does not jointly reduce both components. Teacher-forced intervention metrics and free-generation EFF/GEN are distinct outcomes. The bootstrap seed controls case resampling, not repeated editing runs.
+Partial-rank correlations are Pearson correlations between residuals after ranking continuous variables and regressing each variable on the stated controls. Categorical edit-count and trajectory indicators are not ranked. The 5,000-draw intervals apply to full-panel unadjusted correlations and their paired differences; adjusted coefficients and sensitivity-panel coefficients do not have bootstrap intervals.
 
-## Plotting
+The geometry restriction requires both prompt contexts' mean orthogonal displacement, norm ratio and absolute norm deviation to be at most 3. The collapse sensitivity removes Llama–MEMIT Native, SPHERE and SADR trajectories on both datasets. These are distinct sensitivity panels. Case-wise second moments preserve the squared-norm decomposition; squares of checkpoint means are not substituted.
 
-`plot_core_figures.py` reads the numeric plot data in `data/` and generates PNG, PDF, and SVG with Matplotlib/STIX typography:
+RQ3 uses common eligible request IDs across both operations and all three input families within each state and reduction fraction. The 204 intervals are pointwise, unadjusted for multiple comparisons and conditional on the fixed endpoint. They do not describe independent editing runs or the uncertainty of the 34-state mean.
 
-- Figure 4: rewrite endpoints, with a subplot for each model/dataset combination.
-- Figure 5: six plotted coordinates per retained checkpoint; prompt context is encoded by color. Additional edit orders and the extra-order legend entry are excluded.
+## Figures
 
-The renderer checks plotted coordinates against the included observations. Generated graphics and temporary outputs are written to the chosen output directory and excluded from Git.
+The figure command writes PDF, PNG, SVG, exact-coordinate CSVs and `figure_validation.json`:
 
-## Model measurements
+- `fig4_pq_plane`: all 40 rewrite endpoints, using the manuscript's symlog axes.
+- `fig5_geometry_locality`: all 360 checkpoints, with 2,160 context/metric coordinates.
+- The corresponding `_restricted` figures: 34 endpoints and 337 checkpoints on linear axes.
+- `rq3_paired_forest_combined`: 204 saved contrasts in a horizontal layout with groups (a)–(d). The graphic omits model-name headings and N/A labels; model/dataset mapping and unavailable cases are explained in its caption in the manuscript.
 
-The saved-data workflow does not load a model or create new predictions. For editing, activation capture, and intervention entry points, see [experiments/README.md](../experiments/README.md). Model-source checks and numerical reaggregation are recorded separately from full GPU experiments.
+## Model measurements and maintenance
 
-## Repository checks
+This workflow reads stored numeric observations. Model execution requires the external inputs described in [experiments/README.md](../experiments/README.md).
 
-```bash
-python -m analysis.check_release
-python -m analysis.package_release --output build/BeyondNormGrowth.zip
-```
-
-The checker validates Python syntax, local document links, fixed filesystem paths, file sizes, and content hashes. Packaging excludes local model inputs, caches, and generated outputs. Run `python -m analysis.check_release --write-manifest` after reviewing intentional changes to tracked files.
-
-## Importing a revised numeric snapshot
-
-Stage a completed canonical paper bundle without replacing the included data:
-
-```bash
-python -m analysis.import_snapshot --source-dir PAPER_BUNDLE --output-dir build/candidate
-python -m analysis.reproduce --data-dir build/candidate --output-dir build/candidate_results
-python -m analysis.plot_core_figures --data-dir build/candidate --output-dir build/candidate_figures
-```
-
-The importer preserves numeric CSV cells and records source hashes and selected columns. It normalizes the legacy locality `mean_d` alias to `locality_mean_d`. Install only a reviewed snapshot; the importer deliberately writes outside `data/`.
-
-For a completed 40-trajectory bundle, the installer stages the data, validates the
-statistics and figures, preserves existing files in a dated backup, and installs
-only after the checks pass:
-
-```bash
-python -m analysis.finalize_canonical --prepare-destination-state --work-dir build/canonical_release
-python -m analysis.finalize_canonical --source-dir PAPER_BUNDLE --work-dir build/canonical_release --install
-```
-
-Preparation seals the hashes of destinations that installation can overwrite.
-If any of those files changes before installation, automatic installation is
-refused. `--verify-only` runs the checks without installing. The installer
-rejects incomplete canonical coverage before touching `data/`. The actual
-shared threshold mask determines the retained count. Any installation or release
-check failure restores the previous data and manifest. Success is recorded in
-`build/canonical_release/install_validation.json`, including artifact hashes.
+After reviewing intentional source changes, refresh the release manifest with `python -m analysis.check_release --write-manifest`. A portable archive can be created with `python -m analysis.package_release --output build/BeyondNormGrowth.zip`.

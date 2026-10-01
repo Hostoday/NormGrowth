@@ -1640,7 +1640,7 @@
     },
     {
       "release_path": "experiments/README.md",
-      "sha256": "804cf7c170c459fceb5811851166251f5a4602f479368d1b8194517d23319969",
+      "sha256": "79f9c9b726e8d448258e53ba7ca51b584ed2210e10b9d335d36a9f499e242776",
       "purpose": "Model entry points, portable path setup, and links to observed ENCORE presets"
     },
     {
@@ -1652,6 +1652,31 @@
       "release_path": "experiments/model_code/test_sphere_orientation.py",
       "sha256": "5f67f17786afabc33f6524c4194ad7815cde29cc8fa8aeb45919cb5de37da63b",
       "purpose": "CPU SVD, transpose-equivalence, Linear bitwise and module-dispatch regression checks"
+    },
+    {
+      "release_path": "analysis/reproduce.py",
+      "sha256": "4ef9e0e428b4e4f2bf5a30c56114869a5db8afe49622a77a6d119787e4e0ff13",
+      "purpose": "Current manuscript saved-observation reaggregation and plotting; portable CPU implementation"
+    },
+    {
+      "release_path": "analysis/plot_core_figures.py",
+      "sha256": "09224dedf66f4bde4f1e28b2e3d574db030942fb39d7dcd051b4a018dee37f4b",
+      "purpose": "Current manuscript saved-observation reaggregation and plotting; portable CPU implementation"
+    },
+    {
+      "release_path": "analysis/manuscript_statistics.py",
+      "sha256": "5f5b1ff3d56b653a90572644381e0c310885b63ba02d7609a415895a847d2d0f",
+      "purpose": "Current manuscript saved-observation reaggregation and plotting; portable CPU implementation"
+    },
+    {
+      "release_path": "analysis/manuscript_vectors_interventions.py",
+      "sha256": "22062791fca2829bad4614c54e91586bcd63154518a350e05353606066f75ec2",
+      "purpose": "Current manuscript saved-observation reaggregation and plotting; portable CPU implementation"
+    },
+    {
+      "release_path": "analysis/plot_rq3_forest.py",
+      "sha256": "94b10c134db1ec6382169925b96acea71b3944dc5c9f6834703896c48f64814c",
+      "purpose": "Current manuscript saved-observation reaggregation and plotting; portable CPU implementation"
     }
   ],
   "excluded_assets": [
@@ -1663,5 +1688,7 @@
     "original experiment output directories"
   ],
   "layout_note": "Model source files are grouped under experiments/. Original source_path fields remain relative to their source repository.",
-  "path_configuration": "BNG_* relative paths resolve from the release repository root; executable imports resolve from experiments/. Historical external protocol contents are not rewritten."
+  "path_configuration": "BNG_* relative paths resolve from the release repository root; executable imports resolve from experiments/. Historical external protocol contents are not rewritten.",
+  "analysis_updated": "2026-10-01",
+  "analysis_source_description": "Statistical definitions and figure conventions follow the revised manuscript. Model-source provenance is unchanged; generated analysis modules are separately recorded."
 }

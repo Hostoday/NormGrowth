@@ -1,6 +1,6 @@
 {
-  "schema_version": 1,
-  "source_bundle": "paper_figures_SPHERE_corrected_20260927",
+  "schema_version": 2,
+  "source_bundle": "manuscript_user_latest_20260930_updated_20261001",
   "canonical_orders_only": true,
   "complete_second_moments": true,
   "design_conditions": 40,
@@ -25,17 +25,39 @@
   },
   "missing_trajectories": [],
   "files": {
-    "rq1": "rq1_per_edit_40000.csv",
-    "rq2": "rq2_checkpoints.csv",
-    "rq3_doses": "rq3_orthogonal_states_doses_200.csv",
-    "rq3_same_norm": "rq3_same_norm_conditions_480.csv",
-    "performance": "performance_1k_40.csv",
-    "figure4": "figure4_rewrite_endpoints.csv",
-    "figure5": "figure5_prompt_overlay.csv",
+    "rq1": "manuscript/rq1_per_edit.csv",
+    "rq2": "manuscript/checkpoints.csv",
+    "rq3_doses": "manuscript/intervention_doses.csv",
+    "rq3_same_norm": "manuscript/same_norm_conditions.csv",
+    "performance": "manuscript/endpoint_tf_1000.csv",
+    "figure4": "manuscript/rewrite_endpoints.csv",
+    "figure5": "manuscript/checkpoints.csv",
     "rq2_mask": "rq2_threshold_mask.csv",
     "rq3_differences": "rq3_same_norm_state_differences.csv",
     "rq2_drift": "rq2_drift_correlations.csv",
-    "locality_endpoints": "locality_endpoints.csv",
-    "endpoint_summary": "endpoint_norm_decomposition_summary.csv"
+    "locality_endpoints": "manuscript/locality_endpoints.csv",
+    "endpoint_summary": "endpoint_norm_decomposition_summary.csv",
+    "rq3_contrasts": "manuscript/same_norm_paired_contrasts.csv"
+  },
+  "legacy_source_bundle": "paper_figures_SPHERE_corrected_20260927",
+  "manuscript_snapshot": true,
+  "manuscript_data_directory": "manuscript",
+  "rq2_primary_checkpoints": 360,
+  "rq2_sensitivity_checkpoints": {
+    "geometry_limit3": 337,
+    "collapsed_trajectories_excluded": 306
+  },
+  "rq1_finite_vectors": 39473,
+  "rq1_paired_displacement_cosines": 39257,
+  "endpoint_evaluation": "complete-target teacher-forced case-macro accuracy including EOS/EOT; locality Base-prediction preservation without added EOS/EOT",
+  "figure_primary_scope": {
+    "endpoints": 40,
+    "checkpoints": 360,
+    "overlay_coordinates": 2160
+  },
+  "figure_sensitivity_scope": {
+    "endpoints": 34,
+    "checkpoints": 337,
+    "overlay_coordinates": 2022
   }
 }

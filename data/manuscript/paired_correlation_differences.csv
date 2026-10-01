@@ -1,0 +1,5 @@
+dataset,context,rho_d_minus_rho_DH,ci_lower,ci_upper
+zsRE,rewrite,-0.06055,-0.09045,-0.0289
+zsRE,locality,-0.06744,-0.09168,-0.04044
+CounterFact,rewrite,-0.04843,-0.07225,-0.02462
+CounterFact,locality,-0.12662,-0.21941,-0.03345
