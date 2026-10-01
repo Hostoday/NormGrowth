@@ -1,10 +1,9 @@
-"""Reproduce the manuscript's RQ2 statistics from packaged checkpoint CSVs.
+"""Compute RQ2 statistics from user-supplied checkpoint measurements.
 
-Run ``python -m analysis.manuscript_statistics --output-dir build/manuscript_rq2``.
-Only saved numeric measurements are read: no model, network, or NPZ is needed.
-The archived reference tables are comparison targets, never analysis inputs.
-The formulas and deterministic bootstrap follow the manuscript's archived
-trajectory_statistics, rq2_controls, and collapse-exclusion analyses.
+Run ``python -m analysis.manuscript_statistics --data-dir path/to/measurements``.
+The input directory must contain ``checkpoints.csv`` with all 40 trajectories
+and the nine scheduled checkpoints. No published result tables are required.
+This module aggregates measurements and does not run model inference.
 """
 from pathlib import Path
 import argparse
@@ -111,16 +110,15 @@ def _panels(frame):
                  for suffix in ["mean_q", "mean_kappa", "mean_abs_norm_deviation"]]
     restricted = frame[threshold].le(3).all(axis=1)
     collapsed = frame.model.eq("Llama") & frame.editor.eq("MEMIT") & frame.method.isin(["Native", "SPHERE", "SADR"])
-    if frame[restricted].groupby("dataset").size().to_dict() != {"CounterFact": 169, "zsRE": 168}:
-        raise ValueError("The geometry-restricted panel must contain 337 checkpoints")
     if int(collapsed.sum()) != 54 or frame[collapsed].trajectory_id.nunique() != 6:
         raise ValueError("The collapse sensitivity must remove six complete trajectories")
-    return {"full360": frame, "restricted337": frame[restricted], "excluded306": frame[~collapsed]}, restricted, collapsed
+    return {"primary": frame, "geometry_restricted": frame[restricted],
+            "collapse_excluded": frame[~collapsed]}, restricted, collapsed
 
 
 def _rank_controls(panels):
     rows = []
-    for panel in ["full360", "restricted337"]:
+    for panel in ["primary", "geometry_restricted"]:
         for dataset in DATASETS:
             for model in ["Pooled", "Llama", "GPT-2 XL"]:
                 group = panels[panel][panels[panel].dataset.eq(dataset)]
@@ -140,7 +138,7 @@ def _rank_controls(panels):
 
 def _composition(panels):
     rows = []
-    for panel in ["full360", "restricted337"]:
+    for panel in ["primary", "geometry_restricted"]:
         for dataset, group in panels[panel].groupby("dataset", sort=True):
             for context in CONTEXTS:
                 p = group[f"{context}_mean_p"]
@@ -174,7 +172,7 @@ def _composition(panels):
 
 def _collapse(panels):
     rows = []
-    for panel, name in [("full", "full360"), ("exclude_six_trajectories", "excluded306")]:
+    for panel, name in [("full", "primary"), ("exclude_six_trajectories", "collapse_excluded")]:
         for dataset, group in panels[name].groupby("dataset", sort=True):
             for context in CONTEXTS:
                 for metric in ["mean_q", "mean_d", "mean_kappa", "mean_abs_norm_deviation"]:
@@ -207,7 +205,7 @@ def _within_trajectory(frame):
 
 def _time_sensitivity(panels):
     rows = []
-    for panel in ["full360", "restricted337"]:
+    for panel in ["primary", "geometry_restricted"]:
         for dataset in DATASETS:
             group = panels[panel][panels[panel].dataset.eq(dataset)]
             for context in CONTEXTS:
@@ -250,7 +248,7 @@ def _bootstrap(frame):
                 point = _spearman(values.ravel(), outcome.ravel())
                 low, high = np.percentile(reps, [2.5, 97.5])
                 replicates[metric], points[metric] = reps, point
-                rows.append(dict(panel="full360", dataset=dataset, context=context, metric=metric,
+                rows.append(dict(panel="primary", dataset=dataset, context=context, metric=metric,
                                  n_checkpoints=len(group), n_condition_trajectories=len(ids),
                                  n_checkpoints_per_trajectory=len(TIMES), pooled_spearman=point,
                                  cluster_bootstrap_ci_low=low, cluster_bootstrap_ci_high=high,
@@ -262,92 +260,60 @@ def _bootstrap(frame):
     return pd.DataFrame(rows), pd.DataFrame(differences)
 
 
-def _compare(actual, expected_path, keys, rounded=False):
-    expected = pd.read_csv(expected_path, float_precision="round_trip")
-    actual = actual.sort_values(keys).reset_index(drop=True)
-    expected = expected.sort_values(keys).reset_index(drop=True)
-    if len(actual) != len(expected) or actual.duplicated(keys).any() or expected.duplicated(keys).any():
-        raise ValueError(f"Invalid reference row coverage: {expected_path.name}")
-    missing = set(expected.columns) - set(actual.columns)
-    if missing:
-        raise ValueError(f"Missing computed columns in {expected_path.name}: {sorted(missing)}")
-    max_difference = 0.0
-    for column in expected:
-        a, b = actual[column], expected[column]
-        if b.isna().all() and a.fillna("").eq("").all():
-            # Empty reason strings are read back as NaN in an all-empty column.
-            continue
-        if pd.api.types.is_bool_dtype(b):
-            pd.testing.assert_series_equal(a, b, check_names=False, check_dtype=False)
-        elif pd.api.types.is_numeric_dtype(b):
-            # The four-row paired-difference reference is published to five decimals.
-            if rounded and column not in keys:
-                a = a.round(5)
-            np.testing.assert_allclose(a, b, rtol=1e-9, atol=1e-10, equal_nan=True,
-                                       err_msg=f"{expected_path.name}:{column}")
-            finite = np.isfinite(a.to_numpy(dtype=float)) & np.isfinite(b.to_numpy(dtype=float))
-            if finite.any():
-                max_difference = max(max_difference, float(np.abs(a[finite] - b[finite]).max()))
-        else:
-            pd.testing.assert_series_equal(a.fillna("").astype(str), b.fillna("").astype(str), check_names=False)
-    return dict(reference="expected/" + expected_path.name, rows=len(expected),
-                compared_columns=list(expected.columns), maximum_absolute_difference=max_difference,
-                comparison="five-decimal published values" if rounded else "full-precision numeric values", passed=True)
-
-
 def run(data_dir, output_dir):
-    """Recompute and validate RQ2; ``data_dir`` is the ``data/manuscript`` folder."""
+    """Compute RQ2 tables from an external directory containing checkpoints.csv."""
     data_dir, output_dir = Path(data_dir), Path(output_dir)
     if output_dir.resolve() == data_dir.resolve() or data_dir.resolve() in output_dir.resolve().parents:
-        raise ValueError("Write reproduced outputs outside the input data directory")
-    output_dir.mkdir(parents=True, exist_ok=True)
+        raise ValueError("Write computed outputs outside the input data directory")
     source = data_dir / "checkpoints.csv"
+    if not source.is_file():
+        raise FileNotFoundError(
+            f"Missing checkpoint measurements: {source}. "
+            "Supply --data-dir with the directory containing checkpoints.csv.")
     frame = pd.read_csv(source, float_precision="round_trip")
     panels, restricted, collapsed = _panels(frame)
+    output_dir.mkdir(parents=True, exist_ok=True)
     membership = frame[KEY + ["trajectory_id", "edit_count"]].copy()
-    membership["full360"], membership["restricted337"], membership["excluded306"] = True, restricted, ~collapsed
+    membership["primary"], membership["geometry_restricted"], membership["collapse_excluded"] = True, restricted, ~collapsed
     membership.to_csv(output_dir / "rq2_panel_membership.csv", index=False)
 
     boot, paired = _bootstrap(frame)
     products = [
-        ("rq2_partial_rank_all.csv", _rank_controls(panels),
-         ["panel", "model_scope", "dataset", "context", "predictor", "specification"], False),
-        ("d_controlled_geometry_associations.csv", _composition(panels),
-         ["panel", "dataset", "context", "predictor", "controls"], False),
-        ("collapse_exclusion_associations.csv", _collapse(panels),
-         ["panel", "dataset", "context", "metric", "controls"], False),
-        ("trajectory_cluster_bootstrap.csv", boot, ["dataset", "context", "metric"], False),
-        ("paired_correlation_differences.csv", paired, ["dataset", "context"], True),
-        ("within_trajectory_correlations.csv", _within_trajectory(frame), ["context", "trajectory_id"], False),
-        ("rq2_T_sensitivity.csv", _time_sensitivity(panels), ["panel", "dataset", "geometry_context"], False),
+        ("rq2_partial_rank_all.csv", _rank_controls(panels)),
+        ("d_controlled_geometry_associations.csv", _composition(panels)),
+        ("collapse_exclusion_associations.csv", _collapse(panels)),
+        ("trajectory_cluster_bootstrap.csv", boot),
+        ("paired_correlation_differences.csv", paired),
+        ("within_trajectory_correlations.csv", _within_trajectory(frame)),
+        ("rq2_T_sensitivity.csv", _time_sensitivity(panels)),
     ]
-    checks, hashes = [], {"checkpoints.csv": hashlib.sha256(source.read_bytes()).hexdigest()}
-    for name, actual, keys, rounded in products:
-        reference = data_dir / "expected" / name
-        checks.append(_compare(actual, reference, keys, rounded))
-        hashes["expected/" + name] = hashlib.sha256(reference.read_bytes()).hexdigest()
+    outputs = ["rq2_panel_membership.csv"]
+    for name, actual in products:
         actual.to_csv(output_dir / name, index=False, float_format="%.17g")
+        outputs.append(name)
     report = dict(
-        passed=True, scope="Reaggregation of packaged measured checkpoints; no model inference",
+        status="completed", scope="Statistics computed from supplied checkpoint measurements",
+        model_inference=False,
         panels={name: dict(checkpoints=len(panel), trajectories=int(panel.trajectory_id.nunique()),
                            per_dataset=panel.groupby("dataset").size().to_dict()) for name, panel in panels.items()},
         collapse_exclusion="All nine checkpoints of Llama MEMIT Native/SPHERE/SADR in both datasets; descriptive post hoc sensitivity",
-        reference_comparisons=checks, input_sha256=hashes,
-        bootstrap=dict(draws=BOOTSTRAP_DRAWS, seed=BOOTSTRAP_SEED, recomputed_correlation_arrays=len(boot),
+        input_sha256={"checkpoints.csv": hashlib.sha256(source.read_bytes()).hexdigest()},
+        outputs=outputs,
+        bootstrap=dict(draws=BOOTSTRAP_DRAWS, seed=BOOTSTRAP_SEED, computed_correlation_arrays=len(boot),
                        sampling_unit="20 whole trajectories with replacement within each dataset; all nine checkpoints retained",
                        same_draws_for_contexts_and_metrics=True, paired_difference_intervals=len(paired),
                        interval="2.5th and 97.5th percentiles",
-                       scope="Full360 unadjusted q/d/D_H correlations and paired d-minus-D_H correlation differences",
-                       saved_replicate_arrays_required=False),
-        inference_scope="Adjusted coefficients and restricted337/excluded306 sensitivities are descriptive; no p values or confidence intervals for those coefficients",
+                       scope="Primary unadjusted q/d/D_H correlations and paired d-minus-D_H correlation differences"),
+        inference_scope="Adjusted coefficients and geometry-restricted/collapse-excluded sensitivities are descriptive; no p values or confidence intervals for those coefficients",
         versions=dict(numpy=np.__version__, pandas=pd.__version__, scipy=scipy.__version__))
-    (output_dir / "validation.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
+    (output_dir / "rq2_computation.json").write_text(json.dumps(report, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
     return report
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-dir", type=Path, default=ROOT / "data" / "manuscript")
+    parser.add_argument("--data-dir", type=Path, required=True,
+                        help="Directory containing the checkpoint measurements (checkpoints.csv)")
     parser.add_argument("--output-dir", type=Path, default=ROOT / "build" / "manuscript_rq2")
     args = parser.parse_args()
     print(json.dumps(run(args.data_dir, args.output_dir), indent=2))

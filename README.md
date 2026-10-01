@@ -2,51 +2,49 @@
 
 **Base-Relative Geometry of Hidden-State Drift in Sequential Knowledge Editing**
 
-Code for analyzing target/realized-state norm changes, parallel and orthogonal hidden-state displacement, and component-wise interventions in sequential knowledge editing.
+Experimental and analysis code for MEMIT and AlphaEdit with Native, NAS, ENCORE, SPHERE, and SADR on Llama-3-8B-Instruct and GPT-2 XL, using zsRE and CounterFact.
 
-The study covers MEMIT and AlphaEdit with Native, NAS, ENCORE, SPHERE, and SADR on Llama-3-8B-Instruct and GPT-2 XL, using zsRE and CounterFact.
+This repository contains source code, configuration files, and execution instructions. Experiment measurements, result tables, figures, model weights, and datasets are generated or obtained separately.
 
-## Installation and analysis
+## Environment
 
-Use Python 3.9 and run from the repository root:
+Create the `normgrowth` environment from the recorded package versions:
 
 ```bash
-python -m pip install -r requirements.txt
-python -m analysis.reproduce --output-dir build/results
-python -m analysis.plot_core_figures --output-dir build/figures
+conda env create -f environment.yml
+conda activate normgrowth
 ```
 
-The analysis reproduces the current manuscript's saved-data results: RQ1 norm and vector comparisons, RQ2 associations on all 360 checkpoints with 337/306-checkpoint sensitivity analyses, and RQ3 paired contrasts and bootstrap intervals. The endpoint table uses complete-target teacher-forced EFF/GEN. The plotting command generates the full-sample Figures 4 and 5, their restricted supplements, and the combined RQ3 forest plot. Both commands run on CPU without model weights. Inputs and version metadata are recorded in `data/analysis_snapshot.json`.
-
-| Directory | Contents |
-|---|---|
-| [analysis/](analysis/README.md) | Statistical analysis, visualization, and validation |
-| [data/](data/README.md) | Numeric observations, reference tables, and source records |
-| [experiments/](experiments/README.md) | Editing, geometry capture, intervention code, and model settings |
+[requirements.txt](requirements.txt) records the package versions from the existing EasyEdit environment. [environment.yml](environment.yml) sets the public environment name and Python version. GPU execution also requires a compatible NVIDIA driver. For statistics and plotting alone, install [analysis/requirements.txt](analysis/requirements.txt) in a separate Python 3.9 environment.
 
 ## Model experiments
 
-See [experiment instructions](experiments/README.md) for the model environment, entry points, and required inputs. Paths are derived from the repository location or configurable through `BNG_*` environment variables; relative environment values are resolved from the repository root.
+Start with the [experiment instructions](experiments/README.md) for environment setup, editing and evaluation entry points, geometry capture, and interventions. The [hyperparameter guide](experiments/hparams/README.md) describes the supplied ENCORE configurations.
 
-New model experiments require model/tokenizer access, benchmark inputs, covariance assets, and the corresponding checkpoints and evaluation protocols. These assets are external to this repository. Saved-data reproduction has been validated separately from model-source import and component checks; full GPU experiments and a fresh installation of the model environment were not rerun for this release.
+Prepare the required model/tokenizer, benchmark inputs, and method-specific covariance or projector assets. Capture and intervention scripts also require the checkpoints and evaluation protocols described in the experiment instructions. The source runners expose individual stages; they do not provide a single command for all 40 experimental conditions.
 
-## Analysis scope
+Default asset paths are derived from the repository location. Relative `BNG_*` environment settings are resolved from the repository root; relative command-line paths are resolved from the working directory. Keep local inputs in `inputs/` and generated results in `outputs/` or `build/`; these directories are ignored by Git.
 
-- **RQ1:** Target/realized norm ratios across 40,000 edits; vector comparisons on 39,473 finite observations and 39,257 paired displacement cosines.
-- **RQ2:** All 360 checkpoints are the primary panel. The 337-state geometry restriction and exclusion of six complete trajectories (306 checkpoints) are sensitivity analyses. Partial-rank controls distinguish norm deviation, edit count, trajectory and total displacement. Correlation intervals use 5,000 whole-trajectory bootstrap draws.
-- **RQ3:** Prompt-last interventions at 40 endpoint states; same-final-norm contrasts use 34 eligible states at each reduction fraction. The 204 state-specific intervals use 10,000 paired-case bootstrap draws. Overall means weight states equally and have no aggregate confidence interval.
-- **Endpoint performance:** EFF/GEN average token accuracy within each case, then average cases; answers include EOS/EOT. LOC measures agreement with Base predictions under the same gold prefix without an added terminator.
+## Statistics and figures
 
-The packaged endpoint scores and vector measurements are saved observations. CPU reproduction recalculates summaries and intervals; it does not rerun model predictions or hidden-state extraction. See the [analysis protocol](analysis/README.md) and [numeric data description](data/README.md).
+In the `normgrowth` environment, run from the repository root after collecting your measurements into the [analysis input format](analysis/INPUTS.md):
 
-## Validation
+```bash
+python -m analysis.reproduce --data-dir inputs/measurements --output-dir build/results
+python -m analysis.plot_core_figures --data-dir inputs/measurements --contrasts-file build/results/rq1_rq3/same_norm_paired_contrasts.csv --output-dir build/figures
+```
+
+The analysis computes RQ1 norm and vector comparisons, RQ2 geometry–locality associations and sensitivity analyses, and RQ3 paired contrasts and bootstrap intervals from the supplied measurements. It does not run model inference. No saved paper result or reference table is required. See [analysis instructions](analysis/README.md) for individual modules and statistical scope.
+
+## Checks
 
 ```bash
 python -m analysis.check_release
+python experiments/model_code/smoke.py
 ```
 
-This checks source syntax, relative document links, hardcoded filesystem paths, and recorded file hashes. After intentional source edits, refresh the manifest with `python -m analysis.check_release --write-manifest`. The GitHub workflow runs the CPU analysis and release checks.
+The source check verifies Python syntax, local documentation links, portable paths, and exclusion of experiment data. The component smoke check runs in the model environment and verifies the norm-matched intervention construction without model weights. CI runs the source check and analysis command-line checks with the smaller analysis environment; numerical analyses require your measurement inputs.
 
 ## License and citation
 
-Project code is provided under the [MIT license](LICENSE). The vendored EasyEdit/AlphaEdit sources retain their licenses and notices; see [source attribution](experiments/NOTICE.md). Citation metadata is available in [CITATION.cff](CITATION.cff).
+Project code is provided under the [MIT license](LICENSE). Vendored EasyEdit and AlphaEdit sources retain their licenses and notices; see [source attribution](experiments/NOTICE.md). Citation metadata is in [CITATION.cff](CITATION.cff).

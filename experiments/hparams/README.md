@@ -1,6 +1,6 @@
 # ENCORE: 실행에 사용한 조건별 설정
 
-`*_encore.yaml` 8개는 보고된 ENCORE 실행의 YAML과 저장된 effective 설정을 대조해 만든 실행 preset이다. 기존 `llama3-8b.yaml` 두 파일은 일반 템플릿이며 이 preset을 대신하지 않는다. 2026-09-24 ENCORE 정렬 재실험에서 교체한 Llama 세 조건을 반영한다. 파일별 근거와 hash는 [소스 기록](../../data/provenance/code_sources.json)에 있다.
+`*_encore.yaml` 8개는 논문의 ENCORE 조건별 실행 설정이다. 기존 `llama3-8b.yaml` 두 파일은 일반 템플릿이며 이 preset을 대신하지 않는다.
 
 | 모델 | 데이터셋 | Editor | 추가 norm λ | MPES 충족 관측 수 | Preset |
 |---|---|---|---:|---:|---|
@@ -23,10 +23,8 @@
 
 - GPT-2 XL MEMIT은 zsRE Table 11의 λ40/cutoff+4, CounterFact Table 8의 λ10/cutoff+3을 사용해 각각 5회·4회로 설정했다. GPT AlphaEdit는 Tables 10/6의 cutoff+1에 대응하는 2회다.
 - Llama CounterFact MEMIT은 Table 8의 λ20/cutoff+1과 대응한다.
-- Llama zsRE MEMIT은 교정 재실험의 λ10/4회를 사용한다.
-- Llama AlphaEdit는 교정 재실험의 zsRE 4회, CounterFact 1회를 사용한다. 두 조건의 추가 norm λ는 0이다.
-
-세 조건의 RQ1·RQ2·RQ3 및 성능표는 같은 교정된 편집 실행을 사용한다. 데이터 snapshot의 실제 trajectory 포함 범위와 누락 여부는 [분석 자료 안내](../../data/README.md)에 기록한다. 추가 편집 순서는 canonical 분석에서 제외한다.
+- Llama zsRE MEMIT은 λ10/4회를 사용한다.
+- Llama AlphaEdit는 zsRE 4회, CounterFact 1회를 사용한다. 두 조건의 추가 norm λ는 0이다.
 
 ## 실행
 

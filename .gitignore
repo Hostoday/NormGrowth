@@ -8,6 +8,7 @@
 /captures/
 /local_data/
 /inputs/
+/data/
 /.venv/
 /venv/
 __pycache__/
@@ -28,6 +29,12 @@ __pycache__/
 *.tar
 *.gz
 
+# Measurements and computed result tables are generated locally.
+*.csv
+*.tsv
+*.parquet
+*.jsonl
+
 # Machine-specific settings and credentials
 .env
 .env.*
@@ -35,7 +42,7 @@ __pycache__/
 *.local.json
 *.local.yaml
 
-# Preserve source PDFs and the compact numerical CSVs in data/ and paper/.
+# LaTeX build products
 *.aux
 *.bbl
 *.blg

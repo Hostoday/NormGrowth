@@ -1,7 +1,7 @@
-name: CPU reproduction
+name: Source checks
 on: [push, pull_request]
 jobs:
-  numeric-release:
+  source-checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -9,7 +9,7 @@ jobs:
         with:
           python-version: '3.9'
           cache: pip
-      - run: python -m pip install -r requirements.txt
-      - run: python -m analysis.reproduce --output-dir build/reproduced
-      - run: python -m analysis.plot_core_figures --output-dir build/figures
+      - run: python -m pip install -r analysis/requirements.txt
       - run: python -m analysis.check_release
+      - run: python -m analysis.reproduce --help
+      - run: python -m analysis.plot_core_figures --help

@@ -1,11 +1,11 @@
-"""Reaggregate the latest manuscript's RQ1 vectors and RQ3 paired contrasts.
+"""Compute RQ1 vector summaries and RQ3 contrasts from supplied measurements.
 
-All inputs are portable CSV files under ``data_dir``. Vector geometry is an
-archived per-edit measurement: this module reaggregates it, checks the paired
-reference definitions and norm ratios, and does not reopen activation tensors.
-RQ3 intervals are independently reconstructed from paired case scores using the
-original case order, 10,000 draws, seed 20260912, and percentile definition.
-No models, original experiment directories, or network access are required.
+Pass --data-dir with rq1_vectors_per_edit.csv,
+rq1_reference_sensitivity_per_edit.csv, and rq3_selected_case_scores.csv.
+Vector geometry is measured per edit; this module aggregates those measurements
+and checks paired reference definitions and norm ratios. RQ3 intervals use
+paired case scores in their original order, 10,000 draws, seed 20260912, and
+percentile limits. No published result tables or model inference are required.
 """
 from pathlib import Path
 import argparse
@@ -86,6 +86,7 @@ def _vector_summary(frame, identity, scope):
 
 def _reference_summary(group, identity):
     paired = group[group.paired_valid]
+    _require(len(paired) > 0, "No defined paired displacement cosines for configuration: " + str(identity))
     common, initial = paired[COMMON].to_numpy(), paired[INITIAL].to_numpy()
     signed = initial - common
     absolute = np.abs(signed)
@@ -129,7 +130,7 @@ def _common_denominator(group, identity):
     )
 
 
-def _rq1(read, compare, write):
+def _rq1(read, write):
     vectors = read("rq1_vectors_per_edit.csv")
     references = read("rq1_reference_sensitivity_per_edit.csv")
     for frame in (vectors, references):
@@ -145,11 +146,9 @@ def _rq1(read, compare, write):
     pd.testing.assert_frame_equal(vectors[EDIT], references[EDIT], check_dtype=False)
     finite = vectors.pre_vector_finite & vectors.post_vector_finite
     _require(np.array_equal(finite, references.source_vectors_finite), "RQ1 vector availability differs")
-    _require(int(finite.sum()) == 39473, "Expected 39,473 finite vector observations")
     _close(vectors.requested_actual_displacement_cosine, references[COMMON], "common-reference cosine", atol=2e-12)
     paired = np.isfinite(references[COMMON]) & np.isfinite(references[INITIAL])
     _require(np.array_equal(paired, references.paired_valid), "Paired validity does not match defined cosines")
-    _require(int(paired.sum()) == 39257, "Expected 39,257 paired displacement cosines")
     _close(references.loc[paired, INITIAL] - references.loc[paired, COMMON],
            references.loc[paired, "paired_signed_difference"], "paired signed cosine difference", atol=2e-12)
     _close(np.abs(references.loc[paired, "paired_signed_difference"]),
@@ -157,8 +156,6 @@ def _rq1(read, compare, write):
     _require(references.loc[~paired, "paired_signed_difference"].isna().all(), "Undefined cosines were imputed")
     _require(np.array_equal(references.init_reference_delta_norm.eq(0), references.init_reference_delta_zero),
              "Zero initial-reference displacement flag differs from norm")
-    _require(int((references.init_reference_delta_zero & finite).sum()) == 216,
-             "Expected 216 zero initial-reference displacements among finite vectors")
 
     summary, ratios = [], []
     for identity, group in vectors.groupby(GROUP, sort=True):
@@ -170,9 +167,6 @@ def _rq1(read, compare, write):
     ratios = pd.DataFrame(ratios)
     ref_summary = pd.DataFrame([_reference_summary(group, identity)
                                for identity, group in references.groupby(GROUP, sort=True)])
-    compare(summary, "expected/rq1_vectors_by_configuration.csv", GROUP + ["scope"])
-    compare(ref_summary, "expected/rq1_reference_sensitivity_manuscript_table.csv", GROUP)
-    compare(ratios, "expected/rq1_common_denominator_all40.csv", GROUP)
     write(summary, "rq1_vectors_by_configuration.csv")
     write(ref_summary, "rq1_reference_sensitivity_manuscript_table.csv")
     write(ratios, "rq1_common_denominator_all40.csv")
@@ -181,10 +175,10 @@ def _rq1(read, compare, write):
         configurations=len(all_rows), edits=len(vectors), finite_vectors=int(finite.sum()),
         configurations_with_all_1000_vectors=int(all_rows.all_required_vectors_finite_n.eq(1000).sum()),
         nonfinite_vectors=int((~finite).sum()), paired_displacement_cosines=int(paired.sum()),
-        zero_initial_displacements_on_finite_vectors=216,
+        zero_initial_displacements_on_finite_vectors=int((references.init_reference_delta_zero & finite).sum()),
         common_origin="cos(z - h_pre, h_post - h_pre)",
         comparison_origin="cos(z - h_init, h_post - h_pre)",
-        geometry_scope="Reaggregation of archived per-edit vector measurements; no activation tensors reopened",
+        geometry_scope="Aggregation of supplied per-edit vector measurements; no activation tensors reopened",
         common_denominator_scope="All 40,000 scalar norm records, including edits without finite stored vectors",
     )
 
@@ -193,9 +187,8 @@ def _label(prefix, dose):
     return f"{prefix}_f{int(dose * 100):03d}"
 
 
-def _rq3(read, compare, write):
+def _rq3(read, write):
     frame = read("rq3_selected_case_scores.csv")
-    canonical = read("same_norm_paired_contrasts.csv")
     frame.eligible_at_both_doses = _bool(frame.eligible_at_both_doses)
     case_key = STATE + ["dose_fraction", "family", "condition", "case_id"]
     _require(not frame.duplicated(case_key).any(), "Duplicate RQ3 paired case records")
@@ -208,8 +201,8 @@ def _rq3(read, compare, write):
     reconstructed = ((semantic.n_target_tokens - 1) * semantic.semantic_accuracy + semantic.terminator_accuracy) / semantic.n_target_tokens
     _close(reconstructed, semantic.endpoint_value, "full/content/termination accuracy decomposition", atol=1e-12)
 
-    # All random index matrices equal a fresh default_rng(SEED) call with this n,
-    # exactly as in the archived analysis. Reusing them only saves CPU work.
+    # Use the same deterministic paired resampling rule for each sample size.
+    # Reusing the index matrices only saves CPU work.
     draws = {}
 
     def estimate(values):
@@ -222,7 +215,7 @@ def _rq3(read, compare, write):
         return float(values.mean()), float(lo), float(hi)
 
     groups = {identity: group for identity, group in frame.groupby(STATE, sort=True)}
-    _require(len(groups) == 34, "Expected 34 states eligible for norm-matched comparisons")
+    _require(len(groups) > 0, "No states eligible for norm-matched comparisons")
     results, selections = [], []
     for identity, group in groups.items():
         by_dose = {}
@@ -258,7 +251,7 @@ def _rq3(read, compare, write):
                     for metric, column in metrics:
                         for operation, lhs, rhs in [("orthogonal", per, "native"), ("parallel_only", par, "native"),
                                                     ("parallel_minus_orthogonal", par, per)]:
-                            # Preserve the archived operation order, not 100*(lhs-rhs).
+                            # Convert each endpoint to percentage points before subtraction.
                             values = (100 * cases[dose, family, lhs].loc[ids, column].to_numpy()
                                       - 100 * cases[dose, family, rhs].loc[ids, column].to_numpy())
                             point, lo, hi = estimate(values)
@@ -267,32 +260,24 @@ def _rq3(read, compare, write):
                                                 n_cases=len(ids), mean_difference_pp=point, ci_low_pp=lo, ci_high_pp=hi))
     sensitivity = pd.DataFrame(results)
     selection = pd.DataFrame(selections)
-    _require(len(sensitivity) == 2040, "Expected 2,040 state-specific sensitivity contrasts")
-    contrast_key = STATE + ["scope", "dose_fraction", "family", "metric", "operation"]
-    compare(selection, "expected/rq3_common_dose_case_ids.csv", STATE)
-    compare(sensitivity, "expected/rq3_sensitivity_state_contrasts.csv", contrast_key)
+    _require(len(sensitivity) == len(groups) * 60, "Incomplete state-specific sensitivity contrasts")
 
     mean_keys = ["scope", "dose_fraction", "family", "endpoint", "metric", "operation"]
     averages = []
     for identity, group in sensitivity.groupby(mean_keys, sort=True):
-        _require(len(group) == 34, "Sensitivity average must weight the same 34 states equally")
+        _require(len(group) == len(groups), "Sensitivity averages must weight the same eligible states equally")
         averages.append(dict(zip(mean_keys, identity), n_states=len(group), n_cases_min=int(group.n_cases.min()),
                              n_cases_max=int(group.n_cases.max()), mean_difference_pp=float(group.mean_difference_pp.mean())))
     averages = pd.DataFrame(averages)
-    compare(averages, "expected/rq3_sensitivity_overall_means.csv", mean_keys)
 
     direct = sensitivity[sensitivity.scope.eq("dose_specific") & sensitivity.metric.eq("full")
-                         & sensitivity.operation.eq("parallel_minus_orthogonal")].set_index(STATE + ["dose_fraction", "family"])
-    direct_rows = []
-    _require(len(canonical) == len(direct) == 204, "Expected 204 canonical paired contrasts")
-    for row in canonical.to_dict("records"):
-        identity = tuple(row[k] for k in STATE + ["dose_fraction", "family"])
-        calculated = direct.loc[identity]
-        _require(row["scope"] == "B_common_all_families" and row["lhs"] == _label("projection_match", row["dose_fraction"])
-                 and row["rhs"] == _label("perp", row["dose_fraction"]), "Canonical contrast direction/scope mismatch")
-        direct_rows.append(dict(row, **{key: calculated[key] for key in ["n_cases", "mean_difference_pp", "ci_low_pp", "ci_high_pp"]}))
-    direct_frame = pd.DataFrame(direct_rows)
-    compare(direct_frame, "same_norm_paired_contrasts.csv", STATE + ["dose_fraction", "family"])
+                         & sensitivity.operation.eq("parallel_minus_orthogonal")].copy()
+    _require(len(direct) == len(groups) * len(DOSES) * len(FAMILIES), "Incomplete direct paired contrasts")
+    direct["scope"] = "B_common_all_families"
+    direct["lhs"] = direct.dose_fraction.map(lambda dose: _label("projection_match", dose))
+    direct["rhs"] = direct.dose_fraction.map(lambda dose: _label("perp", dose))
+    direct_frame = direct[STATE + ["dose_fraction", "scope", "family", "endpoint", "lhs", "rhs", "n_cases",
+                                   "mean_difference_pp", "ci_low_pp", "ci_high_pp"]].reset_index(drop=True)
 
     interval_counts = []
     for (dose, family), group in direct_frame.groupby(["dose_fraction", "family"], sort=True):
@@ -319,52 +304,41 @@ def _rq3(read, compare, write):
 
 
 def run(data_dir, output_dir):
-    """Write independently recomputed summaries and return a JSON-safe report."""
+    """Compute tables from external observations and return a JSON-safe report."""
     data_dir, output_dir = Path(data_dir), Path(output_dir)
-    _require(data_dir.resolve() != output_dir.resolve(), "Output directory must differ from input directory")
+    _require(data_dir.resolve() != output_dir.resolve() and data_dir.resolve() not in output_dir.resolve().parents,
+             "Write computed outputs outside the input data directory")
+    required = ["rq1_vectors_per_edit.csv", "rq1_reference_sensitivity_per_edit.csv",
+                "rq3_selected_case_scores.csv"]
+    missing = [name for name in required if not (data_dir / name).is_file()]
+    if missing:
+        raise FileNotFoundError(
+            f"Missing measurements in {data_dir}: {', '.join(missing)}. "
+            "Supply --data-dir with the directory containing these observation files.")
     output_dir.mkdir(parents=True, exist_ok=True)
-    inputs, checks, outputs = {}, [], []
+    inputs, outputs = {}, []
 
     def read(relative):
         path = data_dir / relative
         inputs[relative] = hashlib.sha256(path.read_bytes()).hexdigest()
         return pd.read_csv(path, float_precision="round_trip", dtype={"case_id": str})
 
-    def compare(actual, relative, keys):
-        expected = read(relative)
-        _require(not actual.duplicated(keys).any() and not expected.duplicated(keys).any(), "Duplicate summary keys: " + relative)
-        actual = actual.sort_values(keys).reset_index(drop=True)
-        expected = expected.sort_values(keys).reset_index(drop=True)
-        _require(len(actual) == len(expected), "Row count differs: " + relative)
-        largest = 0.0
-        for column in expected:
-            _require(column in actual, "Missing reconstructed column: " + relative + ":" + column)
-            if pd.api.types.is_numeric_dtype(expected[column]):
-                _close(actual[column], expected[column], relative + ":" + column)
-                differences = np.abs(actual[column].to_numpy(dtype=float) - expected[column].to_numpy(dtype=float))
-                finite = differences[np.isfinite(differences)]
-                if len(finite):
-                    largest = max(largest, float(finite.max()))
-            else:
-                pd.testing.assert_series_equal(actual[column], expected[column], check_names=False, check_dtype=False)
-        checks.append(dict(reference=relative, rows=len(expected), compared_columns=list(expected.columns),
-                           max_absolute_numeric_difference=largest, passed=True))
-
     def write(frame, name):
         frame.to_csv(output_dir / name, index=False, float_format="%.17g")
         outputs.append(name)
 
-    report = dict(scope="CPU reaggregation of archived RQ1 per-edit measurements and RQ3 paired case scores",
-                  rq1=_rq1(read, compare, write), rq3=_rq3(read, compare, write),
-                  checks=checks, input_sha256=inputs, outputs=outputs, model_inference=False, passed=True)
-    (output_dir / "vectors_interventions_validation.json").write_text(json.dumps(report, indent=2) + "\n")
+    report = dict(status="completed", scope="Statistics computed from supplied RQ1 vector measurements and RQ3 paired case scores",
+                  rq1=_rq1(read, write), rq3=_rq3(read, write),
+                  input_sha256=inputs, outputs=outputs, model_inference=False)
+    (output_dir / "vectors_interventions_computation.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
     return report
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     root = Path(__file__).resolve().parents[1]
-    parser.add_argument("--data-dir", type=Path, default=root / "data/manuscript")
+    parser.add_argument("--data-dir", type=Path, required=True,
+                        help="Directory containing per-edit vector and paired case-score measurements")
     parser.add_argument("--output-dir", type=Path, default=root / "build/manuscript_vectors_interventions")
     args = parser.parse_args()
     print(json.dumps(run(args.data_dir, args.output_dir), indent=2))

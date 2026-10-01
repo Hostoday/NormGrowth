@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""Check portable release files without loading models or accessing the network."""
+"""Check the code-only source tree without model weights or experiment results."""
 from __future__ import annotations
 
 import argparse
 import ast
-import hashlib
 import json
 from pathlib import Path
 import re
@@ -16,7 +15,6 @@ EXCLUDED_ROOTS = {'.git', '.venv', 'venv', 'build', 'outputs', 'logs', 'models',
 EXCLUDED_PARTS = {'__pycache__', '.pytest_cache', '.ipynb_checkpoints'}
 TENSORS = {'.pt', '.pth', '.bin', '.ckpt', '.safetensors', '.npz', '.npy'}
 TEXT = {'.py', '.md', '.txt', '.csv', '.json', '.yaml', '.yml', '.cff', '.toml'}
-MANIFEST = ROOT/'data/provenance/release_manifest.json'
 
 # Match filesystem literals, while leaving URL schemes and relative links alone.
 PATH_LITERAL = re.compile(r'^(?:~/|/|[A-Za-z]:[\\/])[A-Za-z_.][A-Za-z0-9_. /\\:-]*$')
@@ -48,10 +46,6 @@ def absolute_path_line(content, tree=None):
     return None
 
 
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def release_files():
     selected = []
     for path in ROOT.rglob('*'):
@@ -74,8 +68,8 @@ def inspect():
     links = python_files = 0
     for path in files:
         name = str(path.relative_to(ROOT))
-        if path.suffix in TENSORS or path.stat().st_size > 50_000_000:
-            raise ValueError(f'Large experiment artifact in release: {name}')
+        if path.suffix in TENSORS | {'.csv', '.tsv', '.parquet', '.jsonl'} or path.stat().st_size > 50_000_000:
+            raise ValueError(f'Experiment data in code-only release: {name}; keep it under inputs/, outputs/ or local_data/')
         if path.name == '.env' or (path.name.startswith('.env.') and path.name != '.env.example'):
             raise ValueError(f'Local environment file in release: {name}')
         if path.suffix not in TEXT:
@@ -107,22 +101,8 @@ def inspect():
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--write-manifest', action='store_true',
-                        help='Refresh the release snapshot after reviewing intended changes.')
-    args = parser.parse_args()
-    files, report = inspect()
-    expected = {str(p.relative_to(ROOT)): {'sha256': sha(p), 'bytes': p.stat().st_size}
-                for p in files if p != MANIFEST}
-    if args.write_manifest:
-        MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-        MANIFEST.write_text(json.dumps({'schema': 1, 'files': expected}, indent=2)+'\n')
-    else:
-        if not MANIFEST.is_file():
-            raise ValueError('Missing release manifest; use --write-manifest after reviewing changes.')
-        saved = json.loads(MANIFEST.read_text())['files']
-        if expected != saved:
-            differences = sorted(k for k in expected.keys() | saved.keys() if expected.get(k) != saved.get(k))
-            raise ValueError('Release differs from reviewed snapshot: '+', '.join(differences[:12]))
+    parser.parse_args()
+    _, report = inspect()
     print(json.dumps(report, indent=2))
 
 

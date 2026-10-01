@@ -1,20 +1,19 @@
-"""Render the latest horizontal RQ3 forest plot from saved paired contrasts.
+"""Render the horizontal RQ3 forest plot from locally computed paired contrasts.
 
-Run: python -m analysis.plot_rq3_forest --data-dir data --output-dir build/figures
-The 204 estimates and pointwise intervals are used without recomputation.
+Pass --input-file with same_norm_paired_contrasts.csv produced by analysis.reproduce.
+The supplied estimates and pointwise intervals are plotted without recomputation.
 """
 from pathlib import Path
 import argparse
 import csv
 import hashlib
 import json
+import math
 
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-
-DEFAULT_DATA = Path(__file__).resolve().parents[1] / "data"
 
 PANELS = [("Llama", "zsRE"), ("Llama", "CounterFact"),
           ("GPT-2 XL", "zsRE"), ("GPT-2 XL", "CounterFact")]
@@ -28,27 +27,50 @@ CONDITIONS = [(editor, method) for editor in ["MEMIT", "AlphaEdit"]
 POSITIONS = [float(i) + (0.65 if i >= 5 else 0) for i in range(10)]
 
 
-def _render(data_dir, output_dir):
-    """Draw all saved contrasts, returning a machine-readable validation record."""
-    data_dir = Path(data_dir).resolve()
+def _render(input_file, output_dir):
+    """Draw supplied contrasts, returning a machine-readable rendering record."""
+    source = Path(input_file).resolve()
     output_dir = Path(output_dir).resolve()
-    if output_dir == data_dir or data_dir in output_dir.parents:
-        raise ValueError("Output must not overwrite the source data directory")
-    base = data_dir / "manuscript" if (data_dir / "manuscript").is_dir() else data_dir
-    SOURCE = base / "same_norm_paired_contrasts.csv"
-    with SOURCE.open(newline='') as handle:
-        ROWS = list(csv.DictReader(handle))
+    if not source.is_file():
+        raise FileNotFoundError(f"Missing paired contrast input: {source}; run analysis.reproduce first")
+    with source.open(newline='') as handle:
+        reader = csv.DictReader(handle)
+        required = {"model", "dataset", "editor", "method", "order_id", "edit_count",
+                    "scope", "dose_fraction", "family", "lhs", "rhs",
+                    "mean_difference_pp", "ci_low_pp", "ci_high_pp"}
+        missing = required.difference(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"Missing paired contrast columns: {', '.join(sorted(missing))}")
+        rows = list(reader)
+    if not rows:
+        raise ValueError("The paired contrast input contains no eligible state contrasts")
     lookup = {}
-    for row in ROWS:
+    for row in rows:
         dose = float(row["dose_fraction"])
+        assert dose in {value for value, _, _, _ in DOSES}
+        assert (row["model"], row["dataset"]) in PANELS
+        assert (row["editor"], row["method"]) in CONDITIONS
+        assert row["family"] in {family for family, _, _, _ in METRICS}
         assert row["scope"] == "B_common_all_families"
         assert row["order_id"] == "canonical" and int(row["edit_count"]) == 1000
         assert row["lhs"] == f"projection_match_f{int(dose * 100):03d}"
         assert row["rhs"] == f"perp_f{int(dose * 100):03d}"
         key = (row["model"], row["dataset"], row["editor"], row["method"], dose, row["family"])
         assert key not in lookup
+        mean, lo, hi = [float(row[k]) for k in
+                        ["mean_difference_pp", "ci_low_pp", "ci_high_pp"]]
+        assert all(math.isfinite(value) for value in (mean, lo, hi)) and lo <= mean <= hi
         lookup[key] = row
-    assert len(lookup) == 204
+    metric_limits = {}
+    for family, _, limits, _ in METRICS:
+        values = [float(row[column]) for row in rows if row["family"] == family
+                  for column in ["ci_low_pp", "ci_high_pp"]]
+        if values:
+            padding = .04 * (limits[1] - limits[0])
+            metric_limits[family] = (min(limits[0], min(values) - padding),
+                                     max(limits[1], max(values) + padding))
+        else:
+            metric_limits[family] = limits
 
     plt.rcParams.update({
         "font.family": "STIXGeneral", "mathtext.fontset": "stix", "font.size": 11.5,
@@ -73,6 +95,7 @@ def _render(data_dir, output_dir):
     panel_info = []
     for ri, (model, dataset) in enumerate(PANELS):
         for ci, (family, metric, limits, ticks) in enumerate(METRICS):
+            limits = metric_limits[family]
             ax = axes[ri][ci]
             ax.set_xlim(*limits)
             ax.set_xticks(ticks)
@@ -94,7 +117,6 @@ def _render(data_dir, output_dir):
             if ri in (0, 2):
                 ax.set_title(metric, pad=9)
             for (editor, method), y in zip(CONDITIONS, POSITIONS):
-                available = 0
                 for dose, color, marker, offset in DOSES:
                     key = (model, dataset, editor, method, dose, family)
                     if key not in lookup:
@@ -111,11 +133,6 @@ def _render(data_dir, output_dir):
                     assert float(artist.lines[0].get_ydata()[0]) == y + offset
                     assert key not in plotted
                     plotted.add(key)
-                    available += 1
-                if not available:
-                    assert model == "Llama" and editor == "MEMIT" and method in ["Native", "SPHERE", "SADR"]
-                else:
-                    assert available == 2
             panel_info.append({"panel": PANEL_LABELS[ri], "model": model, "dataset": dataset, "metric": family,
                                "xlim": list(limits), "xticks": ticks})
         top = axes[ri][0].get_position().y1
@@ -152,9 +169,9 @@ def _render(data_dir, output_dir):
         files.append({"path": path.name,
                       "sha256": hashlib.sha256(path.read_bytes()).hexdigest()})
     plt.close(fig)
-    report = {"source": str(SOURCE.relative_to(data_dir.resolve())),
-              "source_sha256": hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
-              "n_saved_contrasts": len(lookup), "n_plotted_contrasts": len(plotted),
+    report = {"source": source.name,
+              "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+              "n_input_contrasts": len(lookup), "n_plotted_contrasts": len(plotted),
               "layout": "2 rows by 6 columns; Llama data on the left, GPT-2 XL data on the right; no model names anywhere in the graphic",
               "model_names_in_graphic": False,
               "missing_cases_display": "Blank; no N/A labels or footnote",
@@ -166,19 +183,22 @@ def _render(data_dir, output_dir):
     return report
 
 
-def render(data_dir, output_dir):
+def render(input_file, output_dir):
     """Keep the forest style identical in standalone and combined commands."""
     with plt.rc_context():
         plt.rcdefaults()
-        return _render(data_dir, output_dir)
+        return _render(input_file, output_dir)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-dir", type=Path, default=DEFAULT_DATA)
+    parser.add_argument("--input-file", type=Path, required=True,
+                        help="same_norm_paired_contrasts.csv produced by analysis.reproduce")
     parser.add_argument("--output-dir", type=Path, default=Path("build/figures"))
     args = parser.parse_args()
-    report = render(args.data_dir, args.output_dir)
+    if not args.input_file.is_file():
+        parser.error(f"Missing paired contrast input: {args.input_file}; run analysis.reproduce first")
+    report = render(args.input_file, args.output_dir)
     print(json.dumps({"n_plotted_contrasts": report["n_plotted_contrasts"],
                       "files": report["files"]}, indent=2))
 

@@ -1,10 +1,8 @@
-"""Render the current manuscript figures from portable saved CSVs.
+"""Render geometry and intervention figures from locally generated measurements.
 
-Run: python -m analysis.plot_core_figures --output-dir build/figures
-Manuscript snapshots render full-range Figures 4/5, their restricted sensitivity
-views, and the horizontal RQ3 forest plot. Earlier snapshots retain their original
-Figure 4/5 selection and plotting behavior.
-No fitting, jitter, clipping, or point subsampling is applied.
+Required inputs are a flat measurement directory and the paired contrast CSV
+produced by analysis.reproduce. No experiment results are bundled with the code.
+The full and restricted geometry views use the same observations and coordinates.
 """
 from pathlib import Path
 import argparse
@@ -16,136 +14,12 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 from . import _paper_style as style
-from . import _paper_style as original
-from . import snapshot
-from .snapshot import CHECKPOINT, THRESHOLD_COLUMNS, filename, metadata, validate_checkpoints
-HERE = Path(__file__).resolve().parents[1] / 'data'
+from .snapshot import CHECKPOINT, THRESHOLD_COLUMNS, validate_checkpoints
+HERE = None
 COHORTS = [('Llama','zsRE'),('Llama','CounterFact'),('GPT-2 XL','zsRE'),('GPT-2 XL','CounterFact')]
-X_PQ, Y_PQ = (-.60,.30), (.40,2.70)
 COLORS={'locality':'#4477AA','rewrite':'#DD8844'}
 LABELS={'locality':'Locality prompt','rewrite':'Rewrite prompt'}
 METRICS=[('mean_q',r'Mean orthogonal component $\bar q$'),('mean_kappa',r'Mean norm ratio $\bar\kappa_H$'),('mean_abs_norm_deviation',r'Mean absolute norm deviation $D_H$')]
-XLIMS={'mean_q':(0.,3.),'mean_kappa':(.8,3.),'mean_abs_norm_deviation':(0.,2.)}
-XTICKS={'mean_q':[0,.5,1,1.5,2,2.5,3],'mean_kappa':[1,1.5,2,2.5,3],'mean_abs_norm_deviation':[0,.5,1,1.5,2]}
-
-
-def visible_limits(default, values):
-    """Keep established axes unless new retained observations extend beyond them."""
-    padding=.04*(default[1]-default[0])
-    minimum,maximum=float(values.min()),float(values.max())
-    return (min(default[0],minimum-padding) if minimum<default[0] else default[0],
-            max(default[1],maximum+padding) if maximum>default[1] else default[1])
-
-
-def canvas():
-    fig,axes=plt.subplots(2,2,figsize=(9,6.2),sharex=True,sharey=True)
-    fig.subplots_adjust(left=.09,right=.983,bottom=.105,top=.825,wspace=.20,hspace=.37)
-    for index,(ax,(model,dataset)) in enumerate(zip(axes.flat,COHORTS)):
-        ax.set_title(f'({chr(97+index)}) {model} · {dataset}',loc='left',pad=7)
-        style.grid(ax)
-    style.endpoint_legend(fig)
-    return fig,axes
-
-
-def endpoint_point(ax,x,y,method,editor,size=28):
-    color='#bd532e' if method=='Native' else '#565656'
-    artist=ax.scatter(x,y,s=size,marker=style.MARKERS[method],
-        facecolors=color if editor=='AlphaEdit' else 'white',edgecolors=color,linewidths=.8,zorder=3)
-    np.testing.assert_array_equal(artist.get_offsets()[0],[x,y])
-
-
-def render_endpoint(data):
-    fig,axes=canvas(); panels=[]
-    x_limits=visible_limits(X_PQ,data.rewrite_mean_p)
-    y_limits=visible_limits(Y_PQ,data.rewrite_mean_q)
-    for index,(ax,(model,dataset)) in enumerate(zip(axes.flat,COHORTS)):
-        part=data[data.model.eq(model)&data.dataset.eq(dataset)]
-        assert part.rewrite_mean_p.between(*x_limits).all()
-        assert part.rewrite_mean_q.between(*y_limits).all()
-        ax.set_xlim(*x_limits);ax.set_ylim(*y_limits)
-        ax.set_xticks([-.6,-.4,-.2,0,.2]);ax.set_yticks([.5,1,1.5,2,2.5])
-        ax.axvline(0,color='#a6a6a6',lw=.65,ls=(0,(3,3)))
-        for row in part.itertuples():
-            endpoint_point(ax,row.rewrite_mean_p,row.rewrite_mean_q,row.method,row.editor)
-        if index//2==1:ax.set_xlabel(r'Mean parallel component $\bar p_{\mathrm{edit}}$',labelpad=6)
-        if index%2==0:ax.set_ylabel(r'Mean orthogonal component $\bar q_{\mathrm{edit}}$',labelpad=6)
-        panels.append(dict(model=model,dataset=dataset,visible_points=len(part),x_limits=list(x_limits),y_limits=list(y_limits)))
-    stem='fig4_pq_plane'
-    style.export(fig,stem,dict(input_points=len(data),visible_points=len(data),off_scale_points=0,
-        panels=panels,subplot_layout=[2,2],source=filename('figure4'),
-        source_sha256=style.sha(HERE/filename('figure4')),
-        geometry_context='rewrite subject_last',geometry_cohort='fixed1000',
-        exact_coordinates=True,shared_axes=True,scales='linear',
-        removed_endpoint_count=40-len(data)))
-
-
-def overlay_point(ax,row):
-    fill=original.fill_for(row.model,row.dataset,row.order_id)
-    size=.82*np.sqrt(15+30*row.edit_count/1000)
-    kwargs=original.make_marker(style.MARKERS[row.method],COLORS[row.prompt_context],fill,size)
-    kwargs['mew']=.65
-    artist,=ax.plot(row.geometry_value,row.locality_percent,**kwargs,
-        zorder=4 if fill in ('none','lined') else 3)
-    np.testing.assert_array_equal([float(artist.get_xdata()[0]),float(artist.get_ydata()[0])],
-                                 [row.geometry_value,row.locality_percent])
-
-
-def original_bottom_legends(fig, long):
-    method=[Line2D([],[],**original.make_marker(style.MARKERS[m],'#626262','full',5.5,m)) for m in style.METHODS]
-    fill_specs=[('full','Llama · zsRE'),('right','GPT-2 XL · zsRE'),
-                ('none','Llama · CounterFact'),('lined','GPT-2 XL · CounterFact')]
-    if long.order_id.ne('canonical').any():
-        fill_specs.insert(1, ('left','Llama · zsRE (extra)'))
-    cohorts=[Line2D([],[],**original.make_marker('o','#626262',fill,5.5,label)) for fill,label in fill_specs]
-    size=[Line2D([],[],**original.make_marker('o','#626262','full',.82*np.sqrt(15+30*n/1000),f'{n:,} edits')) for n in [50,1000]]
-    legends=[]
-    for handles,y,spacing in [(method,.146,1.9),(cohorts,.093,.95),(size,.038,2.)]:
-        legends.append(fig.legend(handles=handles,loc='center',bbox_to_anchor=(.525,y),ncol=len(handles),
-            frameon=False,handletextpad=.45,columnspacing=spacing,handlelength=1.,fontsize=9))
-    prompt=[Line2D([],[],ls='',marker='o',mfc=COLORS[c],mec=COLORS[c],ms=5,label=LABELS[c]) for c in COLORS]
-    fig.legend(handles=prompt,loc='upper center',bbox_to_anchor=(.66,.998),ncol=2,frameon=False,
-               handletextpad=.5,columnspacing=1.8,fontsize=9)
-    return legends
-
-
-def main_figure(long, checkpoint_count):
-    fig,axes=plt.subplots(2,3,figsize=(9,6.1),sharey=True)
-    fig.subplots_adjust(left=.077,right=.986,bottom=.255,top=.91,wspace=.24,hspace=.48)
-    panels=[]
-    limits={metric:visible_limits(XLIMS[metric],long.loc[long.metric.eq(metric),'geometry_value'])
-            for metric,_ in METRICS}
-    for ri,dataset in enumerate(['zsRE','CounterFact']):
-        for ci,(metric,label) in enumerate(METRICS):
-            ax=axes[ri,ci];part=long[long.dataset.eq(dataset)&long.metric.eq(metric)]
-            for row in part.sort_values(['edit_count','method','prompt_context'],kind='stable').itertuples():overlay_point(ax,row)
-            ax.set_xlim(*limits[metric]);ax.set_xticks(XTICKS[metric]);ax.set_ylim(-1,101);ax.set_yticks([0,20,40,60,80,100])
-            ax.set_xlabel(label if ri==1 else '',labelpad=6)
-            ax.set_title(f'({chr(97+ri*3+ci)})',loc='left',pad=6,fontsize=10);style.grid(ax)
-            assert part.geometry_value.between(*limits[metric]).all()
-            assert part.locality_percent.between(0,100).all()
-            expected=sorted(part[['geometry_value','locality_percent']].itertuples(index=False,name=None))
-            plotted=sorted((float(line.get_xdata()[0]),float(line.get_ydata()[0])) for line in ax.lines)
-            assert plotted==expected
-            panels.append(dict(dataset=dataset,metric=metric,drawn_points=len(part),
-                locality_points=int(part.prompt_context.eq('locality').sum()),rewrite_points=int(part.prompt_context.eq('rewrite').sum()),
-                x_limits=list(ax.get_xlim()),y_limits=list(ax.get_ylim()),exact_artist_coordinate_match=True))
-        axes[ri,0].set_ylabel('LOC (%)',labelpad=6)
-        box=axes[ri,0].get_position();fig.text(box.x0,box.y1+.05,dataset,ha='left',va='bottom',fontsize=10)
-    legends=original_bottom_legends(fig, long)
-    fig.canvas.draw();renderer=fig.canvas.get_renderer();boxes=[legend.get_window_extent(renderer) for legend in legends]
-    assert all(not boxes[i].overlaps(boxes[j]) for i in range(len(boxes)) for j in range(i))
-    assert boxes[0].y1+5<min(ax.xaxis.label.get_window_extent(renderer).y0 for ax in axes[-1])
-    unique=long.drop_duplicates('row_id')
-    style.export(fig,'fig5_geometry_locality',dict(source=filename('figure5'),
-        source_sha256=style.sha(HERE/filename('figure5')),input_checkpoint_count=len(unique),
-        dataset_checkpoint_counts=unique.groupby('dataset').size().to_dict(),
-        drawn_points=len(long),points_per_metric=len(long)//len(METRICS),
-        prompts=['locality','rewrite'],prompt_colors=COLORS,subplot_layout=[2,3],panels=panels,
-        geometry_cohort='fixed1000',canonical_orders_only=bool(long.order_id.eq('canonical').all()),
-        excluded_checkpoints=checkpoint_count-len(unique),all_retained_points_visible=True,
-        same_checkpoint_and_outcome_for_both_prompts=True,method_shapes_preserved=True,
-        model_dataset_order_fills_preserved=True,edit_count_marker_size_preserved=True,
-        same_metric_axis_limits_across_datasets=True,linear_axes=True))
 
 
 def manuscript_export(fig, stem, data, audit):
@@ -183,21 +57,24 @@ def manuscript_endpoint(data, source, restricted=False):
                         wspace=.3, hspace=.42)
     style.endpoint_legend(fig)
     panels = []
-    span = max(float(data.mean_p.max() - data.mean_p.min()), .1)
+    p_min = float(data.mean_p.min()) if len(data) else -.5
+    p_max = float(data.mean_p.max()) if len(data) else .5
+    span = max(p_max - p_min, .1)
     for index, (ax, (model, dataset)) in enumerate(zip(axes.flat, COHORTS)):
         part = data[data.model.eq(model) & data.dataset.eq(dataset)]
-        expected = (7 if model == 'Llama' else 10) if restricted else 10
-        assert len(part) == expected
+        if not restricted:
+            assert len(part) == 10
         ax.set_title(f'({chr(97+index)}) {model} · {dataset} (n = {len(part)})',
                      loc='left', pad=7)
         if restricted:
-            ax.set_xlim(data.mean_p.min() - .08*span, data.mean_p.max() + .08*span)
+            ax.set_xlim(p_min - .08*span, p_max + .08*span)
             ax.set_ylim(0, 3)
             ax.set_xticks([-.4, -.2, 0, .2]); ax.set_yticks([0, 1, 2, 3])
         else:
             ax.set_xscale('symlog', linthresh=.5, linscale=3)
             ax.set_yscale('symlog', linthresh=3, linscale=3)
-            ax.set_xlim(-.6, data.mean_p.max()*1.5)
+            ax.set_xlim(p_min - .04*abs(p_min) if p_min < -.6 else -.6,
+                        max(.6, p_max*1.5))
             ax.set_ylim(0, data.mean_q.max()*1.5)
             ax.set_xticks([-.5, 0, .5, 1e2, 1e4])
             ax.set_xticklabels(['−0.5', '0', '0.5', r'$10^2$', r'$10^4$'])
@@ -311,13 +188,21 @@ def manuscript_overlay(long, source, restricted=False):
         linthresh=None if restricted else 3, linscale=None if restricted else 3))
 
 
-def render_manuscript_snapshot():
-    """Use the manuscript's full panel; select restricted figures independently."""
-    base = HERE / 'manuscript'
-    checkpoint_source = str((base/'checkpoints.csv').relative_to(HERE))
-    endpoint_source = str((base/'rewrite_endpoints.csv').relative_to(HERE))
+def render_figures(contrasts_file):
+    """Plot the full panel and its independently selected restricted views."""
+    checkpoint_source = 'checkpoints.csv'
+    endpoint_source = 'rewrite_endpoints.csv'
     checkpoints = pd.read_csv(HERE/checkpoint_source, float_precision='round_trip')
     endpoint = pd.read_csv(HERE/endpoint_source, float_precision='round_trip')
+    checkpoint_columns = set(CHECKPOINT + ['row_id', 'trajectory_id', 'locality_percent',
+        'rewrite_mean_p'] + THRESHOLD_COLUMNS)
+    endpoint_columns = set(CHECKPOINT + ['row_id', 'context', 'mean_p', 'mean_q',
+        'mean_kappa', 'mean_abs_norm_deviation'])
+    for frame, required, source in [(checkpoints, checkpoint_columns, checkpoint_source),
+                                     (endpoint, endpoint_columns, endpoint_source)]:
+        missing = required.difference(frame.columns)
+        if missing:
+            raise ValueError(f"Missing columns in {source}: {', '.join(sorted(missing))}")
     validate_checkpoints(checkpoints)
     assert len(checkpoints) == checkpoints.row_id.nunique() == 360
     assert len(endpoint) == endpoint.row_id.nunique() == 40
@@ -330,13 +215,11 @@ def render_manuscript_snapshot():
     for metric in ['mean_p', 'mean_q', 'mean_kappa', 'mean_abs_norm_deviation']:
         np.testing.assert_array_equal(endpoint[metric], indexed.loc[endpoint.row_id, 'rewrite_'+metric])
     keep = checkpoints[THRESHOLD_COLUMNS].le(3).all(axis=1)
-    assert int(keep.sum()) == 337
     if 'limit3_sensitivity_retained' in checkpoints:
         saved_keep = checkpoints.limit3_sensitivity_retained.astype(str).str.lower().isin(['true', '1'])
         np.testing.assert_array_equal(keep, saved_keep)
     selected_ids = set(checkpoints.loc[keep, 'row_id'])
     restricted_endpoint = endpoint[endpoint.row_id.isin(selected_ids)].copy()
-    assert len(restricted_endpoint) == 34
     identity = CHECKPOINT + ['row_id', 'trajectory_id', 'locality_percent']
     frames = []
     for context in ['locality', 'rewrite']:
@@ -351,63 +234,44 @@ def render_manuscript_snapshot():
     long = pd.concat(frames, ignore_index=True)
     assert len(long) == 2160 and long.groupby(['row_id', 'metric']).size().eq(2).all()
     restricted_long = long[long.row_id.isin(selected_ids)].copy()
-    assert len(restricted_long) == 2022
+    assert len(restricted_long) == 6*int(keep.sum())
     manuscript_endpoint(endpoint, endpoint_source)
     manuscript_overlay(long, checkpoint_source)
     manuscript_endpoint(restricted_endpoint, endpoint_source, restricted=True)
     manuscript_overlay(restricted_long, checkpoint_source, restricted=True)
     from .plot_rq3_forest import render as render_forest
-    style.AUDITS['rq3_paired_forest_combined'] = render_forest(HERE, style.OUTPUT_DIR)
+    style.AUDITS['rq3_paired_forest_combined'] = render_forest(contrasts_file, style.OUTPUT_DIR)
     return dict(main_endpoints=len(endpoint), main_checkpoints=len(checkpoints),
                 main_overlay_points=len(long), restricted_endpoints=len(restricted_endpoint),
                 restricted_checkpoints=int(keep.sum()), restricted_overlay_points=len(restricted_long),
-                rq3_saved_contrasts=style.AUDITS['rq3_paired_forest_combined']['n_plotted_contrasts'])
+                rq3_contrasts=style.AUDITS['rq3_paired_forest_combined']['n_plotted_contrasts'])
 
 
 def main():
     global HERE
-    parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--output-dir',type=Path,default=Path('build/figures'))
-    parser.add_argument('--data-dir',type=Path,default=HERE)
-    args=parser.parse_args()
-    HERE=args.data_dir.resolve()
-    snapshot.DATA=HERE
-    style.OUTPUT_DIR=args.output_dir.resolve()
-    if HERE==style.OUTPUT_DIR or HERE in style.OUTPUT_DIR.parents:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--data-dir', type=Path, required=True,
+        help='Directory containing checkpoints.csv and rewrite_endpoints.csv')
+    parser.add_argument('--contrasts-file', type=Path, required=True,
+        help='same_norm_paired_contrasts.csv generated by analysis.reproduce')
+    parser.add_argument('--output-dir', type=Path, default=Path('build/figures'))
+    args = parser.parse_args()
+    HERE = args.data_dir.resolve()
+    for name in ['checkpoints.csv', 'rewrite_endpoints.csv']:
+        if not (HERE/name).is_file():
+            parser.error(f'Missing measurement input: {HERE/name}')
+    if not args.contrasts_file.is_file():
+        parser.error(f'Missing paired contrast input: {args.contrasts_file}; run analysis.reproduce first')
+    style.OUTPUT_DIR = args.output_dir.resolve()
+    if HERE == style.OUTPUT_DIR or HERE in style.OUTPUT_DIR.parents:
         parser.error('Output must not overwrite the source data directory')
     style.configure()
     style.AUDITS.clear()
-    info = metadata()
-    if info.get('manuscript_snapshot') or int(info.get('schema_version', 1)) >= 2:
-        counts = render_manuscript_snapshot()
-        (style.OUTPUT_DIR/'figure_validation.json').write_text(json.dumps(dict(
-            passed=True, manuscript_snapshot=True, counts=counts, figures=style.AUDITS), indent=2)+'\n')
-        print(json.dumps(counts, indent=2))
-        return
-    endpoint=pd.read_csv(HERE/filename('figure4'),float_precision='round_trip')
-    # Preserve the source grouping and stable within-group draw order.
-    endpoint=endpoint.sort_values(['source_group','model','dataset','editor','method'],
-        ascending=[False,True,True,True,True],kind='stable')
-    assert not endpoint.duplicated(CHECKPOINT).any()
-    if metadata().get('canonical_orders_only'):
-        assert endpoint.order_id.eq('canonical').all()
-    for metric in ['mean_p','mean_q']:
-        endpoint['rewrite_'+metric]=endpoint[metric]
-    render_endpoint(endpoint)
-    long=pd.read_csv(HERE/filename('figure5'),float_precision='round_trip')
-    assert len(long)==len(METRICS)*2*long.row_id.nunique()
-    assert long.groupby(['row_id','metric']).size().eq(2).all()
-    checkpoints=pd.read_csv(HERE/filename('rq2'),float_precision='round_trip')
-    validate_checkpoints(checkpoints)
-    columns=THRESHOLD_COLUMNS
-    retained=checkpoints[checkpoints[columns].le(3).all(axis=1)].set_index('row_id')
-    assert set(long.row_id)==set(retained.index)
-    for row in long.itertuples():
-        assert row.geometry_value == retained.loc[row.row_id,row.source_column]
-        assert row.locality_percent == retained.loc[row.row_id,'locality_percent']
-    main_figure(long, len(checkpoints))
-    (style.OUTPUT_DIR/'figure_validation.json').write_text(json.dumps(dict(passed=True,figures=style.AUDITS),indent=2)+'\n')
-    print(f'Rendered Figures 4 and 5: {len(endpoint)} endpoints and {len(long):,} exact-coordinate prompt-overlay points.')
+    counts = render_figures(args.contrasts_file)
+    (style.OUTPUT_DIR/'figure_validation.json').write_text(json.dumps(dict(
+        passed=True, counts=counts, figures=style.AUDITS), indent=2)+'\n')
+    print(json.dumps(counts, indent=2))
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
