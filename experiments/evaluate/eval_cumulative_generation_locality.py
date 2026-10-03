@@ -170,7 +170,7 @@ class LocalityExample:
         return self.prompt_ids + self.target_ids
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--run",
@@ -188,7 +188,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--steps", type=int, nargs="*", default=None)
     parser.add_argument("--base-only", action="store_true")
     parser.add_argument("--max-new-tokens", type=int, default=12)
-    parser.add_argument("--generation-batch-size", type=int, default=32)
+    parser.add_argument("--generation-batch-size", type=int, default=1)
     parser.add_argument(
         "--wild-eff-gen",
         action="store_true",
@@ -228,13 +228,17 @@ def parse_args() -> argparse.Namespace:
         default="gpt-4o-mini",
         help="Judge model used only with --wild-score-mode judge.",
     )
-    parser.add_argument("--locality-batch-size", type=int, default=32)
+    parser.add_argument("--locality-batch-size", type=int, default=1)
     parser.add_argument("--easyedit-max-length", type=int, default=256)
     parser.add_argument(
         "--locality-panel-size",
         type=int,
-        default=1000,
-        help="Fixed requests[:N] panel used for EasyEdit pre/post locality at every step.",
+        default=None,
+        help=(
+            "Use all locality prompts in all saved selected requests by default, "
+            "at every checkpoint. Set N explicitly to restrict the fixed panel "
+            "to requests[:N]."
+        ),
     )
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument(
@@ -255,7 +259,21 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--force", action="store_true")
-    return parser.parse_args()
+    args = parser.parse_args(argv)
+    if args.locality_panel_size is not None and args.locality_panel_size <= 0:
+        parser.error("--locality-panel-size must be positive")
+    if args.generation_batch_size <= 0 or args.locality_batch_size <= 0:
+        parser.error("generation and locality batch sizes must be positive")
+    return args
+
+
+def locality_panel_count(args: argparse.Namespace, request_count: int) -> int:
+    """Keep the locality panel fixed independently of the edited prefix."""
+    if args.locality_panel_size is None:
+        return request_count
+    if args.locality_panel_size <= 0:
+        raise ValueError("--locality-panel-size must be positive")
+    return min(args.locality_panel_size, request_count)
 
 
 def parse_run_spec(value: str) -> RunSpec:
@@ -662,6 +680,11 @@ def protocol_metadata(args: argparse.Namespace) -> Dict[str, Any]:
     materialize_subject_placeholders = bool(
         getattr(args, "materialize_subject_placeholders", False)
     )
+    locality_panel = (
+        "all saved selected requests"
+        if args.locality_panel_size is None
+        else f"requests[:{args.locality_panel_size}]"
+    )
     metadata = {
         "name": PROTOCOL_NAME,
         "schema_version": SCHEMA_VERSION,
@@ -692,7 +715,7 @@ def protocol_metadata(args: argparse.Namespace) -> Dict[str, Any]:
             "reference": "initial_unedited_base_model",
             "separator": "single ASCII space",
             "target_add_special_tokens": False,
-            "panel": f"fixed requests[:{args.locality_panel_size}] at every checkpoint",
+            "panel": f"fixed {locality_panel} at every checkpoint",
             "aggregation": "case_macro_of_positionwise_post_equals_base",
             "batch_size": args.locality_batch_size,
             "max_length": args.easyedit_max_length,
@@ -702,7 +725,7 @@ def protocol_metadata(args: argparse.Namespace) -> Dict[str, Any]:
         },
         "panels": {
             "efficacy_generalization": "requests[:edit_count]",
-            "locality": f"requests[:{args.locality_panel_size}]",
+            "locality": locality_panel,
         },
     }
     if bool(getattr(args, "wild_eff_gen", False)):
@@ -1452,7 +1475,7 @@ def load_or_evaluate_base(
     raw_requests_sha256: str,
     wild_judge: Optional[WildJudge] = None,
 ) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    locality_count = min(args.locality_panel_size, len(requests))
+    locality_count = locality_panel_count(args, len(requests))
     if locality_count <= 0:
         raise ValueError("--locality-panel-size must be positive")
     output_path = args.output_root / "base" / "items.json"
@@ -1573,7 +1596,7 @@ def evaluate_run(
 
     output_dir = args.output_root / "runs" / run.slug
     named_parameters = dict(model.named_parameters())
-    locality_count = min(args.locality_panel_size, len(requests))
+    locality_count = locality_panel_count(args, len(requests))
     base_references = locality_reference_predictions(base_payload["cases"], locality_count)
     trajectory_rows = []
     for step in steps:

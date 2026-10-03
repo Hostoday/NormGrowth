@@ -53,6 +53,8 @@ def release_files():
         # Vendored EasyEdit/easyeditor/models contains source, not model weights.
         if rel.parts[0] in EXCLUDED_ROOTS or any(part in EXCLUDED_PARTS for part in rel.parts):
             continue
+        if rel.parts[0] == 'data' and rel != Path('data/README.md'):
+            continue
         if path.is_symlink():
             raise ValueError(f'Symlink is not a portable release file: {rel}')
         if not path.is_file() or path.suffix in {'.pyc', '.zip'}:

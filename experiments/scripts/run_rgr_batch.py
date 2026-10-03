@@ -793,8 +793,13 @@ def maybe_sample_requests(
     seed: int,
     selection: str = "prefix",
 ) -> List[Dict[str, Any]]:
-    if sample_size is None or sample_size <= 0 or sample_size >= len(requests):
+    if sample_size is None or sample_size <= 0:
         return requests
+    if sample_size > len(requests):
+        raise ValueError(
+            f"Requested {sample_size} edits but the dataset contains only "
+            f"{len(requests)} usable requests. Supply enough data or set --sample_size explicitly."
+        )
 
     if selection == "prefix":
         return requests[:sample_size]
@@ -1367,12 +1372,12 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Directory to save the edited model. Defaults to outputs/Models/<method>/<run_name>.",
     )
-    parser.add_argument("--batch_size", type=int, default=None, help="Override hparams.batch_size.")
+    parser.add_argument("--batch_size", type=int, default=1, help="Editing batch size (default: 1).")
     parser.add_argument(
         "--sample_size",
         type=int,
-        default=None,
-        help="Select this many requests before editing.",
+        default=1000,
+        help="Number of edit requests (default: 1000). Set 0 to use all usable requests.",
     )
     parser.add_argument(
         "--selection",
@@ -1889,8 +1894,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--do_eval",
         action="store_true",
-        help="Run in-process pre/post evaluation. Default is to skip evaluation and evaluate later from the saved model.",
+        help="Evaluate the edited prefix for EFF/GEN and the full fixed request cohort for locality at checkpoints.",
     )
+    parser.add_argument(
+        "--eval_steps", type=maybe_parse_literal_list,
+        default=[50, 100, 150, 200, 250, 300, 500, 750, 1000],
+        help="Cumulative evaluation checkpoints for --do_eval; the final edit is always evaluated.",
+    )
+    parser.add_argument("--eval_batch_size", type=int, default=1,
+                        help="Evaluation batch size for --do_eval (default: 1).")
     parser.add_argument(
         "--capture_latents", type=int, choices=[0, 1], default=0,
         help="Save full target/init/delta vectors for each single-request edit.",
@@ -1900,8 +1912,6 @@ def parse_args() -> argparse.Namespace:
         help="Capture the final edited block boundary before/after each single-request edit.",
     )
     parser.add_argument("--skip_eval", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--test_generation", action="store_true", help="Enable generation-based fluency eval.")
-    parser.add_argument("--eval_metric", type=str, default="exact match", help="Evaluation metric for EasyEdit.")
     return parser.parse_args()
 
 
@@ -2510,7 +2520,38 @@ def main() -> None:
         )
     print(f"[config] do_eval={run_eval}")
 
-    evaluation_type = getattr(editor.hparams, "evaluation_type", None)
+    cumulative_evaluations: List[Dict[str, Any]] = []
+    evaluation_steps = set()
+    if run_eval:
+        from diagnostics.analyze_edit_count_gain_trajectory import (
+            collect_group_items, compute_locality_outputs, evaluate_step,
+        )
+        from evaluate.eval_hf_easyedit import maybe_format_prompt
+        # Editing algorithms use subject placeholders; evaluation uses rendered text.
+        evaluation_requests = [
+            dict(request, prompt=maybe_format_prompt(request["prompt"], request.get("subject")),
+                 rephrase_prompt=maybe_format_prompt(request.get("rephrase_prompt"), request.get("subject")))
+            for request in requests
+        ]
+        if args.eval_batch_size < 1 or any(step < 1 for step in args.eval_steps):
+            raise ValueError("Evaluation batch size and checkpoint edit counts must be positive")
+        evaluation_steps = {step for step in args.eval_steps if step <= len(requests)}
+        evaluation_steps.add(len(requests))
+        invalid_steps = [step for step in evaluation_steps
+                         if step != len(requests) and step % int(hparams.batch_size)]
+        if invalid_steps:
+            raise ValueError(f"Evaluation checkpoints must coincide with editing batch boundaries: {invalid_steps}")
+        locality_items = collect_group_items(requests, "locality")
+        missing_locality = set(range(len(requests))) - {int(item[0]) for item in locality_items}
+        if missing_locality:
+            raise ValueError(f"The fixed locality panel is missing prompts for {len(missing_locality)} selected requests")
+        # The reference is captured once from the unedited model, on all selected requests.
+        editor.model.eval()
+        base_locality_outputs = compute_locality_outputs(
+            model=editor.model, model_name=editor.model_name, hparams=editor.hparams,
+            tokenizer=editor.tok, locality_items=locality_items,
+            device=editor.hparams.device, batch_size=args.eval_batch_size,
+        )
 
     all_metrics: List[Dict[str, Any]] = []
     started_at = time.time()
@@ -2526,20 +2567,6 @@ def main() -> None:
             f"[batch {batch_index}/{total_batches}] editing {len(batch_requests)} request(s) "
             f"case_ids={case_ids[:3]}{'...' if len(case_ids) > 3 else ''}"
         )
-
-        pre_batch = [None] * len(batch_requests)
-        if run_eval:
-            for i, request in enumerate(batch_requests):
-                pre_batch[i] = compute_edit_quality(
-                    editor.model,
-                    editor.model_name,
-                    editor.hparams,
-                    editor.tok,
-                    request,
-                    editor.hparams.device,
-                    eval_metric=args.eval_metric,
-                    test_generation=args.test_generation,
-                )
 
         if track_post_update:
             before_nodes, node_metadata = capture_boundary_nodes(
@@ -2557,7 +2584,6 @@ def main() -> None:
             keep_original_weight=False,
         )
         edit_time = time.perf_counter() - edit_start
-        edited_model_for_eval = edited_model
         editor.model = edited_model
         if track_post_update:
             after_nodes, after_node_metadata = capture_boundary_nodes(
@@ -2576,20 +2602,6 @@ def main() -> None:
             )
 
         for request_index, request in enumerate(batch_requests):
-            post_eval = None
-            if run_eval:
-                post_eval = compute_edit_quality(
-                    edited_model_for_eval,
-                    editor.model_name,
-                    editor.hparams,
-                    editor.tok,
-                    request,
-                    editor.hparams.device,
-                    eval_metric=args.eval_metric,
-                    test_generation=args.test_generation,
-                )
-                collapse_locality_outputs(pre_batch[request_index], post_eval, request, evaluation_type)
-
             all_metrics.append(
                 {
                     "case_id": request["case_id"],
@@ -2597,8 +2609,8 @@ def main() -> None:
                     "index_in_batch": request_index,
                     "requested_rewrite": request,
                     "edit_time_sec": edit_time,
-                    "pre": pre_batch[request_index],
-                    "post": post_eval,
+                    "pre": None,
+                    "post": None,
                 }
             )
 
@@ -2607,6 +2619,23 @@ def main() -> None:
             f"(cumulative requests={len(all_metrics)})"
         )
         committed_requests = len(all_metrics)
+        if committed_requests in evaluation_steps:
+            editor.model.eval()
+            evaluation = evaluate_step(
+                committed_requests, editor.model, editor.model_name, editor.hparams,
+                editor.tok, evaluation_requests, requests, base_locality_outputs,
+                args.eval_batch_size, continuous_behavior=False,
+            )
+            evaluation["evaluation_scope"] = {
+                "editing_requests": committed_requests,
+                "locality_requests": len(requests),
+                "locality_reference": "unedited Base predictions on the fixed selected request cohort",
+            }
+            atomic_write_json(
+                os.path.join(output_dir, "evaluations", f"step_{committed_requests:04d}.json"),
+                evaluation,
+            )
+            cumulative_evaluations.append(dict(edit_count=committed_requests, **evaluation["summary"]))
         if (
             bool(args.save_delta_checkpoint)
             and (
@@ -2623,6 +2652,10 @@ def main() -> None:
     total_elapsed = time.time() - started_at
     summary = summarize_metrics(all_metrics)
     summary["total_elapsed_sec"] = total_elapsed
+    if cumulative_evaluations:
+        summary["cumulative_evaluations"] = cumulative_evaluations
+        summary["final_cumulative_evaluation"] = cumulative_evaluations[-1]
+        summary["evaluation_protocol"] = "EFF/GEN on requests[:edit_count]; locality on the fixed full request cohort versus Base"
 
     metrics_path = os.path.join(output_dir, "metrics.json")
     requests_path = os.path.join(output_dir, "requests.json")
@@ -2658,8 +2691,10 @@ def main() -> None:
         "eos_token": eos_token,
         "eos_appended_count": eos_appended_count,
         "do_eval": run_eval,
-        "test_generation": args.test_generation,
-        "eval_metric": args.eval_metric,
+        "eval_steps": sorted(evaluation_steps),
+        "eval_batch_size": args.eval_batch_size,
+        "locality_panel_requests": len(requests) if run_eval else None,
+        "evaluation_metric": "complete-target teacher-forced accuracy; fixed-panel Base prediction agreement",
         "output_dir": output_dir,
         "save_model": save_model_enabled,
         "save_model_dir": save_model_dir,

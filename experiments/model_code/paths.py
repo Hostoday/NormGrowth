@@ -22,7 +22,7 @@ RESEARCH_ROOT = _path("BNG_RESEARCH_ROOT", PACKAGE_ROOT / "inputs" / "research")
 OUTPUT_ROOT = _path(
     "BNG_OUTPUT_ROOT", RESEARCH_ROOT / "Residual_gain_regulization" / "outputs"
 )
-DATA_ROOT = _path("BNG_DATA_ROOT", PACKAGE_ROOT / "inputs" / "datasets")
+DATA_ROOT = _path("BNG_DATA_ROOT", PACKAGE_ROOT / "data")
 MODEL_ROOT = _path("BNG_MODEL_ROOT", PACKAGE_ROOT / "models")
 LLAMA_MODEL = _path("BNG_LLAMA_MODEL", MODEL_ROOT / "Meta-Llama-3-8B-Instruct")
 CACHE_ROOT = _path("BNG_CACHE_ROOT", PACKAGE_ROOT / "build" / "cache")

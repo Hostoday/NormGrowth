@@ -1,32 +1,12 @@
-# 모델 편집·측정·개입 코드
+# Model editing, measurement, and interventions
 
-이 폴더에는 MEMIT·AlphaEdit 편집, hidden-state 측정, 직교 개입과 동일 norm 평행 대조를 위한 실행기와 내부 의존성을 담았다. 실험 설정과 코드를 제공하며, 측정 결과와 생성된 파일은 포함하지 않는다.
+This directory contains MEMIT and AlphaEdit editing code, hidden-state measurements, orthogonal interventions, and parallel controls with matched final norms. Experiment settings and source code are provided; datasets, model weights, and generated results are supplied or produced locally.
 
-논문의 EFF·GEN은 complete-target teacher-forced 점수이며 평가 target에 포함된 EOS/EOT도 유지한다. LOC는 동일한 teacher-forced 문맥에서 편집 전후 모델의 토큰 예측 일치율이다. 자유 생성 평가 경로도 소스에 포함되어 있으므로 실행 시 사용할 평가 규약을 구분해야 한다.
+The paper evaluates EFF and GEN with complete-target teacher forcing, retaining EOS/EOT tokens when present in the evaluation target. LOC measures agreement between the Base and edited models' token predictions under the same teacher-forced context. The source also contains free-generation evaluation; select the evaluation protocol corresponding to the reported metric.
 
-모델·tokenizer, 데이터셋, covariance·projection cache는 외부에서 준비해야 한다. 측정·개입 실행기에는 편집 checkpoint와 단계별 protocol·capture도 필요하다. 아래 명령은 각 단계의 진입점이며, 전체 40조건을 한 번에 실행하는 통합 파이프라인은 제공하지 않는다.
+## Environment
 
-## 포함한 코드
-
-| 단계 | 진입점·구현 | 범위 |
-|---|---|---|
-| MEMIT·AlphaEdit 편집 | [run_rgr_batch.py](scripts/run_rgr_batch.py), [MEMIT](EasyEdit/easyeditor/models/memit/memit_main.py), [AlphaEdit](EasyEdit/easyeditor/models/alphaedit/AlphaEdit_main.py) | Native·NAS·ENCORE·SPHERE·SADR의 opt-in 구현과 target 최적화·outer update |
-| 순차 편집과 artifact 기록 | [analyze_edit_count_gain_trajectory.py](diagnostics/analyze_edit_count_gain_trajectory.py) | 원 프로젝트의 순차 실행기. HN을 포함한 과거 보조 옵션도 소스에 존재하며 논문 모든 조건의 기본 설정은 아님 |
-| Llama locality geometry | [capture_scalar_checkpoint_h9.py](diagnostics/capture_scalar_checkpoint_h9.py) | Base + cumulative delta 복원, locality prompt-last H9 |
-| Llama rewrite geometry | [capture_rewrite_backfill.py](model_code/capture_rewrite_backfill.py) | inventory 기반 고정 평가 집합, rewrite subject-last H9 |
-| GPT-2 XL checkpoint 평가 | [gpt2_checkpoint_analysis.py](diagnostics/gpt2_checkpoint_analysis.py) | 모델·run·data 경로를 받는 H18 capture와 checkpoint 평가 |
-| 직교 개입, Llama–zsRE | [run_llama_intervention_extension.py](diagnostics/run_llama_intervention_extension.py) | 기존 protocol v2의 모델 실행과 집계 |
-| 직교 개입, GPT-2 XL 두 데이터셋 | [run_gpt2_intervention_extension.py](diagnostics/run_gpt2_intervention_extension.py) | `--dataset zsRE` 또는 `CounterFact` |
-| 직교 개입, Llama–CounterFact | [run_llama_counterfact_intervention.py](diagnostics/run_llama_counterfact_intervention.py) | 10조건과 보존된 source manifest |
-| 동일 norm 평행 대조, Llama–CounterFact | [run_llama_counterfact_parallel_control.py](diagnostics/run_llama_counterfact_parallel_control.py) | 기하적으로 가능한 case의 총 Base-axis projection 조절 |
-| 동일 norm 평행 대조, 나머지 세 조합 | [run_all_cohort_parallel_control.py](diagnostics/run_all_cohort_parallel_control.py) | `llama_zsre`, `gpt2_zsre`, `gpt2_counterfact` |
-| 평가 규약 | [eval_cumulative_generation_locality.py](evaluate/eval_cumulative_generation_locality.py), [target_text_contract.py](diagnostics/target_text_contract.py) | 자유 생성 성능과 TF locality의 구분, 실제 EOS/EOT 보존 |
-
-AlphaEdit의 SPHERE 분기는 각 층의 update를 투영한 결과를 다음 층의 key·residual 계산에 반영한다. `Linear`는 저장 방향을 유지하고 GPT-2 `Conv1D`는 weight와 update를 모두 `[output,input]`으로 전치한 뒤 정규화·투영하고 원 저장 방향으로 복원한다. 따라서 두 backbone 모두 MLP 입력 방향에 같은 제약을 적용한다.
-
-## 환경과 모델 없는 확인
-
-현재 EasyEdit 환경의 실제 패키지 버전을 [저장소 requirements.txt](../requirements.txt)에 기록했다. 공개 환경 이름은 `normgrowth`이며 Python 3.9.7, PyTorch 2.1.0(CUDA 12.1), Transformers 4.46.2를 사용한다. [environment.yml](../environment.yml)로 환경을 생성한다.
+The package versions from the EasyEdit experiment environment are recorded in the repository [requirements.txt](../requirements.txt). The public environment is named `normgrowth` and uses Python 3.9.7, PyTorch 2.1.0 with CUDA 12.1, and Transformers 4.46.2. Run these commands from the repository root:
 
 ```bash
 conda env create -f environment.yml
@@ -38,49 +18,107 @@ python -B experiments/model_code/capture_rewrite_backfill.py --help
 python -B experiments/model_code/smoke.py
 ```
 
-`--help`는 모델을 로드하지 않는다. `smoke.py`는 평행 대조의 직교 성분 보존·목표 norm과 불가능한 입력의 처리를 확인하고 소스 문법을 검사한다.
+The help commands do not load a model. `smoke.py` checks source syntax and verifies that the parallel control preserves the orthogonal component, reaches the target norm when feasible, and handles infeasible inputs.
 
-## 경로 설정과 외부 자산
+## Dataset placement and default protocol
 
-저장소 루트에서 위 명령을 실행한다. 실행기 파일을 다른 작업 디렉터리에서 지정해도 기본 경로는 저장소 위치를 따른다. 경로 기본값은 [model_code/paths.py](model_code/paths.py)에서 설정한다.
+Create a `data/` directory at the repository root and place the datasets there:
 
-| 환경변수 | 의미 | 기본 경로 |
+```text
+data/
+├── zsre/
+│   └── zsre_3k.json
+└── counterfact/
+    └── counterfact.json
+```
+
+These files are local inputs and are not distributed with the code. Use the corresponding path with `--data_path` in the editing runner, or `--data-path` in the trajectory runner. See the [data instructions](../data/README.md) for input preparation.
+
+The default editing protocol selects the first **1,000 valid, normalized requests** in their original order (`prefix` selection), uses seed **42**, and applies edits sequentially with **batch size 1**. Prefix selection does not randomly resample the dataset.
+
+At each checkpoint after `t` edits, EFF and GEN evaluate the rewrite and rephrase prompts of **all requests edited so far**, namely the first `t` selected requests. Locality uses a **fixed panel containing every locality entry associated with the initial 1,000 selected requests**, at every checkpoint. It is not independently sampled or restricted to the requests edited so far. For example, at 50 edits EFF and GEN cover the first 50 edit requests while locality covers the locality entries of all 1,000 selected requests. At 1,000 edits, both use the full selected cohort. Requests can have multiple locality entries, so the number of locality prompts can differ from 1,000.
+
+The trajectory runner defaults to 1,000 edits and evaluates at edit counts `0,50,100,150,200,250,300,500,750,1000`, where 0 denotes the Base model. Evaluation batch sizes control forward-pass throughput and are separate from the editing batch size.
+
+In `run_rgr_batch.py`, enable checkpoint scoring with `--do_eval`. It records the full fixed locality panel's Base predictions before editing and evaluates after `50,100,150,200,250,300,500,750,1000` edits, plus the final edit when it falls outside that schedule. The default evaluation batch size is 1. Results are written to `evaluations/step_XXXX.json` under the run output directory; `summary.json` includes `final_cumulative_evaluation`. Without `--do_eval`, the runner performs editing only.
+
+For example, run the GPT-2 XL–zsRE–MEMIT ENCORE configuration with:
+
+```bash
+python experiments/scripts/run_rgr_batch.py \
+  --editing_method MEMIT \
+  --hparams_path experiments/hparams/MEMIT/gpt2-xl_zsre_encore.yaml \
+  --data_path data/zsre/zsre_3k.json \
+  --output_dir outputs/gpt2_zsre_memit_encore \
+  --batch_size 1 --sample_size 1000 --selection prefix --seed 42 \
+  --append_eos_to_target 1 --save_model 0 --do_eval
+```
+
+For CounterFact, use `data/counterfact/counterfact.json` and the matching configuration. The eight ENCORE presets and their condition-specific values are described in the [hyperparameter guide](hparams/README.md).
+
+## Experiment entry points
+
+| Stage | Entry point or implementation | Scope |
 |---|---|---|
-| `BNG_RESEARCH_ROOT` | 과거 연구 artifact 트리의 루트 | `inputs/research/` |
-| `BNG_OUTPUT_ROOT` | 원 실행기가 요구하는 `outputs` 트리 | `$BNG_RESEARCH_ROOT/Residual_gain_regulization/outputs/` |
-| `BNG_DATA_ROOT` | 원 데이터셋 경로의 기본 루트 | `inputs/datasets/` |
-| `BNG_MODEL_ROOT` | 로컬 모델 폴더의 루트 | `models/` |
-| `BNG_LLAMA_MODEL` | Llama 모델과 tokenizer가 있는 폴더 | `$BNG_MODEL_ROOT/Meta-Llama-3-8B-Instruct/` |
-| `BNG_CACHE_ROOT` | 보조 모델 cache 루트 | `build/cache/` |
-| `BNG_SCRATCH_ROOT` | EasyEdit trainer 임시 파일 | `build/scratch/` |
-| `BNG_BLIP2_ASSET_ROOT` | 보조 BLIP2 구성 파일의 루트 | `inputs/blip2/` |
+| MEMIT and AlphaEdit editing | [run_rgr_batch.py](scripts/run_rgr_batch.py), [MEMIT](EasyEdit/easyeditor/models/memit/memit_main.py), [AlphaEdit](EasyEdit/easyeditor/models/alphaedit/AlphaEdit_main.py) | Native, NAS, ENCORE, SPHERE, and SADR options; target optimization and weight updates |
+| Sequential editing and artifact capture | [analyze_edit_count_gain_trajectory.py](diagnostics/analyze_edit_count_gain_trajectory.py) | Sequential execution, checkpoint evaluation, and optional diagnostics; historical options such as HN remain available |
+| Llama locality geometry | [capture_scalar_checkpoint_h9.py](diagnostics/capture_scalar_checkpoint_h9.py) | Restore Base plus cumulative parameter deltas and capture locality prompt-last H9 states |
+| Llama rewrite geometry | [capture_rewrite_backfill.py](model_code/capture_rewrite_backfill.py) | Fixed evaluation set specified by an inventory; rewrite subject-last H9 states |
+| GPT-2 XL checkpoint evaluation | [gpt2_checkpoint_analysis.py](diagnostics/gpt2_checkpoint_analysis.py) | H18 capture and checkpoint evaluation with model, run, and dataset paths |
+| Orthogonal intervention, Llama–zsRE | [run_llama_intervention_extension.py](diagnostics/run_llama_intervention_extension.py) | Model execution and aggregation from protocol v2 |
+| Orthogonal intervention, GPT-2 XL | [run_gpt2_intervention_extension.py](diagnostics/run_gpt2_intervention_extension.py) | Select `--dataset zsRE` or `CounterFact` |
+| Orthogonal intervention, Llama–CounterFact | [run_llama_counterfact_intervention.py](diagnostics/run_llama_counterfact_intervention.py) | Ten configurations specified by a source manifest |
+| Matched-norm parallel control, Llama–CounterFact | [run_llama_counterfact_parallel_control.py](diagnostics/run_llama_counterfact_parallel_control.py) | Adjust the total Base-axis projection for geometrically feasible cases |
+| Matched-norm parallel control, other cohorts | [run_all_cohort_parallel_control.py](diagnostics/run_all_cohort_parallel_control.py) | `llama_zsre`, `gpt2_zsre`, and `gpt2_counterfact` |
+| Evaluation conventions | [eval_cumulative_generation_locality.py](evaluate/eval_cumulative_generation_locality.py), [target_text_contract.py](diagnostics/target_text_contract.py) | Free-generation evaluation, teacher-forced locality, and preservation of target EOS/EOT tokens |
+
+These are entry points for individual stages. Running all 40 configurations requires selecting each model, dataset, editor, and method and passing the outputs to the subsequent measurement and intervention stages.
+
+In AlphaEdit, SPHERE projects each layer's update before computing the next layer's keys and residuals. `Linear` weights retain their stored orientation. GPT-2 `Conv1D` weights and updates are both transposed to `[output, input]` for normalization and projection, then restored to their stored orientation. Both backbones therefore apply the constraint along the MLP input dimension.
+
+## Paths and required assets
+
+Default paths are defined in [model_code/paths.py](model_code/paths.py) relative to the repository location, including when a runner is invoked from another working directory.
+
+| Environment variable | Purpose | Default path |
+|---|---|---|
+| `BNG_RESEARCH_ROOT` | Root of the research artifact tree used by existing protocols | `inputs/research/` |
+| `BNG_OUTPUT_ROOT` | Output tree used by the original runners | `$BNG_RESEARCH_ROOT/Residual_gain_regulization/outputs/` |
+| `BNG_DATA_ROOT` | Dataset root | `data/` |
+| `BNG_MODEL_ROOT` | Local model root | `models/` |
+| `BNG_LLAMA_MODEL` | Llama model and tokenizer directory | `$BNG_MODEL_ROOT/Meta-Llama-3-8B-Instruct/` |
+| `BNG_CACHE_ROOT` | Auxiliary model cache root | `build/cache/` |
+| `BNG_SCRATCH_ROOT` | Temporary EasyEdit trainer files | `build/scratch/` |
+| `BNG_BLIP2_ASSET_ROOT` | Auxiliary BLIP2 configuration root | `inputs/blip2/` |
+
+For example:
 
 ```bash
 export BNG_RESEARCH_ROOT=inputs/research
 export BNG_OUTPUT_ROOT=inputs/research/Residual_gain_regulization/outputs
-export BNG_DATA_ROOT=inputs/datasets
+export BNG_DATA_ROOT=data
 export BNG_MODEL_ROOT=models
 export BNG_LLAMA_MODEL=models/Meta-Llama-3-8B-Instruct
 ```
 
-환경변수의 상대경로는 저장소 루트 기준으로 해석한다. 외부 디스크의 경로를 사용자가 직접 지정할 수도 있다. 위 예시는 논문 자료를 제공하지 않으며 실제 자산은 해당 위치에 준비해야 한다. CLI에서 명시적으로 넘기는 상대경로는 일반 명령행 규약대로 호출 작업 디렉터리를 기준으로 한다. BLIP2는 현재 논문의 실험 대상이 아니며, 보조 코드에서 요구하는 구성 파일도 포함하지 않았다.
+Relative paths in these environment variables are resolved against the repository root. Explicit relative CLI paths are resolved against the current working directory. Absolute paths to external storage are also accepted. Place the relevant assets at the configured locations. BLIP2 is auxiliary code and is not used in the paper's experiments.
 
-GPT-2 XL의 일반 평가기는 `--model-path`, `--run-dir`, `--data-path`, `--output-root`를 받는다. 개입 실행기는 protocol/source manifest에서 checkpoint·request·model 경로를 읽는다. 환경변수는 코드의 기본 경로를 바꾸며, manifest 내부의 경로·SHA256·case 순서는 자동 변환하지 않는다. 자산을 옮기면 해당 protocol의 경로도 실제 위치와 일치시켜야 한다.
+The GPT-2 XL checkpoint evaluator accepts `--model-path`, `--run-dir`, `--data-path`, and `--output-root`. Intervention runners read checkpoint, request, and model paths from protocol or source manifests. When moving assets, update the manifest paths to match their new locations; environment variables do not rewrite manifest contents, hashes, or case order.
 
-평행 대조 실행기에는 먼저 생성한 직교 개입 출력과 평가 protocol, native hidden·prediction이 필요하다. `--audit-only`와 `--aggregate-only`에도 이 입력을 준비해야 한다. 일부 source-audit는 protocol 파일을 생성한다.
+Prepare the following assets for the relevant stage:
 
-실제 실행에는 다음 자료가 필요하다.
+- The model and tokenizer revisions used for Llama-3-8B-Instruct or GPT-2 XL.
+- The normalized requests in their original order; measurement and intervention protocols also specify their case order and fit500/eval100 split.
+- Covariance statistics and method-specific assets such as AlphaEdit projectors and NAS anchors when rerunning edits.
+- Cumulative parameter deltas, metadata, and run configurations produced by editing, for checkpoint measurements.
+- Protocols, source manifests, native hidden states, and predictions produced by earlier stages, for intervention and parallel-control runs.
 
-- Llama-3-8B-Instruct 또는 GPT-2 XL의 동일한 모델·tokenizer revision.
-- 정규화된 1,000개 request, canonical case 순서와 fit500/eval100 분할.
-- 각 editor·방법·데이터셋의 cumulative parameter delta, sidecar metadata, run configuration.
-- 편집을 다시 할 경우 covariance 통계, AlphaEdit projector와 NAS anchor 등 방법별 자산.
-- 개입을 계속할 경우 기존 protocol·source manifest·native capture·prediction과 corrected 평가 기록.
+Parallel-control runners require the orthogonal-intervention output, evaluation protocol, and native captures and predictions. Their `--audit-only` and `--aggregate-only` modes also require these inputs. Some source-audit modes write protocol files.
 
-RQ2의 주 rewrite 측정은 subject-last이고 locality는 prompt-last다. RQ3에서는 rewrite·rephrase·locality 각각의 원 prompt-last에 직접 개입한다. 따라서 RQ3을 rewrite subject-last 상관의 동일 위치 인과 검증으로 해석하지 않는다. 현재 논문에 보고하는 대조는 직교 성분의 부분 축소와 동일 최종 norm의 평행 projection 조절이다. 원 실행기에는 과거 random 방향 등 추가 조건이 남아 있지만, 공개된 현재 Results에 이 조건들을 추가로 포함한다는 뜻은 아니다.
+RQ2 measures rewrite geometry at the subject-last position and locality geometry at the prompt-last position. RQ3 intervenes at the original prompt-last position for rewrite, rephrase, and locality prompts. The reported comparisons use partial orthogonal reduction and parallel projection adjustment to the same final norm. Additional historical intervention options remain in the source.
 
-## 설정과 라이선스
+## Configurations and licenses
 
-ENCORE의 8조건 설정은 [조건별 설정표와 실행 안내](hparams/README.md), `hparams/{MEMIT,AlphaEdit}/*_encore.yaml`에 제공하며 AlphaEdit의 `L2=10`을 포함한다. 일반 `llama3-8b.yaml`은 기본 템플릿이므로 논문의 조건별 설정 대신 사용하지 않는다.
+The eight ENCORE configurations are supplied in `hparams/{MEMIT,AlphaEdit}/*_encore.yaml`, including AlphaEdit's base `L2=10`; see the [configuration table](hparams/README.md). The generic `llama3-8b.yaml` files are templates rather than condition-specific paper presets.
 
-EasyEdit 코드는 [원 MIT License](EasyEdit/LICENSE)를 보존했다. AlphaEdit 상류 소스의 [MIT License](model_code/licenses/AlphaEdit-LICENSE)도 함께 제공한다. 모델 가중치와 데이터셋은 각 배포처의 별도 이용 조건을 따른다.
+The EasyEdit [MIT License](EasyEdit/LICENSE) and the upstream AlphaEdit [MIT License](model_code/licenses/AlphaEdit-LICENSE) are preserved. Model weights and datasets remain subject to their respective providers' terms.

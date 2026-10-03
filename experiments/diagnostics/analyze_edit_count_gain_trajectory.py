@@ -131,6 +131,7 @@ from diagnostics.edit_order_manifest import (  # noqa: E402
     validate_manifest as validate_edit_order_manifest,
 )
 from scripts import run_rgr_batch as edit_runner  # noqa: E402
+from model_code.paths import DATA_ROOT  # noqa: E402
 
 
 CONTEXT_CHOICES = {
@@ -439,6 +440,58 @@ def analysis_request_fingerprint(requests: Sequence[Mapping[str, Any]]) -> str:
         for request in requests
     ]
     return hashlib.sha256(canonical_json(signatures).encode("utf-8")).hexdigest()
+
+
+def locality_request_count(sample_size: int, locality_eval_prompts: int | None) -> int:
+    """Default to every selected edit case; an explicit limit supports older runs."""
+    if sample_size <= 0:
+        raise ValueError("--sample-size must be positive")
+    count = sample_size if locality_eval_prompts is None else locality_eval_prompts
+    if not 1 <= count <= sample_size:
+        raise ValueError("--locality-eval-prompts must be in [1, sample-size]")
+    return count
+
+
+def select_trajectory_requests(
+    source_requests: Sequence[Dict[str, Any]],
+    sample_size: int,
+    locality_eval_prompts: int | None,
+    edit_order: str,
+    seed: int,
+    edit_order_permutation: Sequence[int] | None = None,
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+    """Keep locality fixed to the selected cohort, independently of edit order."""
+    locality_count = locality_request_count(sample_size, locality_eval_prompts)
+    if len(source_requests) < sample_size:
+        raise ValueError(
+            f"Requested {sample_size} edits, but the dataset contains only "
+            f"{len(source_requests)} valid requests. Supply more data or lower --sample-size."
+        )
+    requests = list(source_requests[:sample_size])
+    analysis_requests = list(requests[:locality_count])
+    if edit_order_permutation is not None:
+        requests = apply_manifest_order(requests, edit_order_permutation)
+    elif edit_order == "shuffle":
+        random.Random(seed).shuffle(requests)
+    elif edit_order != "prefix":
+        raise ValueError(f"Unsupported edit order: {edit_order!r}")
+    return requests, analysis_requests
+
+
+def validate_analysis_panel(
+    actual: Sequence[Mapping[str, Any]],
+    expected: Sequence[Mapping[str, Any]],
+    path: Path,
+) -> None:
+    if len(actual) != len(expected) or (
+        analysis_request_fingerprint(actual) != analysis_request_fingerprint(expected)
+    ):
+        raise ValueError(
+            f"Existing {path} does not match the requested locality panel "
+            f"({len(actual)} saved requests; {len(expected)} required). "
+            "Choose a new --output-dir, or explicitly restore the original "
+            "--locality-eval-prompts setting when resuming that run."
+        )
 
 
 def validate_or_write_config(path: Path, config: Mapping[str, Any]) -> str:
@@ -3232,15 +3285,15 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Defaults to hparams/<editing-method>/llama3-8b.yaml",
     )
-    parser.add_argument("--data-path", default="data/zsre/zsre_3k.json")
+    parser.add_argument("--data-path", default=str(DATA_ROOT / "zsre" / "zsre_3k.json"))
     parser.add_argument("--model-name", default="meta-llama/Meta-Llama-3-8B-Instruct")
     parser.add_argument("--output-dir", required=True)
-    parser.add_argument("--sample-size", type=int, default=300)
+    parser.add_argument("--sample-size", type=int, default=1000)
     parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument(
         "--steps",
         type=parse_steps,
-        default=parse_steps("0,10,20,50,100,150,200,250,300"),
+        default=parse_steps("0,50,100,150,200,250,300,500,750,1000"),
     )
     parser.add_argument(
         "--layers",
@@ -3259,7 +3312,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--probe-prompts", type=int, default=50)
     parser.add_argument("--jacobian-prompts", type=int, default=50)
-    parser.add_argument("--locality-eval-prompts", type=int, default=50)
+    parser.add_argument(
+        "--locality-eval-prompts", type=int, default=None,
+        help=(
+            "Number of selected edit cases whose locality prompts are evaluated "
+            "at every checkpoint. Defaults to all --sample-size cases; every "
+            "locality prompt in each selected case is included."
+        ),
+    )
     parser.add_argument("--pca-rank", type=int, default=32)
     parser.add_argument(
         "--branch-analysis",
@@ -3716,6 +3776,9 @@ def condition_components(condition: str) -> frozenset:
 
 def validate_args(args: argparse.Namespace) -> None:
     validate_o0_axis_args(args)
+    args.locality_eval_prompts = locality_request_count(
+        args.sample_size, args.locality_eval_prompts
+    )
     if args.batch_size != 1:
         raise ValueError("This trajectory experiment requires --batch-size 1")
     if args.sample_size < max(args.steps):
@@ -3726,8 +3789,6 @@ def validate_args(args: argparse.Namespace) -> None:
         raise ValueError("--probe-prompts must be greater than one")
     if args.jacobian_prompts <= 0 or args.jacobian_prompts > args.probe_prompts:
         raise ValueError("--jacobian-prompts must be in [1, probe-prompts]")
-    if args.locality_eval_prompts <= 0:
-        raise ValueError("--locality-eval-prompts must be positive")
     if args.edit_order_file:
         edit_order_path = Path(args.edit_order_file).expanduser()
         if not edit_order_path.is_file():
@@ -4296,11 +4357,8 @@ def main() -> None:
 
     requests_path = output_dir / "requests.json"
     analysis_requests_path = output_dir / "analysis_requests.json"
-    source_requests: List[Dict[str, Any]] | None = None
+    source_requests, source_record_count = edit_runner.load_requests(args.data_path)
     if edit_order_permutation is not None:
-        source_requests, source_record_count = edit_runner.load_requests(
-            args.data_path
-        )
         if source_record_count != int(edit_order_metadata["source_record_count"]):
             raise ValueError(
                 "Edit-order source normalization changed the record count: "
@@ -4312,44 +4370,42 @@ def main() -> None:
                 "Edit-order manifests require every source JSON record to be "
                 "accepted by the trajectory request loader"
             )
-        expected_ordered_requests = apply_manifest_order(
-            list(source_requests[: args.sample_size]),
-            edit_order_permutation,
-        )
+    expected_ordered_requests, expected_analysis_requests = select_trajectory_requests(
+        source_requests,
+        args.sample_size,
+        args.locality_eval_prompts,
+        args.edit_order,
+        args.seed,
+        edit_order_permutation,
+    )
     if requests_path.exists():
         requests, _ = edit_runner.load_requests(str(requests_path))
         if len(requests) != args.sample_size:
             raise ValueError(
                 f"Existing {requests_path} contains {len(requests)} requests, expected {args.sample_size}"
             )
-        if edit_order_permutation is not None and analysis_request_fingerprint(
+        if analysis_request_fingerprint(
             requests
         ) != analysis_request_fingerprint(expected_ordered_requests):
             raise ValueError(
-                f"Existing {requests_path} does not match --edit-order-file"
+                f"Existing {requests_path} does not match the selected dataset "
+                "prefix and edit order. Choose a new --output-dir."
             )
         if analysis_requests_path.exists():
             analysis_requests, _ = edit_runner.load_requests(str(analysis_requests_path))
-        elif source_requests is not None:
-            analysis_requests = list(
-                source_requests[
-                    : min(args.locality_eval_prompts, len(source_requests))
-                ]
+            validate_analysis_panel(
+                analysis_requests, expected_analysis_requests, analysis_requests_path
             )
         else:
-            analysis_requests = requests[: min(args.locality_eval_prompts, len(requests))]
+            analysis_requests = expected_analysis_requests
     else:
-        if source_requests is None:
-            source_requests, _ = edit_runner.load_requests(args.data_path)
-        all_requests = source_requests
-        requests = list(all_requests[: args.sample_size])
-        analysis_requests = list(
-            all_requests[: min(args.locality_eval_prompts, len(all_requests))]
-        )
-        if edit_order_permutation is not None:
-            requests = expected_ordered_requests
-        elif args.edit_order == "shuffle":
-            random.Random(args.seed).shuffle(requests)
+        requests = expected_ordered_requests
+        analysis_requests = expected_analysis_requests
+        if analysis_requests_path.exists():
+            saved_analysis_requests, _ = edit_runner.load_requests(str(analysis_requests_path))
+            validate_analysis_panel(
+                saved_analysis_requests, analysis_requests, analysis_requests_path
+            )
 
     # Runs started before online post-update/continuous scoring existed must
     # remain resumable with their original fingerprint.  New diagnostics are
@@ -4940,7 +4996,7 @@ def main() -> None:
                 save_downproj_features(feature_path, captured)
                 base_downproj_features_by_group[group] = captured
 
-    locality_requests = analysis_requests[: min(args.locality_eval_prompts, len(analysis_requests))]
+    locality_requests = analysis_requests
     base_locality_path = output_dir / "base_reference" / "base_locality_outputs.json"
     if base_locality_path.exists():
         base_locality_outputs = unflatten_locality_outputs(read_json(base_locality_path))

@@ -21,9 +21,23 @@ conda activate normgrowth
 
 Start with the [experiment instructions](experiments/README.md) for environment setup, editing and evaluation entry points, geometry capture, and interventions. The [hyperparameter guide](experiments/hparams/README.md) describes the supplied ENCORE configurations.
 
-Prepare the required model/tokenizer, benchmark inputs, and method-specific covariance or projector assets. Capture and intervention scripts also require the checkpoints and evaluation protocols described in the experiment instructions. The source runners expose individual stages; they do not provide a single command for all 40 experimental conditions.
+Place your benchmark JSON files in the repository-root [data/](data/README.md) directory:
 
-Default asset paths are derived from the repository location. Relative `BNG_*` environment settings are resolved from the repository root; relative command-line paths are resolved from the working directory. Keep local inputs in `inputs/` and generated results in `outputs/` or `build/`; these directories are ignored by Git.
+```text
+data/
+  zsre/zsre_3k.json
+  counterfact/counterfact.json
+```
+
+Create the dataset subdirectories as needed. Dataset files are local inputs and are ignored by Git. Use `--data_path data/zsre/zsre_3k.json` for the main editing runner, or the corresponding CounterFact path. `BNG_DATA_ROOT` defaults to this `data/` directory.
+
+The default experiment selects the first **1,000 valid requests**, preserves their input order, uses **editing batch size 1**, and sets seed 42. It requires at least 1,000 valid requests; it does not silently run a smaller experiment. Dataset order must match across methods.
+
+At checkpoint `t`, EFF/GEN evaluate the first `t` edited requests and their rephrase prompts. Locality always uses **all locality prompts attached to the initial 1,000 selected requests**, compared with unedited Base predictions. This panel stays fixed, including requests that have not yet been edited. For example, at 50 edits EFF/GEN cover 50 requests while locality still covers the original 1,000-request panel. Add `--do_eval` to the main editing command to evaluate checkpoints `50,100,150,200,250,300,500,750,1000` and the final edit; the trajectory runner also evaluates the Base state at step 0.
+
+Prepare the required model/tokenizer and method-specific covariance or projector assets separately. Capture and intervention scripts also require the checkpoints and evaluation protocols described in the experiment instructions. The source runners expose individual stages; they do not provide a single command for all 40 experimental conditions.
+
+Default asset paths are derived from the repository location. Relative `BNG_*` environment settings are resolved from the repository root; relative command-line paths are resolved from the working directory. Keep datasets in `data/`, other local inputs in `inputs/`, and generated results in `outputs/` or `build/`.
 
 ## Statistics and figures
 

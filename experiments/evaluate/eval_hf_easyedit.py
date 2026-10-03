@@ -669,7 +669,10 @@ def resolve_pre_cache_path(
         sample_label = "trained_requests"
     else:
         data_label = sanitize_cache_component(Path(args.data_path).stem)
-        sample_label = f"seed{args.seed}_n{args.num_samples if args.num_samples > 0 else 'all'}"
+        sample_label = (
+            f"{args.selection}_seed{args.seed}_"
+            f"n{args.num_samples if args.num_samples > 0 else 'all'}"
+        )
     return cache_dir / f"{base_label}__{data_label}__{sample_label}.json"
 
 
@@ -777,6 +780,7 @@ def save_pre_metrics_cache(
         "data_path": args.data_path,
         "requests_path": args.requests_path,
         "sample_source": "requests_path" if args.requests_path else "data_path",
+        "selection": "saved_requests" if args.requests_path else args.selection,
         "seed": args.seed,
         "num_samples_requested": len(requests) if args.requests_path else args.num_samples,
         "num_samples_used": len(requests),
@@ -898,9 +902,9 @@ def compute_pre_metrics_for_requests(
     )
 
 
-def run_evaluation() -> None:
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data_path", required=True, type=str)
+    parser.add_argument("--data_path", type=str, default=None)
     parser.add_argument(
         "--requests_path",
         type=str,
@@ -908,9 +912,13 @@ def run_evaluation() -> None:
         help="Optional saved editing requests.json. When set, evaluate exactly these requests instead of sampling data_path.",
     )
     parser.add_argument("--model_path", required=True, type=str, help="Path to edited LLM")
-    parser.add_argument("--num_samples", type=int, default=100)
+    parser.add_argument("--num_samples", type=int, default=1000)
+    parser.add_argument(
+        "--selection", choices=("prefix", "random"), default="prefix",
+        help="Select the first usable requests by default; ignored with --requests_path.",
+    )
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--batch_size", type=int, default=8)
+    parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--max_new_tokens", type=int, default=32, help=argparse.SUPPRESS)
     parser.add_argument("--save_path", type=str, default=None)
     parser.add_argument("--trust_remote_code", action="store_true")
@@ -927,7 +935,28 @@ def run_evaluation() -> None:
     )
     parser.add_argument("--force_recompute_pre", action="store_true")
     parser.add_argument("--save_pre_only", action="store_true")
+    return parser
+
+
+def select_evaluation_data(
+    parsed: List[Dict[str, Any]],
+    args: argparse.Namespace,
+) -> List[Dict[str, Any]]:
+    """Preserve saved editing requests; otherwise match the editing selection."""
+    if args.requests_path or args.num_samples <= 0 or len(parsed) <= args.num_samples:
+        return parsed
+    if args.selection == "random":
+        return random.Random(args.seed).sample(parsed, args.num_samples)
+    return parsed[:args.num_samples]
+
+
+def run_evaluation() -> None:
+    parser = build_parser()
     args = parser.parse_args()
+    if not args.data_path and not args.requests_path:
+        parser.error("provide --data_path or --requests_path")
+    if args.batch_size <= 0:
+        parser.error("--batch_size must be positive")
 
     set_seed(args.seed)
 
@@ -947,12 +976,7 @@ def run_evaluation() -> None:
             continue
         parsed.append(item)
 
-    if args.requests_path:
-        data = parsed
-    elif args.num_samples > 0 and len(parsed) > args.num_samples:
-        data = random.sample(parsed, args.num_samples)
-    else:
-        data = parsed
+    data = select_evaluation_data(parsed, args)
 
     if not torch.cuda.is_available():
         raise RuntimeError(
@@ -963,6 +987,7 @@ def run_evaluation() -> None:
     print(f"Loaded {len(data)} usable samples from {source_path}")
     print(f"Sample source: {'requests_path' if args.requests_path else 'data_path'}")
     if not args.requests_path:
+        print(f"Selection: {args.selection}")
         print(f"Sampling seed: {args.seed}")
     print(f"Skipped invalid records: {skipped}")
 
@@ -1276,6 +1301,7 @@ def run_evaluation() -> None:
         "data_path": args.data_path,
         "requests_path": args.requests_path,
         "sample_source": "requests_path" if args.requests_path else "data_path",
+        "selection": "saved_requests" if args.requests_path else args.selection,
         "seed": args.seed,
         "num_samples_requested": len(data) if args.requests_path else args.num_samples,
         "num_samples_used": len(data),

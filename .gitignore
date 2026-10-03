@@ -8,7 +8,8 @@
 /captures/
 /local_data/
 /inputs/
-/data/
+/data/*
+!/data/README.md
 /.venv/
 /venv/
 __pycache__/
